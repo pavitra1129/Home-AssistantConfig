@@ -867,7 +867,7 @@
     - precip_intensity_max
     - uv_index
     - moon_phase
-- platform: google_fit_hass
+- platform: google_fit
   scan_interval: 14400
   name: Google Fit Martin
   client_id: !secret google_fit_id # pragma: allowlist secret
@@ -982,6 +982,9 @@
 #cheese forever
 - platform: youtube
   channel_id: UCl1M49CAo9u99gABBIqEgDQ
+#froggy
+- platform: youtube
+  channel_id: UCtEvLS7_ks-k-dB3_ebjgPw
 - platform: time_date
   display_options:
     - "time"

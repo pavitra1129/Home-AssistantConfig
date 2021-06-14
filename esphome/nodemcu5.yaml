@@ -31,7 +31,7 @@ binary_sensor:
     internal: true
     lambda: 'return id(${devicename}_doppler).state;'
     filters:
-      - delayed_off: 3min
+      - delayed_off: 6min
     on_press:
       - homeassistant.service:
           service: switch.turn_on

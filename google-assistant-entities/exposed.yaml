@@ -156,14 +156,14 @@ sensor.climate_flur_temp:
 #    - Temperatur Wohnzimmer
 #    - Temperatur
 #    - Thermometer
-sensor.climate_wohnung_temp:
-  expose: true
-  name: Temperatur
-  room: Wohnung
-  aliases:
-    - Temperatur Wohnung
-    - Temperatur
-    - Thermometer
+#sensor.climate_wohnung_temp:
+#  expose: true
+#  name: Temperatur
+#  room: Wohnung
+#  aliases:
+#    - Temperatur Wohnung
+#    - Temperatur
+#    - Thermometer
 sensor.schalter_schrank_wohnzimmer_temperatur:
   expose: true
   room: Wohnzimmer

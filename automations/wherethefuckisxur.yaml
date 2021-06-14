@@ -13,13 +13,16 @@
         message: "Xûr is at {{state_attr('sensor.where_the_fuck_is_xur', 'planet')}}, {{state_attr('sensor.where_the_fuck_is_xur', 'zone')}}, {{state_attr('sensor.where_the_fuck_is_xur', 'desc')}}"
         target: !secret discord_channel_id0
         data:
-         images:
-            - "c{{state_attr('sensor.where_the_fuck_is_xur', 'img')}}"
+         embed:
+           title: "{{state_attr('sensor.where_the_fuck_is_xur', 'planet')}}, {{state_attr('sensor.where_the_fuck_is_xur', 'zone')}}, {{state_attr('sensor.where_the_fuck_is_xur', 'desc')}}"
+           url: "https://wherethefuckisxur.com{{state_attr('sensor.where_the_fuck_is_xur', 'img')}}"
+           thumbnail:
+             url: "https://wherethefuckisxur.com{{state_attr('sensor.where_the_fuck_is_xur', 'img')}}"
     - service: telegram_bot.send_photo
       data_template:
         target: "{{ trigger.event.data.user_id }}"
         disable_notification: true
-        file: "{{state_attr('sensor.where_the_fuck_is_xur', 'img')}}"
+        url: "{{state_attr('sensor.where_the_fuck_is_xur', 'img')}}"
 #- alias: Update Xur Sensor
 #  id: "17"
 #  trigger:

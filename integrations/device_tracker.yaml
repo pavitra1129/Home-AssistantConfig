@@ -10,9 +10,9 @@ device_tracker:
     name: "Google Pixel"
     time_as: device_or_local
     entity_id:
-#      - device_tracker.pixel_gps
+      - device_tracker.pixel_gps
       - device_tracker.pixel_wifi
-#      - device_tracker.pixel_gmaps
+      - device_tracker.pixel_gmaps
       - device_tracker.google_maps_103287020705128769285
       - device_tracker.google_maps_phixnethassio_gmail_com
   - platform: composite
