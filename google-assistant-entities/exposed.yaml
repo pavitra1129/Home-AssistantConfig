@@ -220,3 +220,13 @@ switch.restreamer:
     - Kamera
     - Camera
     - Restreamer
+switch.soundbar:
+  expose: true
+  name: Soundbar
+  room: Wohnzimmer
+  aliases:
+    - Bluetooth
+    - Mit Bluetooth verbinden
+    - Bluetooth verbindung
+    - Soundbar verbinden
+    - Soundbar

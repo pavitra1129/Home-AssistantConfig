@@ -1,0 +1,9 @@
+{
+  "domain": "lametric_local",
+  "name": "LaMetric Local",
+  "documentation": "https://www.home-assistant.io/integrations/lametric",
+  "requirements": [],
+  "version": "1.02",
+  "codeowners": ["@10der"],
+  "iot_class": "cloud_push"
+}

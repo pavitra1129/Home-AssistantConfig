@@ -327,18 +327,21 @@
       name: Tram
       lines: !secret line_tram # pragma: allowlist secret
       products: ["Tram", "Nachteule"]
-      number: 3
+      number: 5
     - station: !secret station_mvg_bus # pragma: allowlist secret
       destinations: !secret destination_bus # pragma: allowlist secret
       name: Bus
       lines: !secret line_bus # pragma: allowlist secret
       products: ["Bus"]
-      number: 3
+      number: 5
     - station: !secret station_mvg_u # pragma: allowlist secret
       name: U-Bahn
-      directions: ["2"]
+#      directions: ["2"]
       products: ["U-Bahn"]
-      number: 3
+      number: 5
+- platform: deutsche_bahn
+  from: !secret db_start
+  to: !secret db_dest
 - platform: unifigateway
   host: !secret unifigw_host # pragma: allowlist secret
   port: !secret unifigw_port # pragma: allowlist secret
@@ -435,10 +438,10 @@
       #      entity_id: proximity.home
       friendly_name: Direction of travel
       value_template: "{{ state_attr('proximity.home','dir_of_travel') }}"
-    btc_exchange_rate_in_euro:
-      value_template: "{{ ((states.sensor.btc_exchange_rate.state | float) / (states.sensor.eur_exchange_rate.state | float)) | round(2)}}"
-      friendly_name: BTC Exchange Rate (EUR)
-      unit_of_measurement: EUR
+#    btc_exchange_rate_in_euro:
+#      value_template: "{{ ((states.sensor.btc_exchange_rate.state | float) / (states.sensor.eur_exchange_rate.state | float)) | round(2)}}"
+#      friendly_name: BTC Exchange Rate (EUR)
+#      unit_of_measurement: EUR
 #    coinbase_vault_in_euro:
 #      friendly_name: Coinbase BTC Vault (EUR)
 #      unit_of_measurement: EUR
@@ -553,21 +556,21 @@
     #    date_muellabfuhr:
     #      friendly_name: Müllabfuhr
     #      value_template: "{{ states.calendar.mullabfuhr.attributes.start_time }}"
-    heating_time_bad:
-      friendly_name: Heating Time Bad
-      icon_template: mdi:radiator
-      value_template: "{{ states('sensor.heating_bad_on_today') | float * 60 }}"
-      unit_of_measurement: min
-    heating_time_flur:
-      friendly_name: Heating Time Flur
-      icon_template: mdi:radiator
-      value_template: "{{ states('sensor.heating_flur_on_today') | float * 60 }}"
-      unit_of_measurement: min
-    heating_time_wohnzimmer:
-      friendly_name: Heating Time Wohnzimmer
-      icon_template: mdi:radiator
-      value_template: "{{ states('sensor.heating_wohnzimmer_on_today') | float * 60 }}"
-      unit_of_measurement: min
+#    heating_time_bad:
+#      friendly_name: Heating Time Bad
+#      icon_template: mdi:radiator
+#      value_template: "{{ states('sensor.heating_bad_on_today') | float * 60 }}"
+#      unit_of_measurement: min
+#    heating_time_flur:
+#      friendly_name: Heating Time Flur
+#      icon_template: mdi:radiator
+#      value_template: "{{ states('sensor.heating_flur_on_today') | float * 60 }}"
+#      unit_of_measurement: min
+#    heating_time_wohnzimmer:
+#      friendly_name: Heating Time Wohnzimmer
+#      icon_template: mdi:radiator
+#      value_template: "{{ states('sensor.heating_wohnzimmer_on_today') | float * 60 }}"
+#      unit_of_measurement: min
     #    low_battery:
     #      friendly_name: "Low Battery"
     #      value_template: >
@@ -731,99 +734,99 @@
     - memory_percent_used
     - network_tx
     - volume_percentage_used
-- platform: history_stats
-  name: Heating Bad On Today
-  entity_id: binary_sensor.heating_bad
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 1
-- platform: history_stats
-  name: Heating Flur On Today
-  entity_id: binary_sensor.heating_flur
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 1
-- platform: history_stats
-  name: Heating Wohnzimmer On Today
-  entity_id: binary_sensor.heating_wohnzimmer
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 1
-- platform: history_stats
-  name: Heating Bad On Yesterday
-  entity_id: binary_sensor.heating_bad
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 2
-- platform: history_stats
-  name: Heating Flur On Yesterday
-  entity_id: binary_sensor.heating_flur
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 2
-- platform: history_stats
-  name: Heating Wohnzimmer On Yesterday
-  entity_id: binary_sensor.heating_wohnzimmer
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 2
-- platform: history_stats
-  name: Heating Bad On this Week
-  entity_id: binary_sensor.heating_bad
-  state: "on"
-  type: time
-  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
-  end: "{{ now() }}"
-- platform: history_stats
-  name: Heating Flur On this Week
-  entity_id: binary_sensor.heating_flur
-  state: "on"
-  type: time
-  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
-  end: "{{ now() }}"
-- platform: history_stats
-  name: Heating Wohnzimmer On this Week
-  entity_id: binary_sensor.heating_wohnzimmer
-  state: "on"
-  type: time
-  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
-  end: "{{ now() }}"
-- platform: history_stats
-  name: Heating Bad On past 30 days
-  entity_id: binary_sensor.heating_bad
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 30
-- platform: history_stats
-  name: Heating Flur On past 30 days
-  entity_id: binary_sensor.heating_flur
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 30
-- platform: history_stats
-  name: Heating Wohnzimmer On past 30 days
-  entity_id: binary_sensor.heating_wohnzimmer
-  state: "on"
-  type: time
-  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-  duration:
-    days: 30
+#- platform: history_stats
+#  name: Heating Bad On Today
+#  entity_id: binary_sensor.heating_bad
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 1
+#- platform: history_stats
+#  name: Heating Flur On Today
+#  entity_id: binary_sensor.heating_flur
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 1
+#- platform: history_stats
+#  name: Heating Wohnzimmer On Today
+#  entity_id: binary_sensor.heating_wohnzimmer
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 1
+#- platform: history_stats
+#  name: Heating Bad On Yesterday
+#  entity_id: binary_sensor.heating_bad
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 2
+#- platform: history_stats
+#  name: Heating Flur On Yesterday
+#  entity_id: binary_sensor.heating_flur
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 2
+#- platform: history_stats
+#  name: Heating Wohnzimmer On Yesterday
+#  entity_id: binary_sensor.heating_wohnzimmer
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 2
+#- platform: history_stats
+#  name: Heating Bad On this Week
+#  entity_id: binary_sensor.heating_bad
+#  state: "on"
+#  type: time
+#  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+#  end: "{{ now() }}"
+#- platform: history_stats
+#  name: Heating Flur On this Week
+#  entity_id: binary_sensor.heating_flur
+#  state: "on"
+#  type: time
+#  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+#  end: "{{ now() }}"
+#- platform: history_stats
+#  name: Heating Wohnzimmer On this Week
+#  entity_id: binary_sensor.heating_wohnzimmer
+#  state: "on"
+#  type: time
+#  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+#  end: "{{ now() }}"
+#- platform: history_stats
+#  name: Heating Bad On past 30 days
+#  entity_id: binary_sensor.heating_bad
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 30
+#- platform: history_stats
+#  name: Heating Flur On past 30 days
+#  entity_id: binary_sensor.heating_flur
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 30
+#- platform: history_stats
+#  name: Heating Wohnzimmer On past 30 days
+#  entity_id: binary_sensor.heating_wohnzimmer
+#  state: "on"
+#  type: time
+#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+#  duration:
+#    days: 30
 #- platform: scrape
 #  #  scan_interval: 10000000
 #  name: wtfisxur
@@ -872,30 +875,30 @@
   name: Google Fit Martin
   client_id: !secret google_fit_id # pragma: allowlist secret
   client_secret: !secret google_fit_secret # pragma: allowlist secret
-- platform: google_travel_time
-  scan_interval: 1000000
-  name: Travel Parents (Trains)
-  api_key: !secret google_assistantapikey_pwd # pragma: allowlist secret
-  origin: device_tracker.google_pixel
-  destination: zone.mum_dad
-  options:
-    mode: transit
-    transit_mode: train
-    transit_routing_preference: fewer_transfers
-- platform: google_travel_time
-  scan_interval: 1000000
-  name: Travel Parents (Bike)
-  api_key: !secret google_assistantapikey_pwd # pragma: allowlist secret
-  origin: device_tracker.google_pixel
-  destination: zone.mum_dad
-  options:
-    mode: bicycling
-- platform: google_travel_time
-  scan_interval: 1000000
-  name: Commute Home
-  api_key: !secret google_assistantapikey_pwd # pragma: allowlist secret
-  origin: device_tracker.google_pixel
-  destination: zone.home
+#- platform: google_travel_time
+#  scan_interval: 1000000
+#  name: Travel Parents (Trains)
+#  api_key: !secret google_assistantapikey_pwd # pragma: allowlist secret
+#  origin: device_tracker.google_pixel
+#  destination: zone.mum_dad
+#  options:
+#    mode: transit
+#    transit_mode: train
+#    transit_routing_preference: fewer_transfers
+#- platform: google_travel_time
+#  scan_interval: 1000000
+#  name: Travel Parents (Bike)
+#  api_key: !secret google_assistantapikey_pwd # pragma: allowlist secret
+#  origin: device_tracker.google_pixel
+#  destination: zone.mum_dad
+#  options:
+#    mode: bicycling
+#- platform: google_travel_time
+#  scan_interval: 1000000
+#  name: Commute Home
+#  api_key: !secret google_assistantapikey_pwd # pragma: allowlist secret
+#  origin: device_tracker.google_pixel
+#  destination: zone.home
 - platform: snmp
   host: !secret unifi_usg # pragma: allowlist secret
   name: UniFi USG Uptime

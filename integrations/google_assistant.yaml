@@ -12,22 +12,23 @@ google_assistant:
   report_state: false #causes errors in google home console
   expose_by_default: false #setting to true breaks the integration
   exposed_domains:
-    #- light
-    #- camera
-#    - scene
-    #- media_player
-    #- sensor
-    #    - switch
-    #- binary_sensor
-    #- camera
-    #- group
-    #- input_boolean
-    #- scene
-    #- script
-    #- switch
-    #- fan
-    #- lock
-    #- cover
-    #- vacuum
-    #- alarm
+    - light
+    - scene
+    - media_player
+    - sensor
+    - switch
+    - binary_sensor
+#    - camera
+#    - group
+    - input_boolean
+#    - input_select
+#    - script
+#    - fan
+#    - lock
+#    - cover
+#    - vacuum
+    - alarm
+#    - climate
+#    - group
+    - alarm_control_panel
   entity_config: !include_dir_merge_named ../google-assistant-entities

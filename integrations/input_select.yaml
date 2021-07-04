@@ -19,3 +19,9 @@ input_select:
       - Deaktiviert
       - Aktiviert
     initial: Deaktiviert
+#  bt_connect:
+#    icon: mdi:speaker-bluetooth
+#    name: Google Home Bluetooth
+#    options:
+#      - Verbinden
+#      - Trennen

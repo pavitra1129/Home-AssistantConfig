@@ -37,10 +37,11 @@
       data:
         message: "Neues Internet Historian Video: {{states.sensor.internethistorian.state}}"
         data:
-          sound: 'notification'
-          icon: 'a10835'
-          cycles: 10
-          priority: 'critical'
+          sound: "notification"
+          icon: "a10835"
+          cycles: 0
+          lifetime: 3600
+          priority: "critical"
 - alias: "AndroidTV Play Latest Internet Historian Video"
   id: "32"
   trigger:

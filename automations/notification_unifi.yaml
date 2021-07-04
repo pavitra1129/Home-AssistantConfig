@@ -39,6 +39,6 @@
         title: Ein Gast hat sich in dein Netzwerk eingeloggt.
         message: >
           Zur Zeit ist/sind {{states('sensor.unifi_wlan_guest')}} Gaste/Gäste in deinem Netzwerk.
-#    - service: rest_command.assistant_broadcast
-#      data_template:
-#        command: Hey Martin, Ein Gast hat sich in dein Netzwerk eingeloggt.
+    - service: rest_command.assistant_broadcast
+      data_template:
+        command: Hey Martin, Ein Gast hat sich in dein Netzwerk eingeloggt.

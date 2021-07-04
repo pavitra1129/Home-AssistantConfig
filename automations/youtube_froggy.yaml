@@ -40,10 +40,11 @@
       data:
         message: "Neues froggy Video {{states.sensor.froggy18157725.state}}"
         data:
-          sound: 'notification'
-          icon: 'a10835'
-          cycles: 10
-          priority: 'critical'
+          sound: "notification"
+          icon: "a10835"
+          cycles: 0
+          lifetime: 3600
+          priority: "critical"
 - alias: AndroidTV Play Latest froggy Video
   id: "28a"
   trigger:

@@ -1,19 +1,13 @@
-# ██████╗██╗   ██╗███████╗ ██████╗ ████████╗███╗   ███╗██╗███████╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
-#██╔════╝██║   ██║██╔════╝██╔═══██╗╚══██╔══╝████╗ ████║██║╚══███╔╝██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
-#██║     ██║   ██║███████╗██║   ██║   ██║   ██╔████╔██║██║  ███╔╝ ███████║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
-#██║     ██║   ██║╚════██║██║   ██║   ██║   ██║╚██╔╝██║██║ ███╔╝  ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
-#╚██████╗╚██████╔╝███████║╚██████╔╝   ██║   ██║ ╚═╝ ██║██║███████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
-# ╚═════╝ ╚═════╝ ╚══════╝ ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 device_tracker.macbook_air:
   friendly_name: MacBook Air
-  icon: "mdi:laptop-mac"
+  icon: mdi:laptop-mac
   entity_picture: /local/_static/mac_book.png
 device_tracker.google_pixel:
   friendly_name: Google Pixel
-  icon: "mdi:cellphone-android"
+  icon: mdi:cellphone-android
   entity_picture: /local/_static/pixel.png
 device_tracker.google_nexus:
-  icon: "mdi:tablet-android"
+  icon: mdi:tablet-android
   friendly_name: Google Nexus
   entity_picture: /local/_static/nexus.png
 person.martin:
@@ -22,12 +16,10 @@ sensor.martin:
   entity_picture: /local/_static/martin.jfif
 climate.wiser_bad:
   friendly_name: Bad
-  #      entity_picture: /local/_static/thermostat2.png
   icon: mdi:thermostat
 climate.wiser_flur:
   friendly_name: Flur
   icon: mdi:thermostat
-#      entity_picture: /local/_static/thermostat2.png
 climate.wiser_wohnzimmer:
   friendly_name: Wohnzimmer
   icon: mdi:thermostat
@@ -43,12 +35,6 @@ sensor.climate_wohnzimmer_temp:
 switch.wiser_valve_protection:
   icon: mdi:valve
   friendly_name: Ventilschutz
-#sensor.temperatur_flur_thermostat_filtered:
-#  device_class: temperature
-#sensor.temperatur_bad_thermostat_filtered:
-#  device_class: temperature
-#sensor.temperatur_wohnzimmer_thermostat_filtered:
-#  device_class: temperature
 sensor.luftfeuchtigkeit_wohnzimmer_filtered:
   device_class: humidity
 sensor.sonoff_th16_whz_humidity_sensor:
@@ -67,23 +53,18 @@ sensor.date_muellabfuhr:
 light.schalter_1_bad_light:
   name: Bad
   icon: mdi:gesture-tap-box
-#  entity_picture: /local/_static/sonoff.jpg
 light.schalter_1_flur_light:
   name: Flur
   icon: mdi:gesture-tap-box
-#  entity_picture: /local/_static/sonoff.jpg
 light.schalter_schrank_kuche_light:
   name: Küchenschrank
   icon: mdi:gesture-tap-box
-#  entity_picture: /local/_static/sonoff.jpg
 light.schalter_lavalampe_light:
   name: Lavalampe
   icon: mdi:gesture-tap-box
-#  entity_picture: /local/_static/sonoff.jpg
 light.schalter_1_wohnzimmer_light:
   name: Wohnzimmer
   icon: mdi:gesture-tap-box
-#  entity_picture: /local/_static/sonoff.jpg
 sensor.morning_commute_bike:
   icon: mdi:bicycle
 sensor.morning_commute_trains:
@@ -109,9 +90,6 @@ media_player.google_home:
 media_player.shield:
   icon: mdi:television-classic
   device_class: tv
-#media_player.wohnzimmer:
-#  icon: mdi:sofa
-#  device_class: speaker
 media_player.android_tv:
   icon: mdi:television-classic
   device_class: tv
@@ -152,12 +130,6 @@ sensor.wtfisxur:
   icon: mdi:gamepad-variant-outline
 sensor.system_updates:
   icon: mdi:ubuntu
-#group.all_automations:
-#  hidden: false
-#group.all_scripts:
-#  hidden: false
-#group.all_lights:
-#  hidden: false
 binary_sensor.outside_temperature_falling:
   friendly_name: Außentemperatur fallend
   icon: mdi:thermometer-chevron-down
@@ -176,19 +148,6 @@ binary_sensor.updater:
 sensor.nodemcu_2_luxmeter:
   icon: mdi:theme-light-dark
   device_class: illuminance
-#sensor.motion_sensor:
-#  icon: mdi:motion-sensor
-#  device_class: motion
-#sensor.noise_sensor:
-#  device_class: sound
-#switch.restreamer:
-#  icon: mdi:camcorder-box
-#  icon_template: >-
-#    {% if is_state("switch.restreamer", "off") %}
-#      mdi:camcorder-box-off
-#    {% else %}
-#      mdi:camcorder-box
-#    {% endif %}
 binary_sensor.nodemcu_6_wohnzimmer_up:
   icon: mdi:arrow-up-bold-box
 binary_sensor.nodemcu_6_wohnzimmer_down:

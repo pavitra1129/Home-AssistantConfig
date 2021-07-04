@@ -52,7 +52,8 @@
       data:
         message: "Neues JB3 Video: {{states.sensor.jb3.state}}"
         data:
-          sound: 'notification'
-          icon: 'a10835'
-          cycles: 10
-          priority: 'critical'
+          sound: "notification"
+          icon: "a10835"
+          cycles: 0
+          lifetime: 3600
+          priority: "critical"

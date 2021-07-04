@@ -1,3 +1,4 @@
+#only working with v1.18.0 
 esphome:
   name: nodemcu7
   platform: ESP32
@@ -20,7 +21,7 @@ substitutions:
   update_interval_short: 2min
   update_interval_long: 10min
 time: !include shared/time.yaml
-wifi: !include shared/wifi.yaml
+wifi: !include shared/wifi_esp32.yaml
 api: !include shared/api.yaml
 ota: !include shared/ota.yaml
 web_server: !include shared/webserver.yaml

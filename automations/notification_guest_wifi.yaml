@@ -25,9 +25,9 @@
 #      data_template:
 #        command:
 #          Das Gaeste WiFi Passwort lautet lass mich rein
-#    - service: tts.google_cloud_say
-#      data_template:
-#        entity_id: media_player.google_nest_hub
-#        message:
-#          Das Gaeste WiFi Passwort lautet lass mich rein
-#    - delay: '00:00:{{ states.media_player.google_nest_hub.media_duration | int }}'
+    - service: tts.google_cloud_say
+      data_template:
+        entity_id: media_player.google_nest_hub
+        message:
+          Das Gaeste WiFi Passwort lautet lass mich rein
+    - delay: '00:00:{{ states.media_player.google_nest_hub.media_duration | int }}'
