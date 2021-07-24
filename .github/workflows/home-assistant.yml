@@ -1,15 +1,13 @@
 ---
 name: Home Assistant CI
-
 # yamllint disable-line rule:truthy
 on:
   push:
   pull_request:
   schedule:
     - cron: 0 12 * * *
-
 jobs:
-  home_assistant_stable:
+  stable:
     runs-on: ubuntu-latest
     steps:
       - name: Getting your configuration from GitHub
@@ -31,7 +29,7 @@ jobs:
         uses: "docker://homeassistant/home-assistant:stable"
         with:
           args: python -m homeassistant --config . --script check_config --info all
-  home_assistant_beta:
+  beta:
     runs-on: ubuntu-latest
     steps:
       - name: Getting your configuration from GitHub
@@ -53,7 +51,7 @@ jobs:
         uses: "docker://homeassistant/home-assistant:beta"
         with:
           args: python -m homeassistant --config . --script check_config --info all
-  home_assistant_dev:
+  dev:
     runs-on: ubuntu-latest
     steps:
       - name: Getting your configuration from GitHub
