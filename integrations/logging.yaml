@@ -306,8 +306,11 @@ recorder:
       - sensor.hp_switch_uptime
       - sensor.nas_uptime
       - sensor.uptime
-      - sensor.time
+      - sensor.date_time
       - sensor.date_time_iso
+      - sensor.date
+      - sensor.time_date
+      - sensor.time_utc
       - sensor.date_muellabfuhr
       - sensor.circadian_values
       - sensor.memory_free
@@ -471,8 +474,12 @@ logbook:
       - sensor.hp_switch_uptime
       - sensor.nas_uptime
       - sensor.uptime
-      - sensor.time
+      - sensor.date_time
       - sensor.date_time_iso
+      - sensor.date
+      - sensor.time
+      - sensor.time_date
+      - sensor.time_utc
       - sensor.date_muellabfuhr
       - sensor.circadian_values
       - sensor.memory_free

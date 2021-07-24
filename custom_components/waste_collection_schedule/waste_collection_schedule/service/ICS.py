@@ -1,9 +1,9 @@
 import datetime
+import logging
 import re
 
 import icalendar
 import recurring_ical_events
-import logging
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,8 +19,8 @@ class ICS:
         # parse ics file
         try:
             calendar = icalendar.Calendar.from_ical(ics_data)
-        except:
-            # there s an error, simply show the data string
+        except Exception as err:
+            _LOGGER.error(f"Parsing ics data failed:{str(err)}")
             _LOGGER.debug(ics_data)
             return []
 

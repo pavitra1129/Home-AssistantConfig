@@ -52,3 +52,4 @@ switch:
         command_on: !secret ghla_command_on # pragma: allowlist secret
         command_off: !secret ghla_command_off # pragma: allowlist secret
         command_state: !secret ghla_command_state # pragma: allowlist secret
+        command_timeout: 10

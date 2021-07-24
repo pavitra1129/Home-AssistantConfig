@@ -44,9 +44,9 @@
 !custom_components/
 !custom_components/**
 
-#doc
+#doc systemd
 !.doc/
-!.doc/**
+!.doc/systemd/**
 
 #www/_static + motion
 !www/
@@ -62,8 +62,8 @@
 !integrations/*.yaml
 
 #tmp directory
-!tmp/
-!tmp/*.state
+#!tmp/
+#!tmp/*.log
 
 #blueprints directory
 !blueprints/
@@ -108,3 +108,4 @@ ad_whitelist.txt
 __pycache__/
 *.asc
 *.pem
+*.state

@@ -110,31 +110,17 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		self._playlists = []
 		self._playlist_to_index = {}
 		self._tracks = []
+		self._trackLimitUser = -1
 		self._attributes = {}
+		self.reset_attributs()
 		self._next_track_no = 0
 		self._allow_next = False
 		self._last_auto_advance = datetime.datetime.now()
 		self._started_by = None
 		self._interrupt_data = None
-		self._attributes['_media_type'] = None
-		self._attributes['_media_id'] = None
-		self._attributes['_player_state'] = STATE_OFF
 		self._attributes['_player_id'] = None
-		self._attributes['likeStatus'] = ""
-		self._attributes['current_playlist_title'] = ""
-
-		self._playing = False
-		self._state = STATE_OFF
 		self._volume = 0.0
 		self._is_mute = False
-		self._track_name = None
-		self._track_artist = None
-		self._track_album_name = None
-		self._track_album_cover = None
-		self._track_artist_cover = None
-		self._media_duration = None
-		self._media_position = None
-		self._media_position_updated = None
 		self._playContinuous = True
 		self._signatureTimestamp = 0
 		self._x_to_idle = None # Some Mediaplayer don't transition to 'idle' but to 'off' on track end. This re-routes off to idle
@@ -163,6 +149,29 @@ class yTubeMusicComponent(MediaPlayerEntity):
 					vol.Optional(ATTR_LIMIT): vol.Coerce(int)
 				},
 				"async_search",
+			)
+			platform.async_register_entity_service(
+				SERVICE_ADD_TO_PLAYLIST,
+				{
+					vol.Optional(ATTR_SONG_ID): cv.string,
+					vol.Optional(ATTR_PLAYLIST_ID): cv.string
+				},
+				"async_add_to_playlist",
+			)
+			platform.async_register_entity_service(
+				SERVICE_CALL_RATE_TRACK,
+				{
+					vol.Required(ATTR_RATING): cv.string,
+					vol.Optional(ATTR_SONG_ID): cv.string
+				},
+				"async_rate_track",
+			)
+			platform.async_register_entity_service(
+				SERVICE_LIMIT_COUNT,
+				{
+					vol.Required(ATTR_LIMIT): vol.Coerce(int)
+				},
+				"async_limit_count",
 			)
 		# run the api / get_cipher / update select as soon as possible
 		if hass.is_running:
@@ -208,6 +217,28 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		if self._debug_log_concat.find('[E]')>=0: # if the end part is in the messeage print it now
 			self.log_me("","")
 
+
+	# reset some common attributs
+	def reset_attributs(self):
+		self._playing = False
+		self._state = STATE_OFF
+		self._track_name = None
+		self._track_artist = None
+		self._track_album_name = None
+		self._track_album_cover = None
+		self._media_duration = None
+		self._media_position = None
+		self._media_position_updated = None
+		self._attributes['_player_state'] = STATE_OFF
+		self._attributes['likeStatus'] = ""
+		self._attributes['current_playlist_title'] = ""
+		self._attributes['videoId'] = ""
+		self._attributes['lyrics'] = ""
+		self._attributes['_media_type'] = ""
+		self._attributes['_media_id'] = ""
+		self._attributes['current_track'] = 0
+		self._attributes['_media_type'] = None
+		self._attributes['_media_id'] = None
 
 
 	# update will be called eventually BEFORE homeassistant is started completly
@@ -520,26 +551,9 @@ class yTubeMusicComponent(MediaPlayerEntity):
 	async def async_turn_off_media_player(self, data=None):
 		self.log_me('debug',"[S] async_turn_off_media_player")
 		"""Fire the off action."""
-		self._playing = False
-		self._state = STATE_OFF
-		self._track_name = None
-		self._track_artist = None
-		self._track_album_name = None
-		self._track_album_cover = None
-		self._media_duration = None
-		self._media_position = None
-		self._media_position_updated = None
-		self._attributes['_player_state'] = STATE_OFF
-		self._attributes['likeStatus'] = ""
-		self._attributes['current_playlist_title'] = ""
-		self._attributes['videoId'] = ""
-		self._attributes['lyrics'] = ""
-		self._attributes['_media_type'] = ""
-		self._attributes['_media_id'] = ""
-		self._attributes['current_track'] = 0
+		self.reset_attributs()
 		if(self._like_in_name):
 			self._name = self._org_name
-
 		self.async_schedule_update_ha_state()
 		if(self._remote_player == ""):
 			if(not(await self.async_update_remote_player())):
@@ -868,6 +882,26 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				speakersList[i] = speakersList[i].replace(DOMAIN_MP+".","")
 		except:
 			speakersList = list()
+
+		# generate the speaker list in any case (will be needed for the media_browser)
+		defaultPlayer = ''
+		if(len(speakersList)<=1): # if one player is in the speakersList -> grab all available player and preselect the one that was given, if the list contains two or more: don't add all other avilable, leave it as is
+			if(len(speakersList) == 1): 
+				defaultPlayer = speakersList[0]
+			all_entities = await self.hass.async_add_executor_job(self.hass.states.all) 
+			for e in all_entities:
+				if(e.entity_id.startswith(DOMAIN_MP) and not(e.entity_id.startswith(DOMAIN_MP+"."+DOMAIN))):
+					speakersList.append(e.entity_id.replace(DOMAIN_MP+".",""))
+		
+		# create friendly speakerlist
+		self._friendly_speakersList = dict()
+		for a in speakersList:
+			state = self.hass.states.get(DOMAIN_MP+"."+a)
+			friendly_name = state.attributes.get(ATTR_FRIENDLY_NAME)
+			if(friendly_name == None):
+				friendly_name = a
+			self._friendly_speakersList.update({a:friendly_name})	
+
 		# check if the drop down exists
 		if(self._select_mediaPlayer == ""):
 			self.log_me('debug',"- Drop down for media player not found")
@@ -877,24 +911,6 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				if(await self.async_update_remote_player(remote_player=speakersList[0])):
 					self.log_me('debug',"- Choosing "+self._remote_player+" as player")
 		else: #dropdown exists
-			defaultPlayer = ''
-			if(len(speakersList)<=1):
-				if(len(speakersList) == 1):
-					defaultPlayer = speakersList[0]
-				all_entities = await self.hass.async_add_executor_job(self.hass.states.all) 
-				for e in all_entities:
-					if(e.entity_id.startswith(DOMAIN_MP) and not(e.entity_id.startswith(DOMAIN_MP+"."+DOMAIN))):
-						speakersList.append(e.entity_id.replace(DOMAIN_MP+".",""))
-			
-			# create friendly speakerlist
-			self._friendly_speakersList = dict()
-			for a in speakersList:
-				state = self.hass.states.get(DOMAIN_MP+"."+a)
-				friendly_name = state.attributes.get(ATTR_FRIENDLY_NAME)
-				if(friendly_name == None):
-					friendly_name = a
-				self._friendly_speakersList.update({a:friendly_name})			
-			
 			self.log_me('debug',"- Adding "+str(len(self._friendly_speakersList))+" player to the dropdown")
 			data = {input_select.ATTR_OPTIONS: list(self._friendly_speakersList.values()), ATTR_ENTITY_ID: self._select_mediaPlayer}
 			await self.hass.services.async_call(input_select.DOMAIN, input_select.SERVICE_SET_OPTIONS, data)
@@ -941,7 +957,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		self._playlist_to_index = {}
 		try:
 			try:
-				self._playlists = await self.hass.async_add_executor_job(self._api.get_library_playlists,self._trackLimit)
+				self._playlists = await self.hass.async_add_executor_job(self._api.get_library_playlists)
 				self.log_me('debug'," - "+str(len(self._playlists))+" Playlists loaded")
 			except:
 				self._api = None
@@ -1309,27 +1325,28 @@ class yTubeMusicComponent(MediaPlayerEntity):
 			if(media_type == MEDIA_TYPE_PLAYLIST):
 				crash_extra = 'get_playlist(playlistId='+str(media_id)+')'
 				playlist_info = await self.hass.async_add_executor_job(lambda: self._api.get_playlist(media_id, limit=self._trackLimit))
-				self._tracks = playlist_info['tracks']
+				self._tracks = playlist_info['tracks'][:self._trackLimit] # limit function doesn't really work ... seems like
 				self._attributes['current_playlist_title'] = str(playlist_info['title'])
 			elif(media_type == MEDIA_TYPE_ALBUM):
 				crash_extra = 'get_album(browseId='+str(media_id)+')'
-				self._tracks = await self.hass.async_add_executor_job(self._api.get_album,media_id)
-				self._tracks = self._tracks['tracks']
+				self._tracks = await self.hass.async_add_executor_job(self._api.get_album,media_id) # no limit needed
+				self._tracks = self._tracks['tracks'][:self._trackLimit] # limit function doesn't really work ... seems like
 			elif(media_type == MEDIA_TYPE_TRACK):
 				crash_extra = 'get_song(videoId='+str(media_id)+',signatureTimestamp='+str(self._signatureTimestamp)+')'
-				self._tracks = [await self.hass.async_add_executor_job(lambda: self._api.get_song(media_id,self._signatureTimestamp))]
+				self._tracks = [await self.hass.async_add_executor_job(lambda: self._api.get_song(media_id,self._signatureTimestamp))] # no limit needed
 				self._tracks[0] = self._tracks[0]['videoDetails']
 			elif(media_id == HISTORY):
 				crash_extra = 'get_history()'
-				self._tracks = await self.hass.async_add_executor_job(self._api.get_history)
+				self._tracks = await self.hass.async_add_executor_job(self._api.get_history) # no limit needed
 			elif(media_id == USER_TRACKS):
 				crash_extra = 'get_library_upload_songs(limit=999)'
-				self._tracks = await self.hass.async_add_executor_job(self._api.get_library_upload_songs,self._trackLimit*10)
+				self._tracks = await self.hass.async_add_executor_job(self._api.get_library_upload_songs,self._trackLimit)
+				self._tracks = self._tracks[:self._trackLimit] # limit function doesn't really work ... seems like
 			elif(media_type == CHANNEL):
 				if(self._legacyRadio):
 					# get original playlist from the media_id
-					crash_extra = 'get_playlist(playlistId='+str(media_id)+')'
-					self._tracks = await self.hass.async_add_executor_job(self._api.get_playlist,media_id)
+					crash_extra = 'get_playlist(playlistId='+str(media_id)+',limit='+str(self._trackLimit)+')'
+					self._tracks = await self.hass.async_add_executor_job(lambda: self._api.get_playlist(media_id, limit=self._trackLimit))
 					self._tracks = self._tracks['tracks']
 					# select on track randomly
 					if(isinstance(self._tracks, list)):
@@ -1341,30 +1358,40 @@ class yTubeMusicComponent(MediaPlayerEntity):
 							else:
 								r_track = self._tracks[0]
 							# get a 'channel' based on that random track
-							crash_extra += ' ... get_watch_playlist(videoId='+str(r_track['videoId'])+')'
-							self._tracks = await self.hass.async_add_executor_job(self._api.get_watch_playlist,r_track['videoId'])
-							self._tracks = self._tracks['tracks']
+							crash_extra += ' ... get_watch_playlist(videoId='+str(r_track['videoId'])+',limit='+str(self._trackLimit)+')'
+							self._tracks = await self.hass.async_add_executor_job(lambda:self._api.get_watch_playlist(r_track['videoId'], limit=self._trackLimit))
+							self._tracks = self._tracks['tracks'][:self._trackLimit] # limit function doesn't really work ... seems like
 				else:
 					crash_extra = 'get_watch_playlist(playlistId=RDAMPL'+str(media_id)+')'
-					self._tracks = await self.hass.async_add_executor_job(lambda: self._api.get_watch_playlist(playlistId="RDAMPL"+str(media_id)))
-					self._tracks = self._tracks['tracks']
+					self._tracks = await self.hass.async_add_executor_job(lambda: self._api.get_watch_playlist(playlistId="RDAMPL"+str(media_id), limit=self._trackLimit))
+					self._tracks = self._tracks['tracks'][:self._trackLimit] # limit function doesn't really work ... seems like
 				self._started_by = "UI" # technically wrong, but this will enable auto-reload playlist once all tracks are played
-				playlist_info = await self.hass.async_add_executor_job(self._api.get_playlist,media_id)
+				playlist_info = await self.hass.async_add_executor_job(lambda:self._api.get_playlist(media_id, limit=self._trackLimit))
 				self._attributes['current_playlist_title'] = "Radio of "+str(playlist_info['title'])
 			elif(media_type == CHANNEL_VID):
 				crash_extra = 'get_watch_playlist(videoId=RDAMVM'+str(media_id)+')'
-				self._tracks = await self.hass.async_add_executor_job(lambda: self._api.get_watch_playlist(videoId=str(media_id)))
-				self._tracks = self._tracks['tracks']
+				self._tracks = await self.hass.async_add_executor_job(lambda: self._api.get_watch_playlist(videoId=str(media_id), limit=self._trackLimit))
+				self._tracks = self._tracks['tracks'][:self._trackLimit] # limit function doesn't really work ... seems like
 				self._started_by = "UI" # technically wrong, but this will enable auto-reload playlist once all tracks are played
-				video_info = await self.hass.async_add_executor_job(lambda: self._api.get_song(media_id,self._signatureTimestamp))
-				self._attributes['current_playlist_title'] = "Radio of "+str(video_info['title'])
+				video_info = await self.hass.async_add_executor_job(lambda: self._api.get_song(media_id,self._signatureTimestamp)) # no limit needed
+				title = "unknown title"
+				if("videoDetails" in video_info):
+					if("title" in video_info["videoDetails"]):
+						title = video_info['videoDetails']['title']
+				self._attributes['current_playlist_title'] = "Radio of "+str(title)
 			elif(media_type == USER_ALBUM):
 				crash_extra = 'get_library_upload_album(browseId='+str(media_id)+')'
-				self._tracks = await self.hass.async_add_executor_job(self._api.get_library_upload_album,media_id)
-				self._tracks = self._tracks['tracks']
+				self._tracks = await self.hass.async_add_executor_job(lambda: self._api.get_library_upload_album(media_id, limit=self._trackLimit))
+				self._tracks = self._tracks['tracks'][:self._trackLimit] # limit function doesn't really work ... seems like
 			elif(media_type == USER_ARTIST or media_type == USER_ARTIST_2): # Artist -> Track or Artist [-> Album ->] Track
 				crash_extra = 'get_library_upload_artist(browseId='+str(media_id)+')'
-				self._tracks = await self.hass.async_add_executor_job(self._api.get_library_upload_artist,media_id,BROWSER_LIMIT)
+				self._tracks = await self.hass.async_add_executor_job(lambda: self._api.get_library_upload_artist(media_id, limit=self._trackLimit))
+				self._tracks = self._tracks[:self._trackLimit] # limit function doesn't really work ... seems like
+			elif(media_type == CONF_RECEIVERS): # a bit funky, but this enables us to select the player via the media browser .. 
+				await self.async_select_source(media_id)
+			elif(media_type==CUR_PLAYLIST_COMMAND): # a bit funky, but this enables us to just in the current playlist
+				await self.async_call_method(SERVICE_CALL_GOTO_TRACK,media_id) 
+				return # INSTANT leave after this call to prevent any further shuffeling etc
 			else:
 				self.log_me('debug',"- error during fetching play_media, turning off")
 				await self.async_turn_off()
@@ -1390,7 +1417,10 @@ class yTubeMusicComponent(MediaPlayerEntity):
 			await self.async_turn_off()
 			return
 
-
+		# limit list now
+		if(self._trackLimitUser > 0):
+			self.log_me('debug',"Limiting playlist from "+str(len(self._tracks))+" to "+str(self._trackLimitUser)+" items")
+			self._tracks = self._tracks[:self._trackLimitUser]
 		self._tracks_to_attribute()
 
 		# grab track from tracks[] and forward to remote player
@@ -1537,33 +1567,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		self.log_me('debug',parameters)
 		if(command == SERVICE_CALL_RATE_TRACK):
 			if(len(all_params)>=1):
-				try:
-					arg = 'LIKE'
-					if(all_params[0]==SERVICE_CALL_THUMB_UP):
-						self.log_me('debug',"rate thumb up")
-						arg = 'LIKE'
-					elif(all_params[0]==SERVICE_CALL_THUMB_DOWN):
-						self.log_me('debug',"rate thumb down")
-						arg = 'DISLIKE'
-					elif(all_params[0]==SERVICE_CALL_THUMB_MIDDLE):
-						self.log_me('debug',"rate thumb middle")
-						arg = 'INDIFFERENT'
-					elif(all_params[0]==SERVICE_CALL_TOGGLE_THUMB_UP_MIDDLE):
-						if('likeStatus' in self._attributes):
-							if(self._attributes['likeStatus']=='LIKE'):
-								self.log_me('debug',"rate thumb middle")
-								arg = 'INDIFFERENT'
-							else:
-								self.log_me('debug',"rate thumb up")
-								arg = 'LIKE'
-					await self.hass.async_add_executor_job(self._api.rate_song,self._attributes['videoId'],arg)
-					self._attributes['likeStatus'] = arg
-					if(self._like_in_name):
-						self._name = self._org_name + " - " + arg
-					self.async_schedule_update_ha_state()
-					self._tracks[self._next_track_no]['likeStatus'] = arg
-				except:
-					self.exc()
+				await self.async_rate_track(rating=all_params[0])
 		elif(command == SERVICE_CALL_INTERRUPT_START):
 			await self.async_update_remote_player()
 			#_LOGGER.error(self._remote_player)
@@ -1617,12 +1621,15 @@ class yTubeMusicComponent(MediaPlayerEntity):
 			self._name = self._org_name + " - " + self._attributes['likeStatus']
 			self.log_me('debug',"Showing like status in name until restart")
 		elif(command == SERVICE_CALL_GOTO_TRACK):
-			self.log_me('debug',"Going to Track "+str(all_params[0])+".")
-			self._next_track_no = min(max(int(all_params[0])-1-1,-1),len(self._tracks)-1)
-			await self.async_get_track() 
+			self.log_me('debug',"Going to Track "+str(parameters)+".")
+			self._next_track_no = min(max(int(parameters)-1-1,-1),len(self._tracks)-1)
+			prev_shuffle = self._shuffle # store current shuffle setting
+			self._shuffle = False # set false, otherwise async_get_track will override next_track
+			await self.async_get_track()
+			self._shuffle = prev_shuffle # restore
 		else:
 			self.log_me('error',"Command "+str(command)+" not implimented")
-		self.log_me('debug','END async_call_method')
+		self.log_me('debug',"[E] async_call_method")
 
 
 	async def async_search(self, query="", filter=None, limit=20):
@@ -1635,6 +1642,82 @@ class yTubeMusicComponent(MediaPlayerEntity):
 			data = {"title": "yTubeMediaPlayer error", "message": "Please use a valid filter: 'albums', 'playlists', 'songs'"}
 			await self.hass.services.async_call("persistent_notification","create", data)
 		self.log_me('debug',"[E] async_search")
+
+	
+	async def async_add_to_playlist(self, song_id="", playlist_id=""):
+		self.log_debug_later("[S] async_add_to_playlist")
+		if(song_id==""):
+			if(self._attributes['videoId']!=""):
+				song_id = self._attributes['videoId']
+			else:
+				self.log_me('error',"no song_id given, but also currently not playing, so I don't know what to add")
+		if(song_id!="" and playlist_id==""):
+			if(self._attributes['_media_type'] in [MEDIA_TYPE_PLAYLIST, CHANNEL]):
+				playlist_id = self._attributes['_media_id']
+			else:
+				self.log_me('error',"No playlist Id provided and the current playmode isn't 'playlist' nor 'channel', so I don't know where to add the track")
+		if(song_id!="" and playlist_id!=""):
+			#self.log_me('debug',"add_playlist_items(playlistId="+playlist_id+", videoIds=["+song_id+"]))")
+			if(playlist_id=="LM"):
+				await self.async_call_method(command=SERVICE_CALL_RATE_TRACK, parameters=[SERVICE_CALL_THUMB_UP])
+				res = 'song added by liking it'
+			else:
+				try:
+					res = await self.hass.async_add_executor_job(lambda:self._api.add_playlist_items(playlistId=str(playlist_id), videoIds=[str(song_id)]))
+					res = 'song added'
+				except:
+					res = 'You can\'t add songs to this playlist (are you the owner?), requrest failed'
+			self.log_me('debug',res)
+		self.log_me('debug',"[E] async_add_to_playlist")
+
+	async def async_limit_count(self, limit):
+		self.log_debug_later("[S] async_limit_count")
+		self._trackLimitUser = limit
+		if(self._trackLimitUser > self._trackLimit): # having a tracklimit (requests from the api) smaller than the user limit (limits the list AFTER generation) is pointless, so lets adjust this here as well
+			self._trackLimit = self._trackLimitUser
+		self.log_me("debug","New limit: "+str(self._trackLimitUser))
+		self.log_me("debug","[E] async_limit_count")
+
+	async def async_rate_track(self, rating="", song_id=""):
+		self.log_debug_later("[S] async_rate_track")
+		if(rating==""):
+			self.log_me('error',"No Rating given, stopping")
+		if(song_id==""):
+			if(self._attributes['videoId']!=""):
+				self.log_me('debug',"No song Id given, taking current song")
+				song_id = self._attributes['videoId']
+			else:
+				self.log_me('error',"No song Id given and currently not playing, giving up")
+
+		if(song_id!="" and rating!=""):
+			try:
+				arg = 'LIKE'
+				if(rating==SERVICE_CALL_THUMB_UP):
+					self.log_me('debug',"rate thumb up")
+					arg = 'LIKE'
+				elif(rating==SERVICE_CALL_THUMB_DOWN):
+					self.log_me('debug',"rate thumb down")
+					arg = 'DISLIKE'
+				elif(rating==SERVICE_CALL_THUMB_MIDDLE):
+					self.log_me('debug',"rate thumb middle")
+					arg = 'INDIFFERENT'
+				elif(rating==SERVICE_CALL_TOGGLE_THUMB_UP_MIDDLE):
+					if('likeStatus' in self._attributes):
+						if(self._attributes['likeStatus']=='LIKE'):
+							self.log_me('debug',"rate thumb middle")
+							arg = 'INDIFFERENT'
+						else:
+							self.log_me('debug',"rate thumb up")
+							arg = 'LIKE'
+				await self.hass.async_add_executor_job(self._api.rate_song,song_id,arg)
+				self._attributes['likeStatus'] = arg
+				if(self._like_in_name):
+					self._name = self._org_name + " - " + arg
+				self.async_schedule_update_ha_state()
+				self._tracks[self._next_track_no]['likeStatus'] = arg
+			except:
+				self.exc()
+		self.log_me('debug',"[E] async_rate_track")
 	
 
 	def exc(self, resp="self"):
@@ -1657,19 +1740,17 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		self.log_me('debug',"async_browse_media")
 		await self.async_check_api()
 
-		s = None
-		if(self._search.get("query","") != ""):
-			s = self._search
+		
 
 		if media_content_type in [None, "library"]:
-			return await self.hass.async_add_executor_job(lambda: library_payload(self._api,s))
+			return await self.hass.async_add_executor_job(lambda: library_payload(self))
 
 		payload = {
 			"search_type": media_content_type,
 			"search_id": media_content_id,
 		}
 
-		response = await build_item_response(self.hass, self._api, payload, s)
+		response = await build_item_response(self, payload)
 		if response is None:
 			raise BrowseError(
 				f"Media not found: {media_content_type} / {media_content_id}"

@@ -118,10 +118,15 @@ SUPPORT_YTUBEMUSIC_PLAYER = (
 )
 
 SERVICE_SEARCH = "search"
+SERVICE_ADD_TO_PLAYLIST = "add_to_playlist"
+SERVICE_LIMIT_COUNT = "limit_count"
 ATTR_PARAMETERS = "parameters"
 ATTR_QUERY = "query"
 ATTR_FILTER = "filter"
 ATTR_LIMIT = "limit"
+ATTR_SONG_ID = "song_id"
+ATTR_PLAYLIST_ID = "playlist_id"
+ATTR_RATING = "rating"
 SERVICE_CALL_METHOD = "call_method"
 SERVICE_CALL_RATE_TRACK = "rate_track"
 SERVICE_CALL_THUMB_UP = "thumb_up"
@@ -169,7 +174,7 @@ DEFAULT_LIKE_IN_NAME = False
 DEFAULT_DEBUG_AS_ERROR = False
 PROXY_FILENAME = "ytube_proxy.mp4"
 
-DEFAULT_TRACK_LIMIT = 99
+DEFAULT_TRACK_LIMIT = 25
 DEFAULT_LEGACY_RADIO = True
 DEFAULT_SHUFFLE_MODE = 1
 DEFAULT_SHUFFLE = True
@@ -187,20 +192,54 @@ PLAYMODE_RANDOM = "Random"
 PLAYMODE_SHUFFLE_RANDOM = "Shuffle Random"
 PLAYMODE_DIRECT = "Direct"
 
+SEARCH_ID = "search_id"
+SEARCH_TYPE = "search_type"
 LIB_PLAYLIST = 'library_playlists'
+LIB_PLAYLIST_TITLE = "Library Playlists"
+
 LIB_ALBUM = 'library_albums'
+LIB_ALBUM_TITLE = "Library Albums"
+
 LIB_TRACKS = 'library_tracks'
+LIB_TRACKS_TITLE = "Library Songs"
+
+HISTORY = 'history'
+HISTORY_TITLE = "Last played songs"
+
 USER_TRACKS = 'user_tracks'
+USER_TRACKS_TITLE = "Uploaded songs"
+
 USER_ALBUMS = 'user_albums'
+USER_ALBUMS_TITLE = "Uploaded Albums"
 USER_ALBUM = 'user_album'
+
 USER_ARTISTS = 'user_artists'
+USER_ARTISTS_TITLE = "Uploaded Artists"
+
 USER_ARTISTS_2 = 'user_artists2'
+USER_ARTISTS_2_TITLE = "Uploaded Artists -> Album"
+
 USER_ARTIST = 'user_artist'
+USER_ARTIST_TITLE = "Uploaded Artist"
+
 USER_ARTIST_2 = 'user_artist2'
+USER_ARTIST_2_TITLE = "Uploaded Album"
+
 SEARCH = 'search'
+SEARCH_TITLE = "Search results" 
+
+PLAYER_TITLE = "Playback device"
+
+MOOD_OVERVIEW = 'mood_overview'
+MOOD_PLAYLISTS = 'mood_playlists'
+MOOD_TITLE = 'Moods & Genres'
+
+CUR_PLAYLIST = 'cur_playlists'
+CUR_PLAYLIST_TITLE = "Current Playlists"
+CUR_PLAYLIST_COMMAND = "PLAYLIST_GOTO_TRACK"
+
 CHANNEL = 'channel'
 CHANNEL_VID = 'vid_channel'
-HISTORY = 'history'
 STATE_OFF_1X = 'OFF_1X'
 BROWSER_LIMIT = 500
 
