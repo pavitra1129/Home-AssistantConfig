@@ -1,0 +1,30 @@
+#!/bin/bash
+# this cron script syncs my internal ssl certs to the qnap nas and restarts the required services
+
+# homeassistant directory
+export HASSIO_DIR = "/path/to/homeassistant/"
+# directory we're syncing to
+export QNAP_DIR = "/path/to/share/on/nas/"
+# internal wildcard domain that we want to sync
+export INTERNAL_DOMAIN = "internal.domain"
+
+
+# below command triggers the systemd-mount of the /mnt/nas directory there's probably better ways to do that, but works for me
+/bin/ls /mnt/nas &> /dev/null &&\
+
+sleep 10 &&\
+
+# create the keychain from privatekey and fullchain
+for dir in $(ls -d $HASSIO_DIR/addons/data/core_letsencrypt/letsencrypt/live/* | grep -v 'README'); do
+    cat $dir/privkey.pem $dir/fullchain.pem > $dir/fullkeychain.pem
+done
+
+sleep 10 &&\
+
+/usr/bin/sudo /usr/bin/rsync -Laz $HASSIO_DIR/addons/data/core_letsencrypt/letsencrypt/live/$INTERNAL_DOMAIN/ $QNAP_DIR/$INTERNAL_DOMAIN
+
+# restart services on the nas
+# requires passwordless ssh-logon for the user that runs the cronjob
+ssh admin@nas '/etc/init.d/stunnel.sh restart'
+ssh admin@nas '/etc/init.d/thttpd.sh restart'
+ssh admin@nas '/etc/init.d/Qthttpd.sh restart'

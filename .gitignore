@@ -34,11 +34,18 @@
 
 #Stub files
 !.doc/
+!.doc/CI/
 !.doc/CI/*.yaml
 !.doc/CI/*.json
-!.doc/cron.daily/**
-!.doc/cron.hourly/**
+!.doc/CI/*.lst
+!.doc/CI/tmp
+!.doc/CI/tmp/**
+!.doc/cron.*/
+!.doc/cron.*/**
+!.doc/scripts/
 !.doc/scripts/*.sh
+!.doc/systemd/
+!.doc/systemd/**
 
 #images for documentation
 !.doc/images/**
