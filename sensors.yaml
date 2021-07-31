@@ -901,6 +901,7 @@
   host: !secret unifi_usg # pragma: allowlist secret
   name: UniFi USG Uptime
   baseoid: 1.3.6.1.2.1.1.3.0
+  version: 2c
   value_template: >
     {%- set time = value | int // 100 %}
     {%- set minutes = ((time % 3600) // 60) %}
@@ -914,6 +915,7 @@
   host: !secret unifi_switch # pragma: allowlist secret
   name: UniFi Switch Uptime
   baseoid: 1.3.6.1.2.1.1.3.0
+  version: 2c
   value_template: >
     {%- set time = value | int // 100 %}
     {%- set minutes = ((time % 3600) // 60) %}
@@ -927,6 +929,7 @@
   host: !secret unifi_ap # pragma: allowlist secret
   name: UniFi Accesspoint Uptime
   baseoid: 1.3.6.1.2.1.1.3.0
+  version: 2c
   value_template: >
     {%- set time = value | int // 100 %}
     {%- set minutes = ((time % 3600) // 60) %}
@@ -940,6 +943,7 @@
   host: !secret qnap_host # pragma: allowlist secret
   name: NAS Uptime
   baseoid: 1.3.6.1.2.1.1.3.0
+  version: 2c
   value_template: >
     {%- set time = value | int // 100 %}
     {%- set minutes = ((time % 3600) // 60) %}
@@ -953,6 +957,7 @@
   host: !secret hp_switch # pragma: allowlist secret
   name: HP Switch Uptime
   baseoid: 1.3.6.1.2.1.1.3.0
+  version: 2c
   value_template: >
     {%- set time = value | int // 100 %}
     {%- set minutes = ((time % 3600) // 60) %}
