@@ -36,6 +36,9 @@
 !.doc/
 !.doc/CI/*.yaml
 !.doc/CI/*.json
+!.doc/cron.daily/**
+!.doc/cron.hourly/**
+!.doc/scripts/*.sh
 
 #images for documentation
 !.doc/images/**
@@ -108,4 +111,5 @@ ad_whitelist.txt
 __pycache__/
 *.asc
 *.pem
+*.key
 *.state

@@ -175,16 +175,16 @@ binary_sensor:
         to_state: "off"
         prob_given_true: 0.9 # 90% chance that if we are in bed, the light is off
         prob_given_false: 0.7 # 70% chance that if we are not in bed the light is off
-  #  - platform: ffmpeg_noise
-  #    name: Noise Sensor 1 (Wohnzimmer)
-  #    input: -f alsa -ac 1 -i plughw:1,0 -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
-  ##    input: -f pulse -ac 1 -i default -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
-  #    #   input: !secret nest_stream
-  #    extra_arguments: -filter:a highpass=f=300,lowpass=f=2500,volume=volume=2 -codec:a libmp3lame -ar 16000
-  #    initial_state: true
-  #    duration: 2
-  #    reset: 60
-  #    peak: -32
+  - platform: ffmpeg_noise
+    name: Noise Sensor 1 (Wohnzimmer)
+    input: -f alsa -ac 1 -i plughw:1,0 -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
+  #    input: -f pulse -ac 1 -i default -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
+      #   input: !secret nest_stream
+    extra_arguments: -filter:a highpass=f=300,lowpass=f=2500,volume=volume=2 -codec:a libmp3lame -ar 16000
+    initial_state: true
+    duration: 2
+    reset: 60
+    peak: -32
   - platform: ffmpeg_motion
     input: !secret nest_stream # pragma: allowlist secret
     name: Motion Sensor
@@ -219,5 +219,5 @@ binary_sensor:
   #    name: Wohnzimmertür
   #    entity_id: sensor.nodemcu_3_accel_x
   #    lower: "0.4"
-  - platform: uptimerobot
-    api_key: !secret uptime_robot_apikey
+#  - platform: uptimerobot
+#    api_key: !secret uptime_robot_apikey
