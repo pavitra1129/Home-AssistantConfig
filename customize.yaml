@@ -1,3 +1,10 @@
+# ██████╗██╗   ██╗███████╗████████╗ ██████╗ ███╗   ███╗██╗███████╗███████╗
+#██╔════╝██║   ██║██╔════╝╚══██╔══╝██╔═══██╗████╗ ████║██║╚══███╔╝██╔════╝
+#██║     ██║   ██║███████╗   ██║   ██║   ██║██╔████╔██║██║  ███╔╝ █████╗  
+#██║     ██║   ██║╚════██║   ██║   ██║   ██║██║╚██╔╝██║██║ ███╔╝  ██╔══╝  
+#╚██████╗╚██████╔╝███████║   ██║   ╚██████╔╝██║ ╚═╝ ██║██║███████╗███████╗
+# ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝╚═╝╚══════╝╚══════╝
+#                                                                         
 device_tracker.macbook_air:
   friendly_name: MacBook Air
   icon: mdi:laptop-mac
@@ -77,16 +84,19 @@ sensor.travel_parents_trains:
   icon: mdi:train-variant
 sensor.climate_bad_window:
   icon: mdi:window-closed-variant
+  device_class: window
 sensor.climate_flur_window:
   icon: mdi:window-closed-variant
+  device_class: window
 sensor.climate_wohnzimmer_window:
   icon: mdi:window-closed-variant
+  device_class: window
 media_player.google_nest_hub:
   icon: mdi:google-assistant
-  device_class: speaker
+  device_class: sound
 media_player.google_home:
   icon: mdi:google-home
-  device_class: speaker
+  device_class: sound
 media_player.shield:
   icon: mdi:television-classic
   device_class: tv

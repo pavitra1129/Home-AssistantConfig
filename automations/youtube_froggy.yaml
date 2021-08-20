@@ -16,7 +16,7 @@
   id: "11a"
   trigger:
     - platform: state
-      entity_id: sensor.froggy18157725
+      entity_id: sensor.froggy618157725
       attribute: url
   condition:
     - condition: template
@@ -28,8 +28,8 @@
       data_template:
         title: New froggy Video
         message: >
-          {{states('sensor.froggy18157725')}}
-           {{state_attr('sensor.froggy18157725', 'url')}}
+          {{states('sensor.froggy618157725')}}
+           {{state_attr('sensor.froggy618157725', 'url')}}
         data:
           inline_keyboard:
             - "Play Video on TV:/yt_froggy"
@@ -38,7 +38,7 @@
         command: Hey Martin, froggy hat ein neues Video auf YouTube hochgeladen.
     - service: notify.lametric
       data:
-        message: "Neues froggy Video {{states.sensor.froggy18157725.state}}"
+        message: "Neues froggy Video: {{states.sensor.froggy618157725.state}}"
         data:
           sound: "notification"
           icon: "a10835"
@@ -56,7 +56,7 @@
       entity_id:
         - media_player.shield
       data_template:
-        media_content_id: "{{state_attr('sensor.froggy18157725', 'url' | string)}}"
+        media_content_id: "{{state_attr('sensor.froggy618157725', 'url' | string)}}"
         media_content_type: video/youtube
     - service: homeassistant.turn_off
       entity_id: input_boolean.play_froggy

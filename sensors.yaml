@@ -88,7 +88,7 @@
   db_url: !secret dburl # pragma: allowlist secret
   queries:
     - name: MariaDB Homeassistant
-      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024 / 1024, 2) "value" FROM information_schema.tables WHERE table_schema="hassio" GROUP BY table_schema;'
+      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024 / 1024, 2) "value" FROM information_schema.tables WHERE table_schema="hass" GROUP BY table_schema;'
       column: "value"
       unit_of_measurement: GB
     - name: MariaDB States recorded today

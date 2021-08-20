@@ -120,6 +120,7 @@ SUPPORT_YTUBEMUSIC_PLAYER = (
 SERVICE_SEARCH = "search"
 SERVICE_ADD_TO_PLAYLIST = "add_to_playlist"
 SERVICE_LIMIT_COUNT = "limit_count"
+SERVICE_RADIO = "start_radio"
 ATTR_PARAMETERS = "parameters"
 ATTR_QUERY = "query"
 ATTR_FILTER = "filter"
@@ -227,6 +228,9 @@ USER_ARTIST_2_TITLE = "Uploaded Album"
 
 SEARCH = 'search'
 SEARCH_TITLE = "Search results" 
+
+ALBUM_OF_TRACK = 'album_of_track'
+ALBUM_OF_TRACK_TITLE = 'Album of current Track'
 
 PLAYER_TITLE = "Playback device"
 

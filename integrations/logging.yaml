@@ -104,6 +104,12 @@ recorder:
       - sensor.spotlight_1_wohnzimmer_uptime
       - sensor.stehlampe_wohnzimmer_uptime
       - sensor.network_throughput_in_eth0
+      - sensor.processor_use
+      - sensor.core_mem
+      - sensor.disk_use_percent
+      - sensor.unifi_speedtest_rx
+      - sensor.unifi_speedtest_tx
+      - sensor.unifi_speedtest_ping
     domains:
       - updater
       - camera
@@ -164,6 +170,12 @@ logbook:
       - sensor.load_5m
       - sensor.load_15m
       - sensor.network_throughput_in_eth0
+      - sensor.processor_use
+      - sensor.core_mem
+      - sensor.disk_use_percent
+      - sensor.unifi_speedtest_rx
+      - sensor.unifi_speedtest_tx
+      - sensor.unifi_speedtest_ping
     domains:
       - updater
       - camera
@@ -205,6 +217,9 @@ history:
       - sensor.unifi_accesspoint_uptime
       - sensor.unifi_switch_uptime
       - sensor.unifi_usg_uptime
+      - sensor.unifi_speedtest_rx
+      - sensor.unifi_speedtest_tx
+      - sensor.unifi_speedtest_ping
       - sensor.hp_switch_uptime
       - sensor.nas_uptime
       - sensor.uptime
@@ -243,6 +258,9 @@ history:
       - sensor.load_5m
       - sensor.load_15m
       - sensor.network_throughput_in_eth0
+      - sensor.processor_use
+      - sensor.core_mem
+      - sensor.disk_use_percent
     domains:
       - updater
       - camera

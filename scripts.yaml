@@ -6,7 +6,7 @@
 #╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝   ╚══════╝
 check_config:
   sequence: []
-  alias: Check Configuration
+  alias: Check Configuratio
 #send_google_broadcast:
 #  sequence:
 #    - service: notify.google_assistant_broadcast
