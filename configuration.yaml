@@ -38,6 +38,8 @@ homeassistant:
   elevation: !secret home_ela
   allowlist_external_dirs: #seddelete
     - /config/tmp/ #seddelete
+  allowlist_external_urls: #seddelete
+    - http://localhost:8123 #seddelete
 #https://www.home-assistant.io/integrations/media_source/
   media_dirs: #seddelete
     local: /media #seddelete

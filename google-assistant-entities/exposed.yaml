@@ -108,30 +108,30 @@ light.schalter_lavalampe_light:
   expose: true
   room: Wohnzimmer
   name: Lavalampe
-#light.bulbwhzlamp_cwww:
-#  expose: true
-#  room: Wohnzimmer
-#  name: Stehlampe Weiss
-#  aliases:
-#    - Wohnzimmerlampe
-#    - Standlicht
-#light.mood_lights_rgb:
-#  expose: true
-#  room: Wohnzimmer
-#  name: Mood Lights RGB
-#light.mood_lights_cwww:
-#  expose: true
-#  name: Mood Lights CWWW
-#  room: Wohnzimmer
-#camera.nest_cam:
-#  expose: true
-#  name: Nest Cam
-#  room: Wohnzimmer
-#  aliases:
-#    - Cam
-#    - Nest
-#    - Nest Cam
-#    - Kamera
+light.bulbwhzlamp_cwww:
+  expose: true
+  room: Wohnzimmer
+  name: Stehlampe Weiss
+  aliases:
+    - Wohnzimmerlampe
+    - Standlicht
+light.mood_lights_rgb:
+  expose: true
+  room: Wohnzimmer
+  name: Mood Lights RGB
+light.mood_lights_cwww:
+  expose: true
+  name: Mood Lights CWWW
+  room: Wohnzimmer
+camera.nest_cam:
+  expose: true
+  name: Nest Cam
+  room: Wohnzimmer
+  aliases:
+    - Cam
+    - Nest
+    - Nest Cam
+    - Kamera
 binary_sensor.window_wohnzimmer:
   expose: true
   name: Fenster
@@ -220,14 +220,14 @@ scene.chill_mode_on:
     - Chill Out
     - Chill Out Scene
     - Chill Out Szene
-#switch.restreamer:
-#  expose: true
-#  name: Kamera
-#  room: Wohnzimmer
-#  aliases:
-#    - Kamera
-#    - Camera
-#    - Restreamer
+switch.restreamer:
+  expose: true
+  name: Kamera
+  room: Wohnzimmer
+  aliases:
+    - Kamera
+    - Camera
+    - Restreamer
 switch.soundbar:
   expose: true
   name: Soundbar

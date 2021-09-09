@@ -90,6 +90,8 @@ recorder:
       - sensor.memory_free
       - sensor.network_in_eth0
       - sensor.network_out_eth0
+      - sensor.network_throughput_in_eth0
+      - sensor.network_throughput_out_eth0
       - sensor.reddit_gamedeals
       - sensor.nodemcu_2_wohnzimmer_hohe_nhn
       - sensor.nodemcu_2_wohnzimmer_uptime
@@ -103,7 +105,6 @@ recorder:
       - sensor.sonoff_pow_r2_whz_uptime
       - sensor.spotlight_1_wohnzimmer_uptime
       - sensor.stehlampe_wohnzimmer_uptime
-      - sensor.network_throughput_in_eth0
       - sensor.processor_use
       - sensor.core_mem
       - sensor.disk_use_percent
@@ -118,7 +119,7 @@ recorder:
       - sun
       - image_processing
       - light
-      #      - automation
+      - automation
       - group
       - script
       - switch
@@ -150,6 +151,8 @@ logbook:
       - sensor.memory_free
       - sensor.network_in_eth0
       - sensor.network_out_eth0
+      - sensor.network_throughput_in_eth0
+      - sensor.network_throughput_out_eth0
       - sensor.date_time
       - sensor.date_time_iso
       - sensor.date
@@ -230,6 +233,8 @@ history:
       - sensor.memory_free
       - sensor.network_in_eth0
       - sensor.network_out_eth0
+      - sensor.network_throughput_in_eth0
+      - sensor.network_throughput_out_eth0
       - sensor.reddit_gamedeals
       - sensor.rss_coindesk
       - sensor.rss_darknet

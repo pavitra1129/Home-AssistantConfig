@@ -30,7 +30,7 @@ device_tracker:
 #    username: !secret traccar_usr # pragma: allowlist secret
 #    password: !secret traccar_pwd # pragma: allowlist secret
 #    consider_home: 180
-  - platform: google_maps
-    username: !secret gmaps_username # pragma: allowlist secret
-    max_gps_accuracy: 50
-    consider_home: 180
+#  - platform: google_maps
+#    username: !secret gmaps_username # pragma: allowlist secret
+#    max_gps_accuracy: 50
+#    consider_home: 180

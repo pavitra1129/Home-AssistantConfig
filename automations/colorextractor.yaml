@@ -1,0 +1,20 @@
+- id: 1334s
+  alias: "CEX Test"
+
+  trigger:
+    - platform: state
+      entity_id: media_player.android_tv
+
+  action:
+    - service: color_extractor.turn_on
+      data_template:
+        color_extract_url: "http://localhost:8123{{ states.media_player.android_tv.attributes.entity_picture }}"
+        entity_id: light.wled_1
+        brightness_pct: 100
+        transition: 5
+    - service: color_extractor.turn_on
+      data_template:
+        color_extract_url: "http://localhost:8123{{ states.media_player.android_tv.attributes.entity_picture }}"
+        entity_id: light.bulbspotwhztv_rgb
+        brightness_pct: 100
+        transition: 5

@@ -1,0 +1,16 @@
+- alias: run status of nest hub bluetooth every 5 minutes when I'm at home
+  id: "21a"
+  trigger:
+    - platform: time_pattern
+      minutes: /5
+#  condition:
+#    - condition: state
+#      entity_id: input_select.home_mode
+#      state: Home
+#  action:
+#    - service: shell_command.status_google_nest_bt
+  action:
+    service: hassio.addon_stdin
+    data:
+      addon: a0d7b954_ssh
+      input: "/bin/sh /config/nogit_scripts/google_local_bt_status_automation.sh"

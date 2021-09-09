@@ -8,10 +8,10 @@
 media_player:
   - platform: androidtv
     host: !secret host_androidtv # pragma: allowlist secret
-    name: Android TV
+    name: NVIDIA Shield TV
     device_class: androidtv
-    adb_server_ip: localhost
-    adb_server_port: 5037
+#    adb_server_ip: localhost
+#    adb_server_port: 5037
     screencap: true
     apps:
       com.netflix.ninja: "Netflix"
