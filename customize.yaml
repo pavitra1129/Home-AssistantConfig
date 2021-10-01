@@ -155,9 +155,6 @@ binary_sensor.inside_temperature_rising:
 binary_sensor.updater:
   friendly_name: Updater
   icon: mdi:update
-sensor.nodemcu_2_luxmeter:
-  icon: mdi:theme-light-dark
-  device_class: illuminance
 binary_sensor.nodemcu_6_wohnzimmer_up:
   icon: mdi:arrow-up-bold-box
 binary_sensor.nodemcu_6_wohnzimmer_down:
