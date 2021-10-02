@@ -44,10 +44,6 @@ switch.wiser_valve_protection:
   friendly_name: Ventilschutz
 sensor.luftfeuchtigkeit_wohnzimmer_filtered:
   device_class: humidity
-sensor.sonoff_th16_whz_humidity_sensor:
-  device_class: humidity
-sensor.sonoff_th16_whz_temperatur_sensor:
-  device_class: temperature
 sensor.sonoff_pow_r2_whz_power:
   device_class: power
 sensor.sonoff_pow_r2_tv_power:
