@@ -56,3 +56,6 @@ camera:
     name: Destination
     still_image_url: !secret still_image_url_destination
     limit_refetch_to_url_change: true
+#  - platform: ffmpeg
+#    input: !secret ffmpeg_input
+#    extra_arguments: !secret ffmpeg_arguments

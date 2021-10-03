@@ -263,6 +263,14 @@
     - lastBuildDate
     - description
 - platform: feedparser
+  name: RSS chaosradio
+  feed_url: "https://chaosradio.de/feed/mp3"
+  inclusions:
+    - title
+    - link
+    - lastBuildDate
+    - description
+- platform: feedparser
   name: RSS homeassistant alerts
   feed_url: "https://alerts.home-assistant.io/feed.xml"
   inclusions:

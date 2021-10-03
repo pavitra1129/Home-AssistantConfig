@@ -25,3 +25,10 @@ input_select:
 #    options:
 #      - Verbinden
 #      - Trennen
+  movie_mode:
+    icon: mdi:movie
+    name: Film Modus
+    options:
+      - Deaktiviert
+      - Aktiviert
+    initial: Deaktiviert

@@ -27,7 +27,6 @@ light:
       - light.schalter_lavalampe_light
       - light.ledstripwhz1_rgb
       - light.ledstripwhz1_w
-      - light.ledstripwhz2_rgb
       - light.schalter_schrank_kuche_light
   - platform: group
     name: Mood Lights RGB
@@ -36,8 +35,7 @@ light:
       - light.bulbspotwhztv_rgb
       - light.bulbwhzlamp_rgb
       - light.ledstripwhz1_rgb
-      - light.ledstripwhz2_rgb
-      - light.schalter_lavalampe_light
+      - light.wled_1
   - platform: group
     name: Mood Lights CWWW
     entities:
@@ -45,12 +43,11 @@ light:
       - light.bulbspotwhztv_cwww
       - light.bulbwhzlamp_cwww
       - light.ledstripwhz1_w
-      - light.ledstripwhz2_rgb
   - platform: group
     name: LED Strips RGB
     entities:
       - light.ledstripwhz1_rgb
-      - light.ledstripwhz2_rgb
+      - light.wled_1
   - platform: group
     name: LED Strips CWWW
     entities:
@@ -58,4 +55,6 @@ light:
   - platform: group
     name: LED WHZ
     entities:
-      - light.ledstripwhz2_rgb
+      - light.ledstripwhz1_rgb
+      - light.ledstripwhz1_w
+      - light.wled_1
