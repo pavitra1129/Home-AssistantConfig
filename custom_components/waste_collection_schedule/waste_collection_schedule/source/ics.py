@@ -25,18 +25,12 @@ TEST_CASES = {
     "Test File": {
         # Path is used here to allow to call the Source from any location.
         # This is not required in a yaml configuration!
-        "file": Path(__file__)
-        .resolve()
-        .parents[1]
-        .joinpath("test/test.ics")
+        "file": str(Path(__file__).resolve().parents[1].joinpath("test/test.ics"))
     },
     "Test File (recurring)": {
         # Path is used here to allow to call the Source from any location.
         # This is not required in a yaml configuration!
-        "file": Path(__file__)
-        .resolve()
-        .parents[1]
-        .joinpath("test/recurring.ics")
+        "file": str(Path(__file__).resolve().parents[1].joinpath("test/recurring.ics"))
     },
     "München, Bahnstr. 11": {
         "url": "https://www.awm-muenchen.de/entsorgen/abfuhrkalender?tx_awmabfuhrkalender_abfuhrkalender%5Bhausnummer%5D=11&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BB%5D=1%2F2%3BU&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BP%5D=1%2F2%3BG&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BR%5D=001%3BU&tx_awmabfuhrkalender_abfuhrkalender%5Bsection%5D=ics&tx_awmabfuhrkalender_abfuhrkalender%5Bsinglestandplatz%5D=false&tx_awmabfuhrkalender_abfuhrkalender%5Bstandplatzwahl%5D=true&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Bbio%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Bpapier%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Brestmuell%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstrasse%5D=bahnstr.&tx_awmabfuhrkalender_abfuhrkalender%5Byear%5D={%Y}"
@@ -101,6 +95,10 @@ TEST_CASES = {
         "url": "https://www.eaw-rheingau-taunus.de/abfallkalender/calendar.ics?streetid=1429",
         "split_at": ",",
     },
+    "Recollect, Ottawa": {
+        "url": "https://recollect.a.ssl.fastly.net/api/places/BCCDF30E-578B-11E4-AD38-5839C200407A/services/208/events.en.ics",
+        "split_at": "\\, [and ]*",
+    },
 }
 
 
@@ -117,7 +115,7 @@ class Source:
         params=None,
         year_field=None,
         method="GET",
-        split_at="None",
+        split_at=None,
     ):
         self._url = url
         self._file = file

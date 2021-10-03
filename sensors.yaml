@@ -84,7 +84,8 @@
 #      value_template: "{{ value | round(2) }}"
 #      unit_of_measurement: min
 - platform: sql
-  scan_interval: 86400 # 24h
+#  scan_interval: 86400 # 24h
+  scan_interval: 3600 # 1h
   db_url: !secret dburl # pragma: allowlist secret
   queries:
     - name: MariaDB Homeassistant
@@ -362,8 +363,12 @@
     - wlan
     - alerts
     - firmware
+    - vpn
+    - lan
+    - wan
   site_id: !secret unifigw_site # pragma: allowlist secret
   verify_ssl: false
+  version: v4
 - platform: template
   sensors:
     climate_wohnung_temp:
