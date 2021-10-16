@@ -28,6 +28,9 @@ light:
       - light.ledstripwhz1_rgb
       - light.ledstripwhz1_w
       - light.schalter_schrank_kuche_light
+      - light.wled_1
+      - light.wled_2
+      - light.wled_3
   - platform: group
     name: Mood Lights RGB
     entities:
@@ -36,6 +39,7 @@ light:
       - light.bulbwhzlamp_rgb
       - light.ledstripwhz1_rgb
       - light.wled_1
+      - light.wled_3
   - platform: group
     name: Mood Lights CWWW
     entities:
@@ -48,6 +52,7 @@ light:
     entities:
       - light.ledstripwhz1_rgb
       - light.wled_1
+      - light.wled_3
   - platform: group
     name: LED Strips CWWW
     entities:
@@ -58,3 +63,5 @@ light:
       - light.ledstripwhz1_rgb
       - light.ledstripwhz1_w
       - light.wled_1
+      - light.wled_2
+      - light.wled_3

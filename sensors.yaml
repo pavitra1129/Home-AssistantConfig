@@ -880,11 +880,11 @@
     - precip_intensity_max
     - uv_index
     - moon_phase
-- platform: google_fit
-  scan_interval: 14400
-  name: Google Fit Martin
-  client_id: !secret google_fit_id # pragma: allowlist secret
-  client_secret: !secret google_fit_secret # pragma: allowlist secret
+#- platform: google_fit
+#  scan_interval: 14400
+#  name: Google Fit Martin
+#  client_id: !secret google_fit_id # pragma: allowlist secret
+#  client_secret: !secret google_fit_secret # pragma: allowlist secret
 #- platform: google_travel_time
 #  scan_interval: 1000000
 #  name: Travel Parents (Trains)
