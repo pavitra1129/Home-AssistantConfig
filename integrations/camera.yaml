@@ -39,9 +39,6 @@ camera:
   - platform: mjpeg
     mjpeg_url: !secret nest_image # pragma: allowlist secret
     name: Nest Cam File
-#  - platform: local_file
-#    file_path: tmp/deepstack_object_local_file_latest_person.jpg
-#    name: deepstack_latest_person
   - platform: proxy
     entity_id: camera.nest_cam
     max_stream_width: 360
@@ -56,6 +53,3 @@ camera:
     name: Destination
     still_image_url: !secret still_image_url_destination
     limit_refetch_to_url_change: true
-#  - platform: ffmpeg
-#    input: !secret ffmpeg_input
-#    extra_arguments: !secret ffmpeg_arguments

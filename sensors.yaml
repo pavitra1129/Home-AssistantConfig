@@ -1107,18 +1107,3 @@
 #  headers:
 #    Accept: application/json
 #    Content-Type: application/json
-  #- platform: rest
-#  name: Steam Status
-#  json_attributes:
-#    - psa
-#    - services
-#    - graph
-#    - time
-#    - online
-#  resource: !secret steamstatus_api
-#  value_template: "{{ value_json.online }}"
-#  unit_of_measurement: "%"
-#  headers:
-#    Accept: application/json
-#    Content-Type: application/json
-#    User-Agent: xd
