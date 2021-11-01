@@ -38,6 +38,8 @@ light:
       - light.ledstripwhz1_rgb
       - light.ledstripwhz2_rgb
       - light.schalter_lavalampe_light
+      - light.wled_1
+      - light.wled_3
   - platform: group
     name: Mood Lights CWWW
     entities:

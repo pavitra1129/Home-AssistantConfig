@@ -19,7 +19,7 @@
         color_extract_url: "http://localhost:8123{{ states.media_player.android_tv.attributes.entity_picture }}"
         entity_id: light.mood_lights_rgb
         brightness_pct: 100
-        transition: 1
+        transition: 5
 - id: 1334t
   alias: "Ambiroom off"
   trigger:

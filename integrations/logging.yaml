@@ -26,8 +26,51 @@ logger:
 recorder:
   purge_keep_days: 30
   db_url: !secret dburl # pragma: allowlist secret
+  exclude:
+    domains:
+      - updater
+      - camera
+      - media_player
+      - weather
+      - sun
+      - image_processing
+      - light
+      - group
+      - script
+      - zone
+      - time
 logbook:
-system_log:
-  fire_event: true
-  max_entries: 500
-  
+  exclude:
+    entity_globs:
+      - sensor.*time*
+      - sensor.time*
+      - sensor.*date*
+      - sensor.date*
+      - sesnor.load
+      - sensor.*load*
+    domains:
+      - updater
+      - camera
+      - media_player
+      - weather
+      - sun
+      - image_processing
+      - light
+      - group
+      - script
+      - zone
+      - time
+history:
+  exclude:
+    domains:
+      - updater
+      - camera
+      - media_player
+      - weather
+      - sun
+      - image_processing
+      - light
+      - group
+      - script
+      - zone
+      - time

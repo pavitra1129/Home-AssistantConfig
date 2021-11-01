@@ -156,14 +156,15 @@ sensor.climate_flur_temp:
     - Temperatur Flur
     - Temperatur
     - Thermometer
-#sensor.climate_wohnzimmer_temp:
-#  expose: true
-#  name: Temperatur
-#  room: Wohnzimmer
-#  aliases:
-#    - Temperatur Wohnzimmer
-#    - Temperatur
-#    - Thermometer
+    
+switch.wiser_away_mode:
+  expose: true
+  name: Abwesenheitsmodus
+  room: Wohnung
+  aliases:
+    - Abwesenheitsmodus
+    - Wiser Away Mode
+
 #sensor.climate_wohnung_temp:
 #  expose: true
 #  name: Temperatur

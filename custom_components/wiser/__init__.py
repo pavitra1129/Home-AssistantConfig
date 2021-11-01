@@ -10,7 +10,6 @@ import asyncio
 from datetime import timedelta
 from functools import partial
 import json
-from ruamel.yaml import YAML as yaml
 
 import requests.exceptions
 import voluptuous as vol
@@ -37,6 +36,8 @@ from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC
 from homeassistant.helpers.dispatcher import dispatcher_send
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.util import Throttle
+#from homeassistant.util import yaml
+from ruamel.yaml import YAML as yaml
 
 from .const import (
     CONF_SETPOINT_MODE,
@@ -130,7 +131,7 @@ async def async_setup_entry(hass, config_entry):
             else ("schedule_" + entity_id + ".yaml")
         )
 
-        _LOGGER.debug("Getting schedule for %s", entity_id)
+        _LOGGER.info("Getting schedule for %s", entity_id)
         if entity_id in data.schedules:
             _LOGGER.debug("Schedule Id is %s", data.schedules[entity_id])
             hass.async_create_task(
@@ -142,27 +143,31 @@ async def async_setup_entry(hass, config_entry):
     @callback
     def set_schedule(service):
         """Handle the service call."""
-        entity_id = service.data[ATTR_ENTITY_ID]
-        filename = service.data[ATTR_FILENAME]
-        schedule_data = None
-
-        # Set schedule data
-        _LOGGER.debug("Setting schedule for %s from file %s", entity_id, filename)
-        if entity_id in data.schedules:
-            try:
-                _LOGGER.debug("Loading schedule file - %s", filename)
-                schedule_data = yaml.load_yaml(filename)
-            except Exception as ex:
-                _LOGGER.error("Error loading schedule file %s. Error is %s", filename, str(ex))
-            # Set schedule
-            if schedule_data is not None:
-                hass.async_create_task(
-                    data.set_schedule(entity_id, data.schedules[entity_id], schedule_data)
-                )
-            else:
-                _LOGGER.error("Error loading schedule data from file")
+        if service.data[ATTR_FILENAME] == "":
+            _LOGGER.error("Error setting schedule from file: No filename provided")
         else:
-            _LOGGER.error("No schedule exists for %s", entity_id)
+            entity_id = service.data[ATTR_ENTITY_ID]
+            filename = service.data[ATTR_FILENAME]
+            schedule_data = None
+
+            # Set schedule data
+            _LOGGER.info("Setting schedule for %s from file %s", entity_id, filename)
+            if entity_id in data.schedules:
+                try:
+                    _LOGGER.debug("Loading schedule file - %s", filename)
+                    with open(filename, 'r') as f:
+                        schedule_data = yaml().load(f)
+                except Exception as ex:
+                    _LOGGER.error("Error loading schedule file %s. Error is %s", filename, str(ex))
+                # Set schedule
+                if schedule_data is not None:
+                    hass.async_create_task(
+                        data.set_schedule(entity_id, data.schedules[entity_id], schedule_data)
+                    )
+                else:
+                    _LOGGER.error("Error loading schedule data from file")
+            else:
+                _LOGGER.error("No schedule exists for %s", entity_id)
 
     @callback
     def copy_schedule(service):
@@ -171,7 +176,7 @@ async def async_setup_entry(hass, config_entry):
         to_entity_id = service.data[ATTR_COPYTO_ENTITY_ID]
 
         # Check from and to are valid schedule entities
-        _LOGGER.debug("Copying schedule from %s to %s", entity_id, to_entity_id)
+        _LOGGER.info("Copying schedule from %s to %s", entity_id, to_entity_id)
         if entity_id in data.schedules and to_entity_id in data.schedules:
             hass.async_create_task(
                 data.copy_schedule(entity_id, data.schedules[entity_id], to_entity_id, data.schedules[to_entity_id])
@@ -494,10 +499,11 @@ class WiserHubHandle:
                 schedule_data, entity_id.title()
             )
             try:
-                yaml.save_yaml(filename, schedule_data)
+                with open(filename, 'w') as f:
+                    yaml().dump(schedule_data, f)
             except Exception as ex:  # pylint: disable=broad-except
                 _LOGGER.error("Error saving schedule file. Error is %s", str(ex))
-            _LOGGER.debug("Saved schedule for %s to file %s", entity_id, filename)
+            _LOGGER.info("Saved schedule for %s to file %s", entity_id, filename)
         else:
             _LOGGER.error("No schedule data returned for %s", entity_id)
     
@@ -512,8 +518,8 @@ class WiserHubHandle:
                 _LOGGER.debug("Set schedule for %s", entity_id)
                 await self.async_update(no_throttle=True)
                 return True
-            except WiserRESTException:
-                _LOGGER.error("Error setting schedule for %s.  Please check your schedule file.", entity_id)
+            except WiserRESTException as ex:
+                _LOGGER.error("Error setting schedule for %s.  Please check your schedule file. Error is %s", entity_id, str(ex))
         return False
 
     async def copy_schedule(self, entity_id, schedule_id, to_entity_id, to_schedule_id):
