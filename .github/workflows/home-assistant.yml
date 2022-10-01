@@ -18,6 +18,8 @@ jobs:
         run: cp -R ./.doc/CI/* .
       - name: remove unwanted configuration entries from configuration.yaml
         run: sed -i '/#seddelete/d' configuration.yaml
+      - name: remove unwanted configuration entries from integrations/http.yaml
+        run: sed -i '/#seddelete/d' integrations/http.yaml
       - name: remove unwanted configuration entries from integrations/folder_watcher.yaml
         run: sed -i '/#seddelete/d' integrations/folder_watcher.yaml
       - name: Home Assistant Version
@@ -40,6 +42,8 @@ jobs:
         run: cp -R ./.doc/CI/* .
       - name: remove unwanted configuration entries from configuration.yaml
         run: sed -i '/#seddelete/d' configuration.yaml
+      - name: remove unwanted configuration entries from integrations/http.yaml
+        run: sed -i '/#seddelete/d' integrations/http.yaml
       - name: remove unwanted configuration entries from integrations/folder_watcher.yaml
         run: sed -i '/#seddelete/d' integrations/folder_watcher.yaml
       - name: Home Assistant Version
@@ -62,6 +66,8 @@ jobs:
         run: cp -R ./.doc/CI/* .
       - name: remove unwanted configuration entries from configuration.yaml
         run: sed -i '/#seddelete/d' configuration.yaml
+      - name: remove unwanted configuration entries from integrations/http.yaml
+        run: sed -i '/#seddelete/d' integrations/http.yaml
       - name: remove unwanted configuration entries from integrations/folder_watcher.yaml
         run: sed -i '/#seddelete/d' integrations/folder_watcher.yaml
       - name: Home Assistant Version
