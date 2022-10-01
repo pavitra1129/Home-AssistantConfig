@@ -1,0 +1,36 @@
+- alias: Notification defcon Video
+  id: "14"
+  trigger:
+    - platform: state
+      entity_id: sensor.yt_defconconference
+      attribute: video_url
+  condition:
+    - condition: template
+      value_template: "{{ as_timestamp(now()) - as_timestamp(states.automation.notification_defcon_video.attributes.last_triggered) | int > 900 }}"
+    - condition: template
+      value_template: "{{ states.automation.notification_defcon_video.attributes.last_triggered != none }}"
+  action:
+    - service: notify.cloxion
+      data:
+        message: "Neues DEFCON Video: {{states.sensor.yt_defconconference.state}}"
+        data:
+          sound: "notification"
+          icon: "a10835"
+          cycles: 0
+          lifetime: 3600
+          priority: "critical"
+- alias: "AndroidTV Play Latest defcon Video"
+  id: "33"
+  trigger:
+    platform: state
+    entity_id: input_boolean.play_latest_defcon
+    to: "on"
+  action:
+    - service: media_extractor.play_media
+      entity_id:
+        - media_player.fernseher
+      data_template:
+        media_content_id: "{{state_attr('sensor.yt_defconconference', 'video_url' | string)}}"
+        media_content_type: video/youtube
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.play_latest_defcon

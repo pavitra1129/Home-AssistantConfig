@@ -16,4 +16,4 @@ map:
 #cloud:
 zeroconf:
 ssdp:
-updater:
+homeassistant_alerts:

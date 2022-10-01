@@ -21,3 +21,9 @@ tts:
     watson_apikey: !secret ibm_cloud # pragma: allowlist secret
     watson_url: !secret ibm_watson_url # pragma: allowlist secret
     voice: "de-DE_BirgitV3Voice"
+  - platform: google_translate
+    language: de
+    cache: true
+    cache_dir: /config/tts
+    time_memory: 300
+    service_name: google_say

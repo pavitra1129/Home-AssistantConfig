@@ -1,0 +1,53 @@
+#image_processing:
+#  - platform: deepstack_object
+#    ip_address: 10.10.10.22
+#    port: 5000
+#    api_key: !secret deepstack_api_key
+#    # custom_model: mask
+#    # confidence: 80
+#    save_file_folder: /config/media
+#    save_file_format: png
+#    save_timestamped_file: True
+#    always_save_latest_file: True
+#    scale: 0.75
+#    # roi_x_min: 0.35
+#    roi_x_max: 0.8
+#    #roi_y_min: 0.4
+#    roi_y_max: 0.8
+#    targets:
+#      - target: person
+#        confidence: 20
+#      - target: vehicle
+#        confidence: 60
+#      - target: car
+#        confidence: 40
+#    source:
+#      - entity_id: camera.marienplatz_beck
+#  - platform: deepstack_scene
+#    ip_address: 10.10.10.22
+#    port: 5000
+#    api_key: !secret deepstack_api_key
+#    source:
+#      - entity_id: camera.marienplatz_beck
+#  - platform: amazon_rekognition
+#    aws_access_key_id: !secret aws_access_key_id
+#    aws_secret_access_key: !secret aws_secret_access_key
+#    region_name: eu-west-1 # optional region, default is us-east-1
+#    confidence: 90 # Optional, default is 80 percent
+#    targets:
+#      - target: person
+#      - target: car
+#        confidence: 50
+#    show_boxes: true
+#    # roi_x_min: 0.35 # optional, range 0-1, must be less than roi_x_max
+#    roi_x_max: 0.8 # optional, range 0-1, must be more than roi_x_min
+#    roi_y_min: 0.4 # optional, range 0-1, must be less than roi_y_max
+#    roi_y_max: 0.8 # optional, range 0-1, must be more than roi_y_min
+#    scale: 0.75
+#    save_file_format: png
+#    save_file_folder: /config/tmp/ # Optional image storage
+#    save_timestamped_file: True # Set True to save timestamped images, default False
+#    s3_bucket: my_already_existing_bucket
+#    always_save_latest_file: True
+#    source:
+#      - entity_id: camera.marienplatz_beck

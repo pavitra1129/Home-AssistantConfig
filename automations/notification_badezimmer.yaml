@@ -5,18 +5,18 @@
     entity_id: switch.schalter_1_bad_relay
     to: "off"
   action:
-    - service: notify.android
+    - service: notify.android_tv
       data_template:
         title: 🚽 Badezimmer ist frei
         message: " "
-    - service: notify.lametric
+    - service: notify.cloxion
       data:
         message: "Frei!"
         data:
-#          sound: 'notification'
-          icon: 'i8176'
+          #          sound: 'notification'
+          icon: "i8176"
           cycles: 3
-          priority: 'critical'
+          priority: "critical"
 - alias: Notification TV Badezimmer besetzt
   id: "50"
   trigger:
@@ -24,15 +24,15 @@
     entity_id: switch.schalter_1_bad_relay
     to: "on"
   action:
-    - service: notify.android
+    - service: notify.android_tv
       data_template:
         title: 🚽 Badezimmer ist besetzt
         message: " "
-    - service: notify.lametric
+    - service: notify.cloxion
       data:
         message: "Besetzt!"
         data:
-#          sound: 'notification'
-          icon: 'i8176'
+          #          sound: 'notification'
+          icon: "i8176"
           cycles: 3
-          priority: 'critical'
+          priority: "critical"

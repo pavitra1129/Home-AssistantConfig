@@ -2,10 +2,11 @@
   id: "7"
   trigger:
     platform: state
-    entity_id: binary_sensor.updater
+    entity_id: binary_sensor.backups_stale
     to: "on"
   action:
     - data:
-        message: Update available
-        title: Update available
-      service: notify.telegram
+        message: Backup is stale!
+        title: Backup is stale!
+        #priority: 7
+      service: notify.gotify

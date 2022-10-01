@@ -3,38 +3,33 @@
   trigger:
     - platform: state
       entity_id: media_player.android_tv
-      to: "playing"
+
   condition:
     condition: and
     conditions:
-    - condition: state
-      entity_id: input_select.movie_mode
-      state: Aktiviert
-    - condition: state
-      entity_id: input_select.home_mode
-      state: Home
+      - condition: state
+        entity_id: input_select.movie_mode
+        state: Aktiviert
   action:
     - service: color_extractor.turn_on
       data_template:
-        color_extract_url: "http://localhost:8123{{ states.media_player.android_tv.attributes.entity_picture }}"
-        entity_id: light.mood_lights_rgb
-        brightness_pct: 100
-        transition: 5
+        color_extract_url: "https://hassio.local.phixion.org{{ states.media_player.android_tv.attributes.entity_picture }}"
+        entity_id: light.ambilights_tv_rgb
+        brightness_pct: 60
+        transition: 3
 - id: 1334t
   alias: "Ambiroom off"
   trigger:
     - platform: state
       entity_id: media_player.android_tv
-      to: "off"
+
   condition:
     condition: and
     conditions:
-    - condition: state
-      entity_id: input_select.movie_mode
-      state: Deaktiviert
-    - condition: state
-      entity_id: input_select.home_mode
-      state: Home
+      - condition: state
+        entity_id: input_select.movie_mode
+        state: Deaktiviert
+
   action:
     - service: light.turn_off
-      entity_id: light.mood_lights_rgb
+      entity_id: light.ambilights_tv_rgb

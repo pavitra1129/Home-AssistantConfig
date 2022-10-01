@@ -1,0 +1,48 @@
+#ffmpeg:
+#  decoder:
+#    - -hide_banner
+#    - -loglevel
+#    -  error
+#    - -nostdin
+#    - -hwaccel                   # These options enable hardware acceleration of
+#    -  vaapi                     # video de/encoding. You need to check what methods
+#    - -hwaccel_device            # (if any) are supported by running the command:
+#    -  /dev/dri/renderD128       #    ffmpeg -hwaccels
+#    - -hwaccel_output_format     # Then refer to the documentation of the method
+#    -  yuv420p                   # to enable it in ffmpeg. Remove if not sure.
+#    - -fflags
+#    -  nobuffer
+#    - -flags
+#    -  low_delay
+#    - -fflags
+#    -  +genpts+discardcorrupt
+#    - -i                          # camera input field will follow '-i' ffmpeg argument automatically
+#    - -f
+#    -  rawvideo
+#    - -pix_fmt
+#    -  rgb24
+#  encoder:                        # Encoder is optional, remove the entire list to disable.
+#    - -hide_banner
+#    - -loglevel
+#    -  error
+#    - -hwaccel
+#    -  vaapi
+#    - -hwaccel_device
+#    -  /dev/dri/renderD128
+#    - -hwaccel_output_format
+#    -  yuv420p
+#    - -f
+#    -  rawvideo
+#    - -pix_fmt
+#    -  rgb24
+#    - -i                          # detection output stream will follow '-i' ffmpeg argument automatically
+#    - -an
+#    - -f
+#    -  mpegts
+#    - -vcodec
+#    -  libx264
+#    - -pix_fmt
+#    -  yuv420p
+#    - -vf
+#    - "drawtext='text=%{localtime\\:%c}': x=w-tw-lh: y=h-2*lh: fontcolor=white: box=1: boxcolor=black@0.55"
+#

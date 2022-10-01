@@ -4,7 +4,7 @@
 #    platform: state
 #    entity_id: sensor.reddit_gamedealsfree
 #  action:
-#    - service: notify.android
+#    - service: notify.android_tv
 #      data_template:
 #        title: New Game Deal
 #        message: "Event triggered: {{ trigger.entity_id }} changed from {{ trigger.from_state.state }} to {{ trigger.to_state.state }}"
@@ -22,7 +22,7 @@
 #    platform: state
 #    entity_id: sensor.free_game_keys
 #  action:
-#    - service: notify.android
+#    - service: notify.android_tv
 #      data_template:
 #        title: New Game Deal
 #        message: "Event triggered: {{ trigger.entity_id }} changed from {{ trigger.from_state.state }} to {{ trigger.to_state.state }}"

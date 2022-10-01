@@ -1,0 +1,36 @@
+- alias: "Send notification upon failed login attempt"
+  id: 04e7a1c2-5c61-47d4-9731-afa883742c09
+  trigger:
+    - platform: state
+      entity_id: persistent_notification.http_login
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'None' }}"
+  action:
+    - service: notify.home_assistant
+      data_template:
+        title: Failed Home Assistant login attempt!
+        message: http://www.ip-tracker.org/locator/ip-lookup.php?ip={{ state_attr('persistent_notification.http_login', 'message').split('from')[1].replace(' ', '') }}
+    - service: persistent_notification.dismiss
+      data:
+        notification_id: "http_login"
+    - service: notify.gotify
+      data_template:
+        title: Failed Home Assistant login attempt!
+        message: http://www.ip-tracker.org/locator/ip-lookup.php?ip={{ state_attr('persistent_notification.http_login', 'message').split('from')[1].replace(' ', '') }}
+        #priority: 7
+    - service: notify.cloxion
+      data:
+        message: Failed Home Assistant login attempt!
+        data:
+          sound: "notification"
+          icon: "i555"
+          cycles: 0
+          lifetime: 3600
+          priority: "critical"
+    - service: notify.mobile_app_pixel_3a
+      data_template:
+        title: "Failed Home Assistant login attempt!"
+        message: Failed Home Assistant login attempt!
+        data:
+          url: http://www.ip-tracker.org/locator/ip-lookup.php?ip={{ state_attr('persistent_notification.http_login', 'message').split('from')[1].replace(' ', '') }}

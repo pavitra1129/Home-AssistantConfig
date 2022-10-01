@@ -1,33 +1,58 @@
-- alias: Notification Guest Password
+- alias: Notification Guest Wifi on
   id: "18a"
   trigger:
-    - platform: time_pattern
-      minutes: /15
-  condition:
-    condition: and
-    conditions:
-    - condition: state
+    #    - platform: time_pattern
+    #      minutes: /15
+    # condition:
+    #    condition: and
+    #    conditions:
+    #      - condition: state
+    #        entity_id: input_select.guest_mode
+    #        state: Aktiviert
+    #      - condition: state
+    #        entity_id: input_select.home_mode
+    #        state: Home
+    - platform: state
       entity_id: input_select.guest_mode
-      state: Aktiviert
-    - condition: state
-      entity_id: input_select.home_mode
-      state: Home
+      to: Deaktiviert
   action:
-    - service: notify.lametric
+    - service: switch.turn_on
+      entity_id: switch.guest_wifi
+    - service: notify.cloxion
       data:
-        message: 'SSID: phixnet_guest PSK: lassmichrein'
+        message: "Gast Wifi wurde aktiviert"
         data:
-#          sound: 'notification'
-          icon: 'a4714'
+          #          sound: 'notification'
+          icon: "a4714"
           cycles: 15
-          priority: 'critical'
-#    - service: rest_command.assistant_broadcast
-#      data_template:
-#        command:
-#          Das Gaeste WiFi Passwort lautet lass mich rein
-    - service: tts.google_cloud_say
+          priority: "critical"
+    - service: tts.google_translate_say
       data_template:
-        entity_id: media_player.google_nest_hub
-        message:
-          Das Gaeste WiFi Passwort lautet lass mich rein
-    - delay: '00:00:{{ states.media_player.google_nest_hub.media_duration | int }}'
+        entity_id: media_player.wohnzimmer
+        message: Gast Wifi wurde aktiviert
+    - delay: "00:00:{{ states.media_player.wohnzimmer.media_duration | int }}"
+- alias: Notification Guest Wifi off
+  id: "18b"
+  trigger:
+    #    - platform: time_pattern
+    #      minutes: /15
+    #  condition:
+    - platform: state
+      entity_id: input_select.guest_mode
+      to: Deaktiviert
+  action:
+    - service: switch.turn_off
+      entity_id: switch.guest_wifi
+    - service: notify.cloxion
+      data:
+        message: "Gast Wifi wurde deaktiviert"
+        data:
+          #          sound: 'notification'
+          icon: "a4714"
+          cycles: 15
+          priority: "critical"
+    - service: tts.google_translate_say
+      data_template:
+        entity_id: media_player.wohnzimmer
+        message: Gast Wifi wurde deaktiviert
+    - delay: "00:00:{{ states.media_player.wohnzimmer.media_duration | int }}"

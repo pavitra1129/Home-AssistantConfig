@@ -6,4 +6,4 @@
   action:
     - service: google_assistant.request_sync
       data:
-        agent_user_id: !secret api_user_id
+        agent_user_id: !secret google_api_user_id

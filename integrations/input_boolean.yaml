@@ -1,6 +1,6 @@
 input_boolean:
   play_nexpo:
-    name: Play latest nexpo
+    name: Play latest Nexpo
     initial: off
     icon: mdi:youtube
   play_scaretheater:
@@ -19,8 +19,8 @@ input_boolean:
     name: Play latest JB3 Video
     initial: off
     icon: mdi:youtube
-  play_frenck:
-    name: Play latest Frenck
+  play_defcon:
+    name: Play latest DEFCON
     initial: off
     icon: mdi:youtube
   play_cheeseforever:
@@ -29,5 +29,13 @@ input_boolean:
     icon: mdi:youtube
   play_froggy:
     name: Play latest Froggy
+    initial: off
+    icon: mdi:youtube
+  play_channel5:
+    name: Play latest Channel 5
+    initial: off
+    icon: mdi:youtube
+  play_incognitomode:
+    name: Play latest IncognitoMode
     initial: off
     icon: mdi:youtube

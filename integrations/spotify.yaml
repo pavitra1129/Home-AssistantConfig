@@ -4,7 +4,7 @@
 #╚════██║██╔═══╝ ██║   ██║   ██║   ██║██╔══╝    ╚██╔╝
 #███████║██║     ╚██████╔╝   ██║   ██║██║        ██║
 #╚══════╝╚═╝      ╚═════╝    ╚═╝   ╚═╝╚═╝        ╚═╝
-#
-spotify:
-  client_id: !secret spotifyapi_id # pragma: allowlist secret
-  client_secret: !secret spotifyapi_secret # pragma: allowlist secret
+# REMOVED
+#spotify:
+#  client_id: !secret spotifyapi_id # pragma: allowlist secret
+#  client_secret: !secret spotifyapi_secret # pragma: allowlist secret

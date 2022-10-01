@@ -41,27 +41,27 @@
     platform: state
     entity_id: input_select.home_mode
     to: Home
-#  condition:
-#    condition: time
-#    before: "18:00:00"
+  #  condition:
+  #    condition: time
+  #    before: "18:00:00"
   action:
-    - service: notify.telegram
+    - service: notify.gotify
       data:
         message: Home Mode turned ON
+        title: Home Mode turned ON
+        #priority: 7
     - service: switch.turn_off
       entity_id: switch.wiser_away_mode
     - service: switch.turn_on
       entity_id: switch.schalter_1_flur_relay
-    - service: switch.turn_off
-      entity_id: switch.restreamer
       #    - service: media_player.volume_set
 #      data:
-#        entity_id: media_player.google_nest_hub
+#        entity_id: media_player.wohnzimmer
 #        volume_level: 0.01
 #    - delay: 00:00:20
 #    - service: media_player.volume_set
 #      data:
-#        entity_id: media_player.google_nest_hub
+#        entity_id: media_player.wohnzimmer
 #        volume_level: 0.37
 #    - delay: 00:01:05
 #    - service: rest_command.assistant_broadcast
@@ -90,19 +90,20 @@
   action:
     - service: switch.turn_on
       entity_id: switch.wiser_away_mode
-    - service: switch.turn_on
-      entity_id: switch.restreamer
     - service: light.turn_off
-      entity_id:
-        - light.all_lights
+      entity_id: all
     - service: media_player.turn_off
       entity_id:
         - media_player.android_tv
-        - media_player.shield
-    - service: notify.telegram
+        - media_player.fernseher
+    - service: switch.turn_off
+      entity_id: switch.guest_wifi
+    - service: notify.gotify
       data:
         message: Away Mode turned ON
-#    - delay: 00:02:00
+        title: Away Mode turned ON
+        #priority: 7
+        #    - delay: 00:02:00
 #    - service: ffmpeg.restart
 #      data:
 #        entity_id:
@@ -121,15 +122,16 @@
   action:
     - service: switch.turn_on
       entity_id: switch.wiser_away_mode
-    - service: switch.turn_on
-      entity_id: switch.restreamer
     - service: light.turn_off
-      entity_id:
-        - light.all_lights
+      entity_id: all
     - service: media_player.turn_off
       entity_id:
         - media_player.android_tv
-        - media_player.shield
-    - service: notify.telegram
+        - media_player.fernseher
+    - service: switch.turn_off
+      entity_id: switch.guest_wifi
+    - service: notify.gotify
       data:
         message: Home Mode Vacation ON
+        title: Home Mode Vacation ON
+        #priority: 7

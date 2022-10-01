@@ -7,57 +7,41 @@
 #
 light:
   - platform: group
-    name: All Lights
-    entities:
-      #      - light.bulbspotwhzdesk_rgb
-      #      - light.bulbspotwhzdesk_cwww
-      - light.bulbspotwhztv_rgb
-      - light.bulbspotwhztv_cwww
-      - light.bulbwhzlamp_rgb
-      - light.bulbwhzlamp_cwww
-      - light.bulbflur_rgb
-      - light.bulbflur_cwww
-      - light.bulbkueche_rgb
-      - light.bulbkueche_cwww
-#      - light.bulbbad_rgb
-#      - light.bulbbad_cwww
-      - light.schalter_1_bad_light
-      - light.schalter_1_flur_light
-      - light.schalter_1_wohnzimmer_light
-      - light.schalter_lavalampe_light
-      - light.ledstripwhz1_rgb
-      - light.ledstripwhz1_w
-      - light.ledstripwhz2_rgb
-      - light.schalter_schrank_kuche_light
-  - platform: group
     name: Mood Lights RGB
     entities:
-      #      - light.bulbspotwhzdesk_rgb
-      - light.bulbspotwhztv_rgb
       - light.bulbwhzlamp_rgb
+      - light.bulbspotwhztv_rgb
       - light.ledstripwhz1_rgb
-      - light.ledstripwhz2_rgb
-      - light.schalter_lavalampe_light
-      - light.wled_1
-      - light.wled_3
+      - light.wled_desk_bottom
+      - light.wled_ks
+      - light.wled_ps
+      - light.wled_desk_top
+
+  - platform: group
+    name: Ambilights TV RGB
+    entities:
+      - light.bulbwhzlamp_rgb
+      - light.bulbspotwhztv_rgb
+      - light.ledstripwhz1_rgb
+      - light.wled_ks
+      - light.wled_ps
+
   - platform: group
     name: Mood Lights CWWW
     entities:
-      #      - light.bulbspotwhzdesk_cwww
-      - light.bulbspotwhztv_cwww
       - light.bulbwhzlamp_cwww
-      - light.ledstripwhz1_w
-      - light.ledstripwhz2_rgb
+      #      - light.ledstripwhz1_w
+      - light.bulbspotwhztv_cwww
   - platform: group
     name: LED Strips RGB
     entities:
       - light.ledstripwhz1_rgb
-      - light.ledstripwhz2_rgb
-  - platform: group
-    name: LED Strips CWWW
-    entities:
-      - light.ledstripwhz1_w
-  - platform: group
-    name: LED WHZ
-    entities:
-      - light.ledstripwhz2_rgb
+      - light.wled_desk_bottom
+      - light.wled_ks
+      - light.wled_ps
+      - light.wled_desk_top
+#  - platform: group
+#    name: LED Strips CWWW
+#    entities:
+#      - light.ledstripwhz1_w
+

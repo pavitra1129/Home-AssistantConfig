@@ -1,0 +1,331 @@
+multiscrape:
+#defcon
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UC6Om9kAkl32dWlDSNlDS9Iw"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_defconconference
+        on_error: 
+          value: last
+        name: DEFCON Conference
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#nexpo
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UCpFFItkfZz1qz5PpHpqzYBw"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_nexpo
+        on_error: 
+          value: last
+        name: Nexpo
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#scaretheater
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UCaGOgwGKnDVOKY0DrFsBAiA"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_scarethater
+        on_error: 
+          value: last
+        name: Scare Theater
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#jb3
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UCF9AEw1wCDZFNHVjCVCQZ7A"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_jb3
+        on_error: 
+          value: last
+        name: JB3
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#reignbot
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UCchWU8ta6L-Dy3rGIxPINzw"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_reignbot
+        on_error: 
+          value: last
+        name: ReignBot
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#internethistorian
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UCR1D15p_vdP3HkrH8wgjQRw"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_internethistorian
+        on_error: 
+          value: last
+        name: Internet Historian
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#cheeseforever
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UCl1M49CAo9u99gABBIqEgDQ"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_cheeseforever
+        on_error: 
+          value: last
+        name: Cheese Forever
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#froggy
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UCtEvLS7_ks-k-dB3_ebjgPw"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_froggy
+        on_error: 
+          value: last
+        name: Froggy
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#channel5
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UC-AQKm7HUNMmxjdS371MSwg"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_channel5
+        on_error: 
+          value: last
+        name: Channel 5
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri
+#incognitomode
+  - resource: "https://www.youtube.com/feeds/videos.xml?channel_id=UC8Q7XEy86Q7T-3kNpNjYgwA"
+    scan_interval: 60
+    parser: lxml
+    log_response: true
+    sensor:
+      - unique_id: yt_incognitomode
+        on_error: 
+          value: last
+        name: Incognito Mode
+        icon: mdi:youtube
+        select: media\:title
+        attributes:
+          - name: video_url
+            select: media\:content
+            attribute: url
+          - name: video_description
+            select: media\:description
+          - name: entity_picture
+            select: media\:thumbnail
+            attribute: url
+          - name: video_content_id
+            select: yt\:videoId
+          - name: video_views
+            select: media\:statistics
+            attribute: views
+          - name: video_stars
+            select: media\:starRating
+            attribute: count
+          - name: video_date
+            select: updated
+          - name: channel_url
+            select: uri

@@ -7,9 +7,9 @@
   condition:
     condition: and
     conditions:
-#      - condition: state
-#        entity_id: binary_sensor.dark_outside
-#        state: "off"
+      #      - condition: state
+      #        entity_id: binary_sensor.dark_outside
+      #        state: "off"
       - condition: state
         entity_id: input_select.gast_modus
         state: Deaktiviert
@@ -28,12 +28,12 @@
   action:
     - service: camera.snapshot
       data_template:
-        entity_id: camera.nest_cam
+        entity_id: camera.street_view #place holder
         filename: tmp/motion_{{ now().strftime("%Y%m%d_%H%M") }}.jpg
-    - service: telegram_bot.send_photo
-      data_template:
-        caption: Motion Detected!
-        file: 'tmp/motion_{{ now().strftime("%Y%m%d_%H%M") }}.jpg'
+#    - service: telegram_bot.send_photo
+#      data_template:
+#        caption: Motion Detected!
+#        file: 'tmp/motion_{{ now().strftime("%Y%m%d_%H%M") }}.jpg'
     - service: camera.record
       data_template:
         lookback: 60s

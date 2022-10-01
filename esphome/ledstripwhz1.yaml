@@ -14,7 +14,7 @@ esphome:
   platform: ESP8266
   board: esp01_1m
   board_flash_mode: dout
-web_server: !include shared/webserver.yaml
+#web_server: !include shared/webserver.yaml
 globals: !include shared/globals.yaml
 light: !include shared/rgbw.yaml
 output: !include shared/rgbwoutput.yaml

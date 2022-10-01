@@ -6,23 +6,23 @@ light.schalter_1_flur_light:
     - Lampe Flur
     - Flurlicht
     - Flur
-#light.bulbflur_rgb:
-#  expose: true
-#  room: Flur
-#  name: Flur RGB
-#  aliases:
-#    - RGB Flurlampe
-#    - RGB Flurlicht
-#    - RGB Flur
-#light.bulbflur_cwww:
-#  expose: true
-#  room: Flur
-#  name: Flur Weiss
-#  aliases:
-#    - Helle Flurlampe
-#    - Weisses Flurlicht
-#    - Weisse Flurlampe
-#    - Helles FLurlicht
+light.bulbflur_rgb:
+  expose: true
+  room: Flur
+  name: Flur RGB
+  aliases:
+    - RGB Flurlampe
+    - RGB Flurlicht
+    - RGB Flur
+light.bulbflur_cwww:
+  expose: true
+  room: Flur
+  name: Flur Weiss
+  aliases:
+    - Helle Flurlampe
+    - Weisses Flurlicht
+    - Weisse Flurlampe
+    - Helles FLurlicht
 light.schalter_1_bad_light:
   expose: true
   room: Bad
@@ -68,15 +68,15 @@ light.bulbkueche_rgb:
     - RGB Küchenlampe
     - RGB Küchenlicht
     - RGB Küche
-#light.bulbkueche_cwww:
-#  expose: true
-#  room: Küche
-#  name: Küche Weiss
-#  aliases:
-#    - Helle Küchenlampe
-#    - Weisses Küchenlicht
-#    - Weisse Küchenlampe
-#    - Helles Küchenlicht
+light.bulbkueche_cwww:
+  expose: true
+  room: Küche
+  name: Küche Weiss
+  aliases:
+    - Helle Küchenlampe
+    - Weisses Küchenlicht
+    - Weisse Küchenlampe
+    - Helles Küchenlicht
 light.schalter_1_wohnzimmer_light:
   expose: true
   room: Wohnzimmer
@@ -123,15 +123,7 @@ light.mood_lights_cwww:
   expose: true
   name: Mood Lights CWWW
   room: Wohnzimmer
-camera.nest_cam:
-  expose: true
-  name: Nest Cam
-  room: Wohnzimmer
-  aliases:
-    - Cam
-    - Nest
-    - Nest Cam
-    - Kamera
+
 binary_sensor.window_wohnzimmer:
   expose: true
   name: Fenster
@@ -156,7 +148,6 @@ sensor.climate_flur_temp:
     - Temperatur Flur
     - Temperatur
     - Thermometer
-    
 switch.wiser_away_mode:
   expose: true
   name: Abwesenheitsmodus
@@ -180,6 +171,7 @@ sensor.schalter_schrank_wohnzimmer_temperatur:
     - Thermometer
     - Wohnzimmerthermometer
     - Thermometer Wohnzimmer
+
 sensor.schalter_schrank_wohnzimmer_luftfeuchtigkeit:
   expose: true
   room: Wohnzimmer
@@ -187,6 +179,7 @@ sensor.schalter_schrank_wohnzimmer_luftfeuchtigkeit:
     - Hygrometer
     - Wohnzimmerhygrometer
     - Hygrometer Wohnzimmer
+
 sensor.outside_temperature:
   expose: true
   name: Außentemperatur
@@ -196,6 +189,7 @@ sensor.outside_temperature:
     - Außentemperatur
     - Temperatur
     - Thermometer
+
 alarm_control_panel.home_alarm:
   expose: true
   name: Alarm
@@ -204,38 +198,52 @@ alarm_control_panel.home_alarm:
     - Alarm
     - Sicherheitssystem
     - Heim Alarm
-media_player.android_tv:
+
+#media_player.android_tv:
+#  expose: true
+#  name: TV
+#  room: Wohnzimmer
+#  aliases:
+#    - Fernseher
+#    - TV
+#    - Android TV
+
+#scene.chill_mode_on:
+#  expose: true
+#  name: Chill
+#  room: Wohnzimmer
+#  aliases:
+#    - Chill
+#    - Chill Out
+#    - Chill Out Scene
+#    - Chill Out Szene
+
+#switch.guest_wifi:
+#  expose: true
+#  name: Gast Wlan
+#  room: Wohnzimmer
+#  aliases:
+#    - Gast Wlan
+#    - Gast Wifi
+#    - Guest Wifi
+
+#switch.soundbar:
+#  expose: true
+#  name: Soundbar
+#  room: Wohnzimmer
+#  aliases:
+#    - Bluetooth
+#    - Mit Bluetooth verbinden
+#    - Bluetooth verbindung
+#    - Soundbar verbinden
+#    - Soundbar
+
+input_select.home_mode:
   expose: true
-  name: TV
-  room: Wohnzimmer
+  name: Modus
+  room: Wohnung
   aliases:
-    - Fernseher
-    - TV
-    - Android TV
-scene.chill_mode_on:
-  expose: true
-  name: Chill
-  room: Wohnzimmer
-  aliases:
-    - Chill
-    - Chill Out
-    - Chill Out Scene
-    - Chill Out Szene
-switch.restreamer:
-  expose: true
-  name: Kamera
-  room: Wohnzimmer
-  aliases:
-    - Kamera
-    - Camera
-    - Restreamer
-switch.soundbar:
-  expose: true
-  name: Soundbar
-  room: Wohnzimmer
-  aliases:
-    - Bluetooth
-    - Mit Bluetooth verbinden
-    - Bluetooth verbindung
-    - Soundbar verbinden
-    - Soundbar
+    - Heim Modus
+    - Modus
+    - Mode
+    - Home Mode

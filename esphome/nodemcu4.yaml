@@ -13,7 +13,7 @@ wifi: !include shared/wifi.yaml
 api: !include shared/api.yaml
 ota: !include shared/ota.yaml
 text_sensor: !include shared/textsensors.yaml
-web_server: !include shared/webserver.yaml
+#web_server: !include shared/webserver.yaml
 captive_portal:
 logger:
 sensor:

@@ -17,19 +17,17 @@ homeassistant:
   customize_glob: !include customize_glob.yaml
   auth_providers:
     - type: homeassistant
-    - type: trusted_networks
-      allow_bypass_login: true
-      trusted_networks:
-        - !secret trusted_network_1
-        - !secret trusted_network_2
-        - !secret trusted_network_3
-        - !secret trusted_network_4
-        - !secret trusted_network_5
+  #    - type: trusted_networks
+  #      allow_bypass_login: true
+  #      trusted_networks:
+  #        - !secret trusted_network_2
   auth_mfa_modules:
     - type: totp
       name: Authy
-    - type: notify
-      message: "Hey, to get into my clubhouse, you need to say {}"
+  #    - type: notify
+  #      message: "Hey, to get into my clubhouse, you need to say {}"
+  external_url: !secret hassio_external_url
+  internal_url: !secret hassio_internal_url
   name: Home
   time_zone: Europe/Berlin
   unit_system: metric
@@ -38,9 +36,11 @@ homeassistant:
   elevation: !secret home_ela
   allowlist_external_dirs: #seddelete
     - /config/tmp/ #seddelete
+    - /config/media/ #seddelete
   allowlist_external_urls: #seddelete
-    - http://localhost:8123 #seddelete
-#https://www.home-assistant.io/integrations/media_source/
+    - https://localhost:8123 #seddelete
+    - https://hassio.local.phixion.org/api/media_player_proxy #seddelete
+  #https://www.home-assistant.io/integrations/media_source/
   media_dirs: #seddelete
-    local: /media #seddelete
+    local: /config/media #seddelete
 #    recording: /media/rec #seddelete

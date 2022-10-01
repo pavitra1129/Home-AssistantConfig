@@ -15,7 +15,7 @@ time: !include shared/time.yaml
 ota: !include shared/ota.yaml
 api: !include shared/api.yaml
 text_sensor: !include shared/textsensors.yaml
-web_server:
+#web_server:
 captive_portal:
 logger:
   baud_rate: 0

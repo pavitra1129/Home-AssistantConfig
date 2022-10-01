@@ -6,32 +6,32 @@
 #╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝╚═╝        ╚═╝
 #
 notify:
-  - name: pushover
-    platform: pushover
-    api_key: !secret pushover_api_pwd # pragma: allowlist secret
-    user_key: !secret pushover_user_pwd # pragma: allowlist secret
-  - name: android
-    platform: nfandroidtv
-    host: !secret host_androidtv # pragma: allowlist secret
-    position: top-right
-    fontsize: medium
-  - name: Google Assistant Broadcast
-    platform: rest
-    resource: !secret google_assistant_webserver_bc # pragma: allowlist secret
-  - name: Google Assistant Command
-    platform: rest
-    resource: !secret google_assistant_webserver_cmd # pragma: allowlist secret
-  - name: Telegram
-    platform: telegram
-    chat_id: !secret telegram_chatid1 # pragma: allowlist secret
-#https://www.home-assistant.io/integrations/lametric/
-#https://developer.lametric.com/icons
+#  - name: Google Assistant Broadcast
+#    platform: rest
+#    resource: !secret google_assistant_webserver_bc # pragma: allowlist secret
+#  - name: Google Assistant Command
+#    platform: rest
+#    resource: !secret google_assistant_webserver_cmd # pragma: allowlist secret
+  #https://www.home-assistant.io/integrations/lametric/
+  #https://developer.lametric.com/icons
   - name: LaMetric
     platform: lametric
     lifetime: 20
-    icon: 'a35325'
+    icon: "a35325"
     cycles: 3
     priority: info
-  - name: Discord
-    platform: discord
-    token: !secret discord_bot_token # pragma: allowlist secret
+  - name: gotify
+    platform: rest
+    resource: https://gotify.local.phixion.org/message
+    method: POST_JSON
+    headers:
+      X-Gotify-Key: !secret gotify_api_key
+    message_param_name: message
+    title_param_name: title
+    data:
+      priority: 7
+      extras:
+        client::display:
+          contentType: "text/markdown"
+        client::notification:
+        click: { "url": "{{states('input_text.gotify')}}" }

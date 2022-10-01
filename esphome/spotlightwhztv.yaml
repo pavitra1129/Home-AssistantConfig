@@ -26,7 +26,7 @@ esphome:
           id: ${devicename}_rgb
           transition_length: 0s
 globals: !include shared/globals.yaml
-web_server: !include shared/webserver.yaml
+#web_server: !include shared/webserver.yaml
 time: !include shared/time.yaml
 sensor: !include shared/sensors.yaml
 binary_sensor: !include shared/binarysensors.yaml

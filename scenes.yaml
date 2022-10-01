@@ -82,7 +82,7 @@
 - id: all_lights_off
   name: All Lights off
   entities:
-    light.all_lights:
+    group.all_lights:
       state: 'off'
 - id: chill_mode_on
   name: Chill Mode On

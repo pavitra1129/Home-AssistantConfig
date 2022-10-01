@@ -1,22 +1,22 @@
 # ██████╗██╗   ██╗███████╗████████╗ ██████╗ ███╗   ███╗██╗███████╗███████╗
 #██╔════╝██║   ██║██╔════╝╚══██╔══╝██╔═══██╗████╗ ████║██║╚══███╔╝██╔════╝
-#██║     ██║   ██║███████╗   ██║   ██║   ██║██╔████╔██║██║  ███╔╝ █████╗  
-#██║     ██║   ██║╚════██║   ██║   ██║   ██║██║╚██╔╝██║██║ ███╔╝  ██╔══╝  
+#██║     ██║   ██║███████╗   ██║   ██║   ██║██╔████╔██║██║  ███╔╝ █████╗
+#██║     ██║   ██║╚════██║   ██║   ██║   ██║██║╚██╔╝██║██║ ███╔╝  ██╔══╝
 #╚██████╗╚██████╔╝███████║   ██║   ╚██████╔╝██║ ╚═╝ ██║██║███████╗███████╗
 # ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝╚═╝╚══════╝╚══════╝
-#                                                                         
-device_tracker.macbook_air:
-  friendly_name: MacBook Air
-  icon: mdi:laptop-mac
-  entity_picture: /local/_static/mac_book.png
+#
+#device_tracker.macbook_air:
+#  friendly_name: MacBook Air
+#  icon: mdi:laptop-mac
+#  entity_picture: /local/_static/mac_book.png
 device_tracker.google_pixel:
   friendly_name: Google Pixel
-  icon: mdi:cellphone-android
+  icon: mdi:cellphone
   entity_picture: /local/_static/pixel.png
-device_tracker.google_nexus:
-  icon: mdi:tablet-android
-  friendly_name: Google Nexus
-  entity_picture: /local/_static/nexus.png
+#device_tracker.google_nexus:
+#  icon: mdi:tablet-android
+#  friendly_name: Google Nexus
+#  entity_picture: /local/_static/nexus.png
 person.martin:
   entity_picture: /local/_static/martin.jfif
 sensor.martin:
@@ -68,16 +68,16 @@ light.schalter_lavalampe_light:
 light.schalter_1_wohnzimmer_light:
   name: Wohnzimmer
   icon: mdi:gesture-tap-box
-sensor.morning_commute_bike:
-  icon: mdi:bicycle
-sensor.morning_commute_trains:
-  icon: mdi:train
-sensor.commute_home:
-  icon: mdi:home
-sensor.travel_parents_bike:
-  icon: mdi:bike-fast
-sensor.travel_parents_trains:
-  icon: mdi:train-variant
+#sensor.morning_commute_bike:
+#  icon: mdi:bicycle
+#sensor.morning_commute_trains:
+#  icon: mdi:train
+#sensor.commute_home:
+#  icon: mdi:home
+#sensor.travel_parents_bike:
+#  icon: mdi:bike-fast
+#sensor.travel_parents_trains:
+#  icon: mdi:train-variant
 sensor.climate_bad_window:
   icon: mdi:window-closed-variant
   device_class: window
@@ -87,50 +87,48 @@ sensor.climate_flur_window:
 sensor.climate_wohnzimmer_window:
   icon: mdi:window-closed-variant
   device_class: window
-media_player.google_nest_hub:
+media_player.wohnzimmer:
   icon: mdi:google-assistant
   device_class: sound
-media_player.google_home:
-  icon: mdi:google-home
+media_player.kuche:
+  icon: mdi:google-assistant
   device_class: sound
-media_player.shield:
+media_player.fernseher:
   icon: mdi:television-classic
-  device_class: tv
-media_player.android_tv:
-  icon: mdi:television-classic
-  device_class: tv
-sensor.germany_coronavirus_deaths:
-  friendly_name: Corona tote (DE)
-  icon: mdi:skull-crossbones-outline
-  unit_of_measurement: people
-sensor.germany_coronavirus_recovered:
-  friendly_name: Corona geheilt (DE)
-  icon: mdi:hospital-box-outline
-  unit_of_measurement: people
-sensor.germany_coronavirus_confirmed:
-  friendly_name: Corona gesamt (DE)
-  icon: mdi:biohazard
-  unit_of_measurement: people
-sensor.germany_coronavirus_current:
-  friendly_name: Corona infiziert (DE)
-  icon: mdi:bacteria-outline
-  unit_of_measurement: people
-sensor.worldwide_coronavirus_deaths:
-  friendly_name: Corona tote (Weltweit)
-  icon: mdi:skull-crossbones-outline
-  unit_of_measurement: people
-sensor.worldwide_coronavirus_recovered:
-  friendly_name: Corona geheilt (Weltweit)
-  icon: mdi:hospital-box-outline
-  unit_of_measurement: people
-sensor.worldwide_coronavirus_confirmed:
-  friendly_name: Corona gesamt (Weltweit)
-  icon: mdi:biohazard
-  unit_of_measurement: people
-sensor.worldwide_coronavirus_current:
-  friendly_name: Corona infiziert (Weltweit)
-  icon: mdi:bacteria-outline
-  unit_of_measurement: people
+#media_player.android_tv:
+#  icon: mdi:television-classic
+#sensor.germany_coronavirus_deaths:
+#  friendly_name: Corona tote (DE)
+#  icon: mdi:skull-crossbones-outline
+#  unit_of_measurement: people
+#sensor.germany_coronavirus_recovered:
+#  friendly_name: Corona geheilt (DE)
+#  icon: mdi:hospital-box-outline
+#  unit_of_measurement: people
+#sensor.germany_coronavirus_confirmed:
+#  friendly_name: Corona gesamt (DE)
+#  icon: mdi:biohazard
+#  unit_of_measurement: people
+#sensor.germany_coronavirus_current:
+#  friendly_name: Corona infiziert (DE)
+#  icon: mdi:bacteria-outline
+#  unit_of_measurement: people
+#sensor.worldwide_coronavirus_deaths:
+#  friendly_name: Corona tote (Weltweit)
+#  icon: mdi:skull-crossbones-outline
+#  unit_of_measurement: people
+#sensor.worldwide_coronavirus_recovered:
+#  friendly_name: Corona geheilt (Weltweit)
+#  icon: mdi:hospital-box-outline
+#  unit_of_measurement: people
+#sensor.worldwide_coronavirus_confirmed:
+#  friendly_name: Corona gesamt (Weltweit)
+#  icon: mdi:biohazard
+#  unit_of_measurement: people
+#sensor.worldwide_coronavirus_current:
+#  friendly_name: Corona infiziert (Weltweit)
+#  icon: mdi:bacteria-outline
+#  unit_of_measurement: people
 sensor.wtfisxur:
   friendly_name: WTF is Xur?
   icon: mdi:gamepad-variant-outline
@@ -151,14 +149,3 @@ binary_sensor.inside_temperature_rising:
 binary_sensor.updater:
   friendly_name: Updater
   icon: mdi:update
-sensor.nodemcu_2_luxmeter:
-  icon: mdi:theme-light-dark
-  device_class: illuminance
-binary_sensor.nodemcu_6_wohnzimmer_up:
-  icon: mdi:arrow-up-bold-box
-binary_sensor.nodemcu_6_wohnzimmer_down:
-  icon: mdi:arrow-down-bold-box
-binary_sensor.nodemcu_6_wohnzimmer_right:
-  icon: mdi:arrow-right-bold-box
-binary_sensor.nodemcu_6_wohnzimmer_left:
-  icon: mdi:arrow-left-bold-box

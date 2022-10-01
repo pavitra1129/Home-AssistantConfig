@@ -35,6 +35,14 @@
       where: '"database"=''homeassistant'' AND time > now() - 15m'
       database: _internal
       field: diskBytes
+    #    - name: InfluxDB Size traefik
+    #      unit_of_measurement: MB
+    #      group_function: mean
+    #      value_template: "{{ (value | float / 1024 / 1024) | round(1) }}"
+    #      measurement: '"monitor"."shard"'
+    #      where: '"database"=''traefik'' AND time > now() - 15m'
+    #      database: _internal
+    #      field: diskBytes
     - name: Average Power (last hour)
       database: homeassistant
       where: '"entity_id" = ''energy_combined_power'' AND time >= now() - 1h'
@@ -56,7 +64,7 @@
 #    - name: Heating Wohnzimmer (last hour)
 #      database: homeassistant
 #      where: 'time > now() - 1h AND time < now() AND "entity_id" = ''heating_time_wohnzimmer'''
-#      measurement: '"min"' 
+#      measurement: '"min"'
 #      value_template: "{{ value | round(2) }}"
 #      unit_of_measurement: min
 #    - name: Heating Wohnzimmer (past 24hrs)
@@ -83,39 +91,6 @@
 #      measurement: '"min"'
 #      value_template: "{{ value | round(2) }}"
 #      unit_of_measurement: min
-- platform: sql
-  scan_interval: 86400 # 24h
-  db_url: !secret dburl # pragma: allowlist secret
-  queries:
-    - name: MariaDB Homeassistant
-      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024 / 1024, 2) "value" FROM information_schema.tables WHERE table_schema="hass" GROUP BY table_schema;'
-      column: "value"
-      unit_of_measurement: GB
-    - name: MariaDB States recorded today
-      query: "SELECT COUNT(*) as value FROM states WHERE created BETWEEN CURDATE() AND adddate(current_date, 1) LIMIT 1;"
-      column: "value"
-      unit_of_measurement: States
-    - name: MariaDB States recorded yesterday
-      query: "SELECT COUNT(*) as value FROM states WHERE created BETWEEN subdate(current_date, 1) and CURDATE() LIMIT 1;"
-      column: "value"
-      unit_of_measurement: States
-    - name: MariaDB Total states stored
-      query: "SELECT COUNT(*) as value FROM states;"
-      column: "value"
-      unit_of_measurement: States
-    - name: MariaDB Unique Entity IDs
-      query: "SELECT count(DISTINCT entity_id) as value FROM states;"
-      column: "value"
-      unit_of_measurement: Entities
-    - name: MariaDB Newest Entity ID
-      query: "SELECT entity_id, min(last_updated) as last_state FROM states GROUP BY entity_id ORDER BY last_state DESC LIMIT 1;"
-      column: "entity_id"
-    - name: MariaDB Most Updated Entity ID
-      query: "SELECT entity_id, count(*) as count, max(last_updated), min(last_updated) FROM states GROUP BY entity_id ORDER BY count DESC LIMIT 1;"
-      column: "entity_id"
-- platform: version
-  image: qemux86-64
-  source: local
 - platform: systemmonitor
   resources:
     - type: disk_use_percent
@@ -160,18 +135,14 @@
   unit_of_measurement: pending update(s)
   name: Security Updates
   command: "cat /config/tmp/sec_updates.log"
-- platform: dnsip
-  hostname: !secret home_host # pragma: allowlist secret
-  name: !secret home_host # pragma: allowlist secret
-  resolver: 1.1.1.1
-- platform: reddit
-  username: !secret reddit_username # pragma: allowlist secret
-  password: !secret reddit_password # pragma: allowlist secret
-  client_id: !secret reddit_client_id # pragma: allowlist secret
-  client_secret: !secret reddit_client_secret # pragma: allowlist secret
-  subreddits:
-    - gamedealsfree
-  sort_by: new
+#- platform: reddit
+#  username: !secret reddit_username # pragma: allowlist secret
+#  password: !secret reddit_password # pragma: allowlist secret
+#  client_id: !secret reddit_client_id # pragma: allowlist secret
+#  client_secret: !secret reddit_client_secret # pragma: allowlist secret
+#  subreddits:
+#    - gamedealsfree
+#  sort_by: new
 - platform: feedparser
   name: !secret feed_1_name # pragma: allowlist secret
   feed_url: !secret feed_1_url # pragma: allowlist secret
@@ -179,16 +150,7 @@
     - title
     - link
     - pubDate
-- platform: feedparser
-  name: !secret feed_2_name # pragma: allowlist secret
-  feed_url: !secret feed_2_url # pragma: allowlist secret
-  inclusions:
-    - title
-    - link
-    - pubDate
-    - description
-  exclusions:
-    - image
+
 - platform: feedparser
   name: RSS Destiny Glitch
   feed_url: "https://www.reddit.com/r/raidsecrets/search.rss?q=flair%3AGlitch&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
@@ -196,9 +158,89 @@
     - title
     - link
     - updated
+
+- platform: feedparser
+  name: RSS ps4homebrew
+  feed_url: "https://www.reddit.com/r/ps4homebrew/search.rss?q=*&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS wololo
+  feed_url: "https://wololo.net/feed/"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS PS4 PKG
+  feed_url: "https://game-2u.com/feed"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS PKG Links
+  feed_url: "https://www.reddit.com/r/PkgLinks/search.rss?q=*&restrict_sr=on&sort=new&t=month.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
 - platform: feedparser
   name: RSS Destiny Datamine
   feed_url: "https://www.reddit.com/r/raidsecrets/search.rss?q=flair%3ADatamine&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS Guru 3D
+  feed_url: "https://www.guru3d.com/files-rss"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS Metaebene
+  feed_url: "https://metaebene.me/feed"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS LOGBuch Netzpolitik
+  feed_url: "https://logbuch-netzpolitik.de/feed"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS CRE
+  feed_url: "https://cre.fm/feed"
+  inclusions:
+    - title
+    - link
+    - updated
+- platform: feedparser
+  name: RSS Raidsecrets Top
+  feed_url: "https://www.reddit.com/r/raidsecrets/search.rss?q=*&restrict_sr=on&include_over_18=on&sort=top&t=week.rss"
+  inclusions:
+    - title
+    - link
+    - pubDate
+    
+- platform: feedparser
+  name: RSS DTG Top
+  feed_url: "https://www.reddit.com/r/destinythegame/search.rss?q=*&restrict_sr=on&include_over_18=on&sort=top&t=week.rss"
   inclusions:
     - title
     - link
@@ -276,50 +318,46 @@
     - title
     - link
     - updated
-- platform: places
-  name: Martin
-  devicetracker_id: device_tracker.google_pixel
+#- platform: places
+#  name: Martin
+#  devicetracker_id: device_tracker.google_pixel
   #  options: zone,place,street_number,street,city,state,postal_code
-  options: do_not_reorder, place_name, street_number, street, city, postal_code
-  map_provider: google
+#  options: do_not_reorder, place_name, street_number, street, city, postal_code
+#  map_provider: google
   #  map_zoom: 19
-  home_zone: zone.home
-  api_key: !secret email_phixion # pragma: allowlist secret
+#  home_zone: zone.home
+#  api_key: !secret email_phixion # pragma: allowlist secret
 - platform: rest
   resource: https://api.myip.com
   name: External IP
   value_template: "{{ value_json.ip }}"
-- platform: rest
-  resource: !secret supervisor_rest_api
-  name: core
-  unit_of_measurement: "%"
-  value_template: "{{ value_json.data.cpu_percent }}"
-  scan_interval: 10
-  headers:
-    Authorization: !secret llt
-    Content-Type: application/json
-  json_attributes_path: "$.data"
-  json_attributes:
-    - memory_percent
-- platform: rest
-  resource: !secret supervisor_rest_api
-  name: supervisor
-  unit_of_measurement: "%"
-  value_template: "{{ value_json.data.cpu_percent }}"
-  scan_interval: 10
-  headers:
-    Authorization: !secret llt
-    Content-Type: application/json
-  json_attributes_path: "$.data"
-  json_attributes:
-    - memory_percent
+#- platform: rest
+#  resource: !secret supervisor_rest_api
+#  name: core
+#  unit_of_measurement: "%"
+#  value_template: "{{ value_json.data.cpu_percent }}"
+#  scan_interval: 10
+#  headers:
+#    Authorization: !secret llt
+#    Content-Type: application/json
+#  json_attributes_path: "$.data"
+#  json_attributes:
+#    - memory_percent
+#- platform: rest
+#  resource: !secret supervisor_rest_api
+#  name: supervisor
+#  unit_of_measurement: "%"
+#  value_template: "{{ value_json.data.cpu_percent }}"
+#  scan_interval: 10
+#  headers:
+#    Authorization: !secret llt
+#    Content-Type: application/json
+#  json_attributes_path: "$.data"
+#  json_attributes:
+#    - memory_percent
 - platform: authenticated
   provider: ipapi
   enable_notification: true
-  exclude:
-    - !secret trusted_network_1
-    - !secret trusted_network_2
-    - !secret trusted_network_3
 - platform: uptime
 #  unit_of_measurement: days
 - platform: mvglive
@@ -338,7 +376,7 @@
       number: 5
     - station: !secret station_mvg_u # pragma: allowlist secret
       name: U-Bahn
-#      directions: ["2"]
+      #      directions: ["2"]
       products: ["U-Bahn"]
       number: 5
 - platform: deutsche_bahn
@@ -358,46 +396,50 @@
   verify_ssl: false
 - platform: template
   sensors:
+    wallet_eur:
+      value_template: '{{ states.sensor.coinbase_btc_wallet.attributes["Balance in native currency"] }}'
+      friendly_name: BTC Wallet Balance
+      icon_template: mdi:currency-eur
     climate_wohnung_temp:
       friendly_name: Wohnung
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.alle_thermostate.attributes.current_temperature | default(0) | int if states.climate.alle_thermostate.attributes.current_temperature is not none }}"
+      value_template: "{{ states.climate.alle_thermostate.attributes.current_temperature | default(0) }}"
     climate_flur_temp:
       friendly_name: Flur
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.wiser_flur.attributes.current_temperature | default(0) | int if states.climate.wiser_flur.attributes.current_temperature is not none }}"
+      value_template: "{{ states.climate.wiser_flur.attributes.current_temperature | default(0) }}"
     climate_bad_temp:
       friendly_name: Bad
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.wiser_bad.attributes.current_temperature | default(0) | int if states.climate.wiser_bad.attributes.current_temperature is not none }}"
+      value_template: "{{ states.climate.wiser_bad.attributes.current_temperature | default(0) }}"
     climate_wohnzimmer_temp:
       friendly_name: Wohnzimmer
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.wiser_wohnzimmer.attributes.current_temperature | default(0) | int if states.climate.wiser_wohnzimmer.attributes.current_temperature is not none }}"
+      value_template: "{{ states.climate.wiser_wohnzimmer.attributes.current_temperature | default(0) }}"
     climate_wohnung_target_temp:
       friendly_name: Target Temp Wohnung
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.alle_thermostate.attributes.temperature | default(0) | int if states.climate.alle_thermostate.attributes.temperature is not none }}"
+      value_template: "{{ states.climate.alle_thermostate.attributes.current_temperature | default(0) }}"
     climate_flur_target_temp:
       friendly_name: Target Temp Flur
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.wiser_flur.attributes.temperature | default(0) | int if states.climate.wiser_flur.attributes.temperature is not none }}"
+      value_template: "{{ states.climate.wiser_flur.attributes.current_schedule_temp | default(0) }}"
     climate_bad_target_temp:
       friendly_name: Target Temp Bad
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.wiser_bad.attributes.temperature | default(0) | int if states.climate.wiser_bad.attributes.temperature is not none }}"
+      value_template: "{{ states.climate.wiser_bad.attributes.current_schedule_temp | default(0) }}"
     climate_wohnzimmer_target_temp:
       friendly_name: Target Temp Wohnzimmer
       unit_of_measurement: "°C"
       device_class: temperature
-      value_template: "{{ states.climate.wiser_wohnzimmer.attributes.temperature | default(0) | int if states.climate.wiser_wohnzimmer.attributes.temperature is not none }}"
+      value_template: "{{ states.climate.wiser_wohnzimmer.attributes.current_schedule_temp | default(0) }}"
     unifi_speedtest_rx:
       #      entity_id: sensor.unifi_gateway_www
       friendly_name: Download
@@ -423,11 +465,6 @@
       friendly_name: WLAN Guests
       unit_of_measurement: devices
       value_template: "{{ states.sensor.unifi_gateway_wlan.attributes.num_guest | default(0) }}"
-    unifi_wlan_iot:
-      #      entity_id: sensor.unifi_gateway_wlan
-      friendly_name: WLAN IoT
-      unit_of_measurement: devices
-      value_template: "{{ states.sensor.unifi_gateway_wlan.attributes.num_iot | default(0) }}"
     sun_sunset:
       #      entity_id: sun.sun
       friendly_name: Sonnenuntergang
@@ -440,30 +477,6 @@
       #      entity_id: proximity.home
       friendly_name: Direction of travel
       value_template: "{{ state_attr('proximity.home','dir_of_travel') }}"
-#    btc_exchange_rate_in_euro:
-#      value_template: "{{ ((states.sensor.btc_exchange_rate.state | float) / (states.sensor.eur_exchange_rate.state | float)) | round(2)}}"
-#      friendly_name: BTC Exchange Rate (EUR)
-#      unit_of_measurement: EUR
-#    coinbase_vault_in_euro:
-#      friendly_name: Coinbase BTC Vault (EUR)
-#      unit_of_measurement: EUR
-#      value_template: "{{ state_attr('sensor.coinbase_btc_vault','Balance in native currency')|replace('EUR','') }}"
-#    coinbase_wallet_in_euro:
-#      friendly_name: Coinbase BTC Wallet (EUR)
-#      unit_of_measurement: EUR
-#      value_template: "{{ state_attr('sensor.coinbase_btc_wallet','Balance in native currency')|replace('EUR','') }}"
-#    coinbase_vault_xlm_in_euro:
-#      value_template: "{{ state_attr('sensor.coinbase_xlm_vault','Balance in native currency')|replace('EUR','') }}"
-#      friendly_name: Coinbase XLM Vault (EUR)
-#      unit_of_measurement: EUR
-#    coinbase_wallet_xlm_in_euro:
-#      value_template: "{{ state_attr('sensor.coinbase_xlm_wallet','Balance in native currency')|replace('EUR','') }}"
-#      friendly_name: Coinbase XLM Wallet (EUR)
-#      unit_of_measurement: EUR
-#    coinbase_deposit:
-#      value_template: "{{ ((states.sensor.coinbase_vault_in_euro.state | float) + (states.sensor.coinbase_wallet_in_euro.state | float) + (states.sensor.coinbase_eur_wallet.state | float) + (states.sensor.coinbase_wallet_xlm_in_euro.state | float) + (states.sensor.coinbase_vault_xlm_in_euro.state | float)) | round(2)}}"
-#      friendly_name: Coinbase Deposit (EUR)
-#      unit_of_measurement: EUR
     energy_combined_current:
       value_template: "{{ ((states.sensor.sonoff_pow_r2_tv_current.state | float) + (states.sensor.sonoff_pow_r2_whz_current.state | float)) | round(3) }}"
       friendly_name: Energy combined current
@@ -492,87 +505,75 @@
     energy_consumed_yearly_combined:
       unit_of_measurement: kWh
       value_template: "{{ ((states.sensor.energy_consumed_yearly_whz_1.state | float) + (states.sensor.energy_consumed_yearly_whz_2.state | float)) | round(2) }}"
-    thermostat_wohnzimmer_wifi_signal:
-      friendly_name: Thermostat Wohnzimmer WiFi Signal
-      value_template: "{{ states.sensor.wiser_itrv_wohnzimmer.attributes.controller_reception_RSSI | default(0) | int if states.sensor.wiser_itrv_wohnzimmer.attributes.controller_reception_RSSI is not none}}"
-      device_class: signal_strength
-      unit_of_measurement: dB
-    thermostat_bad_wifi_signal:
-      friendly_name: Thermostat Bad WiFi Signal
-      value_template: "{{ states.sensor.wiser_itrv_bad.attributes.controller_reception_RSSI | default(0) | int if states.sensor.wiser_itrv_bad.attributes.controller_reception_RSSI is not none}}"
-      device_class: signal_strength
-      unit_of_measurement: dB
-    thermostat_flur_wifi_signal:
-      friendly_name: Thermostat Flur WiFi Signal
-      value_template: "{{ states.sensor.wiser_itrv_flur.attributes.controller_reception_RSSI | default(0) | int if states.sensor.wiser_itrv_flur.attributes.controller_reception_RSSI is not none}}"
-      device_class: signal_strength
-      unit_of_measurement: dB
-    roomstat_wohnzimmer_wifi_signal:
-      friendly_name: Raum Thermostat WiFi Signal
-      value_template: "{{ states.sensor.wiser_roomstat_wohnzimmer.attributes.controller_reception_RSSI | default(0) | int if states.sensor.wiser_roomstat_wohnzimmer.attributes.controller_reception_RSSI is not none}}"
-      device_class: signal_strength
-      unit_of_measurement: dB
-    heathub_wifi_signal:
-      friendly_name: Heathub WiFi Signal
-      value_template: "{{ states.sensor.wiser_heathub.attributes.controller_reception_RSSI | default(0) | int if states.sensor.wiser_heathub.attributes.controller_reception_RSSI is not none}}"
-      device_class: signal_strength
-      unit_of_measurement: dB
+    #    thermostat_wohnzimmer_wifi_signal:
+    #      friendly_name: Thermostat Wohnzimmer WiFi Signal
+    #      value_template: "{{ states.sensor.wiser_itrv_wohnzimmer.attributes.controller_reception_RSSI | default(0) }}"
+    #      device_class: signal_strength
+    #      unit_of_measurement: dB
+    #    thermostat_bad_wifi_signal:
+    #      friendly_name: Thermostat Bad WiFi Signal
+    #      value_template: "{{ states.sensor.wiser_itrv_bad.attributes.controller_reception_RSSI | default(0) }}"
+    #      device_class: signal_strength
+    #      unit_of_measurement: dB
+    #    thermostat_flur_wifi_signal:
+    #      friendly_name: Thermostat Flur WiFi Signal
+    #      value_template: "{{ states.sensor.wiser_itrv_flur.attributes.controller_reception_RSSI | default(0) }}"
+    #      device_class: signal_strength
+    #      unit_of_measurement: dB
+    #    roomstat_wohnzimmer_wifi_signal:
+    #      friendly_name: Raum Thermostat WiFi Signal
+    #      value_template: "{{ states.sensor.wiser_roomstat_wohnzimmer.attributes.controller_reception_RSSI | default(0) }}"
+    #      device_class: signal_strength
+    #      unit_of_measurement: dB
+    #   heathub_wifi_signal:
+    #      friendly_name: Heathub WiFi Signal
+    #      value_template: "{{ states.sensor.wiser_heathub.attributes.controller_reception_RSSI | default(0) }}"
+    #      device_class: signal_strength
+    #      unit_of_measurement: dB
     climate_thermostat_bad_battery_level:
       friendly_name: Thermostat Bad
-      value_template: "{{ states('sensor.wiser_itrv_bad_battery_level') | default(101) | int if states('sensor.wiser_itrv_bad_battery_level') is not none}}"
+      value_template: "{{ states('sensor.wiser_itrv_bad_battery') | default(101) }}"
       unit_of_measurement: "%"
       device_class: battery
     climate_thermostat_flur_battery_level:
       friendly_name: Thermostat Flur
-      value_template: "{{ states('sensor.wiser_itrv_flur_battery_level') | default(101) | int if states('sensor.wiser_itrv_flur_battery_level') is not none}}"
+      value_template: "{{ states('sensor.wiser_itrv_flur_battery') | default(101) }}"
       unit_of_measurement: "%"
       device_class: battery
     climate_thermostat_wohnzimmer_battery_level:
       friendly_name: Thermostat Wohnzimmer
-      value_template: "{{ states('sensor.wiser_itrv_wohnzimmer_battery_level') | default(101) | int if states('sensor.wiser_itrv_wohnzimmer_battery_level') is not none}}"
+      value_template: "{{ states('sensor.wiser_itrv_wohnzimmer_battery') | default(101) }}"
       unit_of_measurement: "%"
       device_class: battery
     climate_raumthermostat_wohnzimmer_battery_level:
       friendly_name: Raum Thermostat Wohnzimmer
-      value_template: "{{ states('sensor.wiser_roomstat_wohnzimmer_battery_level') | default(101) | int if states('sensor.wiser_roomstat_wohnzimmer_battery_level') is not none}}"
+      value_template: "{{ states('sensor.wiser_roomstat_wohnzimmer_battery') | default(101) }}"
       unit_of_measurement: "%"
       device_class: battery
-    google_pixel_battery_level:
-      value_template: "{{ states.device_tracker.google_pixel.attributes.battery | default(101) | int if states.device_tracker.google_pixel.attributes.battery is not none}}"
-      friendly_name: Goolge Pixel Akku
-      #      entity_id: device_tracker.google_pixel
-      unit_of_measurement: "%"
-      device_class: battery
-    google_nexus_battery_level:
-      value_template: "{{ states.sensor.nexus_battery_level.state | default(101) | int if states.sensor.nexus_battery_level.state is not none}}"
-      friendly_name: Goolge Nexus Akku
-      #      entity_id: device_tracker.google_nexus
-      unit_of_measurement: "%"
-      device_class: battery
-    macbook_air_battery_level:
-      value_template: "{{ states.device_tracker.macbook_air.attributes.battery | default(101) | int if states.device_tracker.macbook_air.attributes.battery is not none}}"
-      friendly_name: MacBook Air Akku
-      #      entity_id: device_tracker.macbook_air
-      unit_of_measurement: "%"
-      device_class: battery
+    #macbook_air_battery_level:
+    #  value_template: "{{ states.device_tracker.macbook_air.attributes.battery | default(101) | int if states.device_tracker.macbook_air.attributes.battery is not none}}"
+    #  friendly_name: MacBook Air Akku
+    #  #      entity_id: device_tracker.macbook_air
+    #  unit_of_measurement: "%"
+    #  device_class: battery
     #    date_muellabfuhr:
     #      friendly_name: Müllabfuhr
     #      value_template: "{{ states.calendar.mullabfuhr.attributes.start_time }}"
-#    heating_time_bad:
-#      friendly_name: Heating Time Bad
-#      icon_template: mdi:radiator
-#      value_template: "{{ states('sensor.heating_bad_on_today') | float * 60 }}"
-#      unit_of_measurement: min
-#    heating_time_flur:
-#      friendly_name: Heating Time Flur
-#      icon_template: mdi:radiator
-#      value_template: "{{ states('sensor.heating_flur_on_today') | float * 60 }}"
-#      unit_of_measurement: min
-#    heating_time_wohnzimmer:
-#      friendly_name: Heating Time Wohnzimmer
-#      icon_template: mdi:radiator
-#      value_template: "{{ states('sensor.heating_wohnzimmer_on_today') | float * 60 }}"
-#      unit_of_measurement: min
+    #    heating_time_bad:
+    #      friendly_name: Heating Time Bad
+    #      icon_template: mdi:radiator
+    #      value_template: "{{ states('sensor.heating_bad_on_today') | float * 60 }}"
+    #      unit_of_measurement: min
+    #    heating_time_flur:
+    #      friendly_name: Heating Time Flur
+    #      icon_template: mdi:radiator
+    #      value_template: "{{ states('sensor.heating_flur_on_today') | float * 60 }}"
+    #      unit_of_measurement: min
+    #    heating_time_wohnzimmer:
+    #      friendly_name: Heating Time Wohnzimmer
+    #      icon_template: mdi:radiator
+    #      value_template: "{{ states('sensor.heating_wohnzimmer_on_today') | float * 60 }}"
+    #      unit_of_measurement: min
     #    low_battery:
     #      friendly_name: "Low Battery"
     #      value_template: >
@@ -583,29 +584,29 @@
     #            {{ item.attributes.friendly_name }}{%- if not loop.last %}, {% endif -%}
     #        {%- endfor -%}
     #        {%- endfor -%}
-    hass_uptime:
-      #      entity_id:
-      #        - sensor.time
-      value_template: >
-        {%- set dt = strptime(states('sensor.last_boot'),"%Y-%m-%dT%H:%M:%S%z") %}
-        {%- set time =  (now().timestamp() - dt.timestamp()) | int %}
-        {%- set minutes = ((time % 3600) // 60) %}
-        {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
-        {%- set hours = ((time % 86400) // 3600) %}
-        {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
-        {%- set days = (time // 86400) %}
-        {%- set days = '{}d '.format(days) if days > 0 else '' %}
-        {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+    #    hass_uptime:
+    #      entity_id:
+    #      - sensor.time
+    #      value_template: >
+    #        {%- set dt = strptime(states('sensor.last_boot'),"%Y-%m-%dT%H:%M:%S%z") %}
+    #        {%- set time =  (now().timestamp() - dt.timestamp()) | int %}
+    #        {%- set minutes = ((time % 3600) // 60) %}
+    #        {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+    #        {%- set hours = ((time % 86400) // 3600) %}
+    #        {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+    #        {%- set days = (time // 86400) %}
+    #        {%- set days = '{}d '.format(days) if days > 0 else '' %}
+    #        {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
     outside_temperature:
       friendly_name: Außentemperatur
       value_template: >
         {{ state_attr('weather.dark_sky', 'temperature') | default(0) | int if states.weather.dark_sky.attributes.temperature is not none }}
       unit_of_measurement: "°C"
       device_class: temperature
-    internet_uptime:
-      friendly_name: Verbunden
-      value_template: >
-        {{ as_timestamp(states.sensor.home_phixion_org.last_changed) | timestamp_custom('%c') }}
+    #    internet_uptime:
+    #      friendly_name: Verbunden
+    #      value_template: >
+    #        {{ as_timestamp(states.sensor.home_phixion_org.last_changed) | timestamp_custom('%c') }}
     core_mem:
       friendly_name: Core Memory Usage
       unit_of_measurement: "%"
@@ -723,112 +724,112 @@
     - filter: time_simple_moving_average
       window_size: 00:05
       precision: 2
-- platform: qnap
-  host: !secret qnap_host # pragma: allowlist secret
-  username: !secret qnap_usr # pragma: allowlist secret
-  password: !secret qnap_pwd # pragma: allowlist secret
-  ssl: true
-  verify_ssl: false
-  port: 443
-  monitored_conditions:
-    - status
-    - cpu_usage
-    - memory_percent_used
-    - network_tx
-    - volume_percentage_used
-#- platform: history_stats
-#  name: Heating Bad On Today
-#  entity_id: binary_sensor.heating_bad
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 1
-#- platform: history_stats
-#  name: Heating Flur On Today
-#  entity_id: binary_sensor.heating_flur
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 1
-#- platform: history_stats
-#  name: Heating Wohnzimmer On Today
-#  entity_id: binary_sensor.heating_wohnzimmer
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 1
-#- platform: history_stats
-#  name: Heating Bad On Yesterday
-#  entity_id: binary_sensor.heating_bad
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 2
-#- platform: history_stats
-#  name: Heating Flur On Yesterday
-#  entity_id: binary_sensor.heating_flur
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 2
-#- platform: history_stats
-#  name: Heating Wohnzimmer On Yesterday
-#  entity_id: binary_sensor.heating_wohnzimmer
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 2
-#- platform: history_stats
-#  name: Heating Bad On this Week
-#  entity_id: binary_sensor.heating_bad
-#  state: "on"
-#  type: time
-#  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
-#  end: "{{ now() }}"
-#- platform: history_stats
-#  name: Heating Flur On this Week
-#  entity_id: binary_sensor.heating_flur
-#  state: "on"
-#  type: time
-#  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
-#  end: "{{ now() }}"
-#- platform: history_stats
-#  name: Heating Wohnzimmer On this Week
-#  entity_id: binary_sensor.heating_wohnzimmer
-#  state: "on"
-#  type: time
-#  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
-#  end: "{{ now() }}"
-#- platform: history_stats
-#  name: Heating Bad On past 30 days
-#  entity_id: binary_sensor.heating_bad
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 30
-#- platform: history_stats
-#  name: Heating Flur On past 30 days
-#  entity_id: binary_sensor.heating_flur
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 30
-#- platform: history_stats
-#  name: Heating Wohnzimmer On past 30 days
-#  entity_id: binary_sensor.heating_wohnzimmer
-#  state: "on"
-#  type: time
-#  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
-#  duration:
-#    days: 30
+#- platform: qnap
+#  host: !secret qnap_host # pragma: allowlist secret
+#  username: !secret qnap_usr # pragma: allowlist secret
+#  password: !secret qnap_pwd # pragma: allowlist secret
+#  ssl: true
+#  verify_ssl: false
+#  port: 443
+#  monitored_conditions:
+#    - status
+#    - cpu_usage
+#    - memory_percent_used
+#    - network_tx
+#    - volume_percentage_used
+- platform: history_stats
+  name: Heating Bad On Today
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 1
+- platform: history_stats
+  name: Heating Flur On Today
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 1
+- platform: history_stats
+  name: Heating Wohnzimmer On Today
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 1
+- platform: history_stats
+  name: Heating Bad On Yesterday
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 2
+- platform: history_stats
+  name: Heating Flur On Yesterday
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 2
+- platform: history_stats
+  name: Heating Wohnzimmer On Yesterday
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 2
+- platform: history_stats
+  name: Heating Bad On this Week
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+- platform: history_stats
+  name: Heating Flur On this Week
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+- platform: history_stats
+  name: Heating Wohnzimmer On this Week
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+- platform: history_stats
+  name: Heating Bad On past 30 days
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 30
+- platform: history_stats
+  name: Heating Flur On past 30 days
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 30
+- platform: history_stats
+  name: Heating Wohnzimmer On past 30 days
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 30
 #- platform: scrape
 #  #  scan_interval: 10000000
 #  name: wtfisxur
@@ -896,100 +897,80 @@
 #  api_key: !secret google_assistantapikey_pwd # pragma: allowlist secret
 #  origin: device_tracker.google_pixel
 #  destination: zone.home
-- platform: snmp
-  host: !secret unifi_usg # pragma: allowlist secret
-  name: UniFi USG Uptime
-  baseoid: 1.3.6.1.2.1.1.3.0
-  version: 2c
-  value_template: >
-    {%- set time = value | int // 100 %}
-    {%- set minutes = ((time % 3600) // 60) %}
-    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
-    {%- set hours = ((time % 86400) // 3600) %}
-    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
-    {%- set days = (time // 86400) %}
-    {%- set days = '{}d '.format(days) if days > 0 else '' %}
-    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
-- platform: snmp
-  host: !secret unifi_switch # pragma: allowlist secret
-  name: UniFi Switch Uptime
-  baseoid: 1.3.6.1.2.1.1.3.0
-  version: 2c
-  value_template: >
-    {%- set time = value | int // 100 %}
-    {%- set minutes = ((time % 3600) // 60) %}
-    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
-    {%- set hours = ((time % 86400) // 3600) %}
-    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
-    {%- set days = (time // 86400) %}
-    {%- set days = '{}d '.format(days) if days > 0 else '' %}
-    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
-- platform: snmp
-  host: !secret unifi_ap # pragma: allowlist secret
-  name: UniFi Accesspoint Uptime
-  baseoid: 1.3.6.1.2.1.1.3.0
-  version: 2c
-  value_template: >
-    {%- set time = value | int // 100 %}
-    {%- set minutes = ((time % 3600) // 60) %}
-    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
-    {%- set hours = ((time % 86400) // 3600) %}
-    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
-    {%- set days = (time // 86400) %}
-    {%- set days = '{}d '.format(days) if days > 0 else '' %}
-    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
-- platform: snmp
-  host: !secret qnap_host # pragma: allowlist secret
-  name: NAS Uptime
-  baseoid: 1.3.6.1.2.1.1.3.0
-  version: 2c
-  value_template: >
-    {%- set time = value | int // 100 %}
-    {%- set minutes = ((time % 3600) // 60) %}
-    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
-    {%- set hours = ((time % 86400) // 3600) %}
-    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
-    {%- set days = (time // 86400) %}
-    {%- set days = '{}d '.format(days) if days > 0 else '' %}
-    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
-- platform: snmp
-  host: !secret hp_switch # pragma: allowlist secret
-  name: HP Switch Uptime
-  baseoid: 1.3.6.1.2.1.1.3.0
-  version: 2c
-  value_template: >
-    {%- set time = value | int // 100 %}
-    {%- set minutes = ((time % 3600) // 60) %}
-    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
-    {%- set hours = ((time % 86400) // 3600) %}
-    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
-    {%- set days = (time // 86400) %}
-    {%- set days = '{}d '.format(days) if days > 0 else '' %}
-    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
-#nexpo
-- platform: youtube
-  channel_id: UCpFFItkfZz1qz5PpHpqzYBw
-#frenck
-- platform: youtube
-  channel_id: UCZ2Ku6wrhdYDHCaBzLaA3bw
-#scaretheatre
-- platform: youtube
-  channel_id: UCaGOgwGKnDVOKY0DrFsBAiA
-#JB3
-- platform: youtube
-  channel_id: UCF9AEw1wCDZFNHVjCVCQZ7A
-#reignbot
-- platform: youtube
-  channel_id: UCchWU8ta6L-Dy3rGIxPINzw
-#internet historian
-- platform: youtube
-  channel_id: UCR1D15p_vdP3HkrH8wgjQRw
-#cheese forever
-- platform: youtube
-  channel_id: UCl1M49CAo9u99gABBIqEgDQ
-#froggy
-- platform: youtube
-  channel_id: UCtEvLS7_ks-k-dB3_ebjgPw
+#- platform: snmp
+#  host: !secret unifi_usg # pragma: allowlist secret
+#  name: UniFi USG Uptime
+#  baseoid: 1.3.6.1.2.1.1.3.0
+#  community: !secret unifi_snmp_community # pragma: allowlist secret
+#  version: "1"
+#  value_template: >
+#    {%- set time = value | int // 100 %}
+#    {%- set minutes = ((time % 3600) // 60) %}
+#    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+#    {%- set hours = ((time % 86400) // 3600) %}
+#    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+#    {%- set days = (time // 86400) %}
+#    {%- set days = '{}d '.format(days) if days > 0 else '' %}
+#    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+#- platform: snmp
+#  community: !secret unifi_snmp_community # pragma: allowlist secret
+#  host: !secret unifi_switch # pragma: allowlist secret
+#  name: UniFi Switch Uptime
+#  baseoid: 1.3.6.1.2.1.1.3.0
+#  version: "1"
+#  value_template: >
+#    {%- set time = value | int // 100 %}
+#    {%- set minutes = ((time % 3600) // 60) %}
+#    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+#    {%- set hours = ((time % 86400) // 3600) %}
+#    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+#    {%- set days = (time // 86400) %}
+#    {%- set days = '{}d '.format(days) if days > 0 else '' %}
+#    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+#- platform: snmp
+#  host: !secret unifi_ap # pragma: allowlist secret
+#  version: "1"
+#  name: UniFi Accesspoint Uptime
+#  baseoid: 1.3.6.1.2.1.1.3.0
+#  value_template: >
+#    {%- set time = value | int // 100 %}
+#    {%- set minutes = ((time % 3600) // 60) %}
+#    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+#    {%- set hours = ((time % 86400) // 3600) %}
+#    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+#    {%- set days = (time // 86400) %}
+#    {%- set days = '{}d '.format(days) if days > 0 else '' %}
+#    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+#- platform: snmp
+#  community: !secret qnap_snmp_community # pragma: allowlist secret
+#  host: !secret qnap_host # pragma: allowlist secret
+#  name: NAS Uptime
+#  baseoid: 1.3.6.1.2.1.1.3.0
+#  version: "1"
+#  value_template: >
+#    {%- set time = value | int // 100 %}
+#    {%- set minutes = ((time % 3600) // 60) %}
+#    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+#    {%- set hours = ((time % 86400) // 3600) %}
+#    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+#    {%- set days = (time // 86400) %}
+#    {%- set days = '{}d '.format(days) if days > 0 else '' %}
+#    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
+#- platform: snmp
+#  host: !secret hp_switch # pragma: allowlist secret
+#  community: !secret hp_snmp_community # pragma: allowlist secret
+#  name: HP Switch Uptime
+#  baseoid: 1.3.6.1.2.1.1.3.0
+#  version: "1"
+#  value_template: >
+#    {%- set time = value | int // 100 %}
+#    {%- set minutes = ((time % 3600) // 60) %}
+#    {%- set minutes = '{}min'.format(minutes) if minutes > 0 else '' %}
+#    {%- set hours = ((time % 86400) // 3600) %}
+#    {%- set hours = '{}hr '.format(hours) if hours > 0 else '' %}
+#    {%- set days = (time // 86400) %}
+#    {%- set days = '{}d '.format(days) if days > 0 else '' %}
+#    {{ 'Less than 1 min' if time < 60 else days + hours + minutes }}
 - platform: time_date
   display_options:
     - "time"
@@ -1012,40 +993,31 @@
   count: 10
   leadtime: 10
   value_template: '{{value.types|join(", ")}} am {{value.date.strftime("%a, %d.%m.%Y")}}'
-#- platform: email
-#  email: !secret gmail_phixion_user
-#  password: !secret gmail_phixion_pwd
-#- platform: email
-#  email: !secret gmail_ridelore_user
-#  password: !secret gmail_ridelore_pwd
-#- platform: email
-#  email: !secret gmail_monitoring_user
-#  password: !secret gmail_monitoring_pwd
 #https://www.home-assistant.io/integrations/rest/
-- platform: rest
-  resource: !secret supervisor_rest_api
-  name: core
-  unit_of_measurement: "%"
-  value_template: "{{ value_json.data.cpu_percent }}"
-  scan_interval: 10
-  headers:
-    Authorization: !secret llt
-    Content-Type: application/json
-  json_attributes_path: "$.data"
-  json_attributes:
-    - memory_percent
-- platform: rest
-  resource: !secret supervisor_rest_api
-  name: supervisor
-  unit_of_measurement: "%"
-  value_template: "{{ value_json.data.cpu_percent }}"
-  scan_interval: 10
-  headers:
-    Authorization: !secret llt
-    Content-Type: application/json
-  json_attributes_path: "$.data"
-  json_attributes:
-    - memory_percent
+#- platform: rest
+#  resource: !secret supervisor_rest_api
+#  name: core
+#  unit_of_measurement: "%"
+#  value_template: "{{ value_json.data.cpu_percent }}"
+#  scan_interval: 10
+#  headers:
+#    Authorization: !secret llt
+#    Content-Type: application/json
+#  json_attributes_path: "$.data"
+#  json_attributes:
+#    - memory_percent
+#- platform: rest
+#  resource: !secret supervisor_rest_api
+#  name: supervisor
+#  unit_of_measurement: "%"
+#  value_template: "{{ value_json.data.cpu_percent }}"
+#  scan_interval: 10
+#  headers:
+#    Authorization: !secret llt
+#    Content-Type: application/json
+#  json_attributes_path: "$.data"
+#  json_attributes:
+#    - memory_percent
 - platform: rest
   name: Where the fuck is Xur
   json_attributes:
@@ -1094,3 +1066,23 @@
 #  headers:
 #    Accept: application/json
 #    Content-Type: application/json
+#- platform: twitch
+#  client_id: !secret twitch_clientid
+#  token: !secret twitch_oauth
+#  channels:
+#    - Vendetta
+- platform: twitch_helix
+  client_id: !secret twitch_clientid # pragma: allowlist secret
+  client_secret: !secret twitch_secret # pragma: allowlist secret
+  own_channel: phi_xion
+  thumbnail_dimensions: 1920x1080
+  entity_prefix: twitch_
+  channels:
+    - "Vendetta"
+    - "evanf1997"
+    - "Gladd"
+  api_opt_outs:
+    # - subscription_user
+    # - follow_user
+    # - follow_total
+    # - stream

@@ -1,5 +1,3 @@
-  css_url: !secret css_url # pragma: allowlist secret
-  js_url: !secret js_url # pragma: allowlist secret
   auth:
     username: !secret esphome_ota_usr # pragma: allowlist secret
     password: !secret esphome_ota_pwd # pragma: allowlist secret

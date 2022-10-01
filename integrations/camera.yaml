@@ -7,7 +7,7 @@
 #
 camera:
   - platform: generic
-    still_image_url: https://www.yr.no/place/Germany/Bavaria/Munich/meteogram.svg
+    still_image_url: https://www.yr.no/nb/innhold/2-2867714/meteogram.svg
     name: Weather
     content_type: "image/svg+xml"
   - platform: mjpeg
@@ -31,18 +31,9 @@ camera:
   - platform: mjpeg
     mjpeg_url: "https://www.foto-webcam.eu/webcam/sonnenbichl/current/1200.jpg"
     name: Mum / Dad
-  - platform: generic
-    name: Nest Cam
-    still_image_url: !secret nest_image # pragma: allowlist secret
-    stream_source: !secret nest_stream # pragma: allowlist secret
-    verify_ssl: false
-  - platform: mjpeg
-    mjpeg_url: !secret nest_image # pragma: allowlist secret
-    name: Nest Cam File
-  - platform: proxy
-    entity_id: camera.nest_cam
-    max_stream_width: 360
-    max_image_width: 720
+  #  - platform: mjpeg
+  #    mjpeg_url: !secret nest_image # pragma: allowlist secret
+  #    name: Nest Cam File
   - platform: generic
     name: Street View
     content_type: image/png
@@ -53,3 +44,18 @@ camera:
     name: Destination
     still_image_url: !secret still_image_url_destination
     limit_refetch_to_url_change: true
+  - platform: generic
+    name: Nest Cam
+    stream_source: "/config/tmp/stream.m3u8"
+  #  extra_arguments: '-q:v 1 -r 25 -vf "scale=1920:1080"'
+  # twitch streamers
+  - platform: generic
+    content_type: image/png
+    name: Twitch Gladd
+    still_image_url: "{{ state_attr('sensor.twitch_gladd','thumbnail_url') }}"
+    limit_refetch_to_url_change: false
+  - platform: generic
+    content_type: image/png
+    name: Twitch Vendetta
+    still_image_url: "{{ state_attr('sensor.twitch_vendetta','thumbnail_url') }}"
+    limit_refetch_to_url_change: false

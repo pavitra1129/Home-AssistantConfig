@@ -14,7 +14,7 @@ esphome:
 logger:
 wifi: !include shared/wifi.yaml
 sensor: !include shared/sensors.yaml
-web_server: !include shared/webserver.yaml
+#web_server: !include shared/webserver.yaml
 time: !include shared/time.yaml
 text_sensor: !include shared/textsensors.yaml
 api: !include shared/api.yaml

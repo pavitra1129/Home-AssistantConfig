@@ -5,6 +5,7 @@ from pathlib import Path
 import requests
 from waste_collection_schedule import Collection  # type: ignore[attr-defined]
 from waste_collection_schedule.service.ICS import ICS
+from waste_collection_schedule.service.ICS_v1 import ICS_v1
 
 TITLE = "ICS"
 DESCRIPTION = "Source for ICS based schedules."
@@ -33,7 +34,8 @@ TEST_CASES = {
         "file": str(Path(__file__).resolve().parents[1].joinpath("test/recurring.ics"))
     },
     "München, Bahnstr. 11": {
-        "url": "https://www.awm-muenchen.de/entsorgen/abfuhrkalender?tx_awmabfuhrkalender_abfuhrkalender%5Bhausnummer%5D=11&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BB%5D=1%2F2%3BU&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BP%5D=1%2F2%3BG&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BR%5D=001%3BU&tx_awmabfuhrkalender_abfuhrkalender%5Bsection%5D=ics&tx_awmabfuhrkalender_abfuhrkalender%5Bsinglestandplatz%5D=false&tx_awmabfuhrkalender_abfuhrkalender%5Bstandplatzwahl%5D=true&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Bbio%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Bpapier%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Brestmuell%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstrasse%5D=bahnstr.&tx_awmabfuhrkalender_abfuhrkalender%5Byear%5D={%Y}"
+        "url": "https://www.awm-muenchen.de/entsorgen/abfuhrkalender?tx_awmabfuhrkalender_abfuhrkalender%5Bhausnummer%5D=11&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BB%5D=1%2F2%3BU&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BP%5D=1%2F2%3BG&tx_awmabfuhrkalender_abfuhrkalender%5Bleerungszyklus%5D%5BR%5D=001%3BU&tx_awmabfuhrkalender_abfuhrkalender%5Bsection%5D=ics&tx_awmabfuhrkalender_abfuhrkalender%5Bsinglestandplatz%5D=false&tx_awmabfuhrkalender_abfuhrkalender%5Bstandplatzwahl%5D=true&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Bbio%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Bpapier%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstellplatz%5D%5Brestmuell%5D=70024507&tx_awmabfuhrkalender_abfuhrkalender%5Bstrasse%5D=bahnstr.&tx_awmabfuhrkalender_abfuhrkalender%5Byear%5D={%Y}",
+        "version": 1,
     },
     "Buxtehude, Am Berg": {
         "url": "https://abfall.landkreis-stade.de/api_v2/collection_dates/1/ort/10/strasse/90/hausnummern/1/abfallarten/R02-R04-B02-D04-D12-P04-R12-R14-W0-R22-R24-R31/kalender.ics"
@@ -99,6 +101,19 @@ TEST_CASES = {
         "url": "https://recollect.a.ssl.fastly.net/api/places/BCCDF30E-578B-11E4-AD38-5839C200407A/services/208/events.en.ics",
         "split_at": "\\, [and ]*",
     },
+    "Frankfurt am Main, Achenbachstrasse 3": {
+        "url": "https://www.fes-frankfurt.de/abfallkalender/QWNoZW5iYWNoc3RyLnwzfDYwNTk2.ics"
+    },
+    "Erlensee, Am Haspel": {
+        "url": "https://sperrmuell.erlensee.de/?type=reminder",
+        "method": "POST",
+        "params": {
+            "street": 8,
+            "eventType[]": [27, 23, 19, 20, 21, 24, 22, 25, 26],
+            "timeframe": 23,
+            "download": "ical",
+        },
+    },
 }
 
 
@@ -115,16 +130,23 @@ class Source:
         params=None,
         year_field=None,
         method="GET",
+        regex=None,
         split_at=None,
+        version=2,
+        verify_ssl=True,
     ):
         self._url = url
         self._file = file
         if bool(self._url is not None) == bool(self._file is not None):
             raise RuntimeError("Specify either url or file")
-        self._ics = ICS(offset=offset, split_at=split_at)
+        if version == 1:
+            self._ics = ICS_v1(offset=offset, split_at=split_at, regex=regex)
+        else:
+            self._ics = ICS(offset=offset, split_at=split_at, regex=regex)
         self._params = params
         self._year_field = year_field  # replace this field in params with current year
         self._method = method  # The method to send the params
+        self._verify_ssl = verify_ssl
 
     def fetch(self):
         if self._url is not None:
@@ -146,10 +168,11 @@ class Source:
                 if now.month == 12:
                     # also get data for next year if we are already in december
                     url = self._url.replace("{%Y}", str(now.year + 1))
-                    self._params[self._year_field] = str(now.year + 1)
+                    if self._year_field is not None:
+                        self._params[self._year_field] = str(now.year + 1)
 
                     try:
-                        entries.extend(self.fetch_url(url), self._params)
+                        entries.extend(self.fetch_url(url, self._params))
                     except Exception:
                         # ignore if fetch for next year fails
                         pass
@@ -162,15 +185,17 @@ class Source:
     def fetch_url(self, url, params=None):
         # get ics file
         if self._method == "GET":
-            r = requests.get(url, params=params, headers=HEADERS)
-        elif self._method == "POST":
-            r = requests.post(url, data=params, headers=HEADERS)
-        else:
-            _LOGGER.error(
-                "Error: unknown method to fetch URL, use GET or POST; got %s"
-                % self._method
+            r = requests.get(
+                url, params=params, headers=HEADERS, verify=self._verify_ssl
             )
-            return "error"
+        elif self._method == "POST":
+            r = requests.post(
+                url, data=params, headers=HEADERS, verify=self._verify_ssl
+            )
+        else:
+            raise RuntimeError(
+                "Error: unknown method to fetch URL, use GET or POST; got {self._method}"
+            )
         r.encoding = "utf-8"  # requests doesn't guess the encoding correctly
 
         # check the return code
@@ -179,7 +204,7 @@ class Source:
                 "Error: the response is not ok; need code 200, but got code %s"
                 % r.status_code
             )
-            return "error"
+            return []
 
         return self._convert(r.text)
 

@@ -12,7 +12,7 @@ time: !include shared/time.yaml
 wifi: !include shared/wifi.yaml
 api: !include shared/api.yaml
 ota: !include shared/ota.yaml
-web_server: !include shared/webserver.yaml
+#web_server: !include shared/webserver.yaml
 captive_portal:
 logger:
 sensor: !include shared/sensors.yaml
@@ -31,7 +31,7 @@ binary_sensor:
     internal: true
     lambda: 'return id(${devicename}_doppler).state;'
     filters:
-      - delayed_off: 6min
+      - delayed_off: 3min
     on_press:
       - homeassistant.service:
           service: switch.turn_on

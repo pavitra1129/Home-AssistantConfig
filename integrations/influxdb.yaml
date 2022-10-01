@@ -26,9 +26,6 @@ influxdb:
   #      - sensor.energy_consumed_weekly_combined
   #      - sensor.energy_consumed_monthly_combined
   #      - sensor.energy_consumed_yearly_combined
-  #      - sensor.coinbase_vault_in_euro
-  #      - sensor.coinbase_wallet_in_euro
-  #      - sensor.coinbase_euro
   #      - sensor.climate_wohnung_temp
   #      - sensor.climate_flur_temp
   #      - sensor.climate_bad_temp

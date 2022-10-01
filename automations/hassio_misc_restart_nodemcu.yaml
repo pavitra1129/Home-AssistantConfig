@@ -44,15 +44,15 @@
     - service: switch.toggle
       entity_id:
         - switch.nodemcu_5_bad_restart
-- alias: Restart Air Quality Sensor Wohnzimmer
-  id: "27c"
-  trigger:
-    - platform: state
-      entity_id: sensor.nodemcu_2_wohnzimmer_eco2_wert
-      to: "unavailable"
-      for:
-        minutes: 2
-  action:
-    - service: switch.toggle
-      entity_id:
-        - switch.nodemcu_2_wohnzimmer_restart
+#- alias: Restart Air Quality Sensor Wohnzimmer
+#  id: "27c"
+#  trigger:
+#    - platform: state
+#      entity_id: sensor.nodemcu_2_wohnzimmer_eco2_wert
+#      to: "unavailable"
+#      for:
+#        minutes: 2
+#  action:
+#    - service: switch.toggle
+#      entity_id:
+#        - switch.nodemcu_2_wohnzimmer_restart

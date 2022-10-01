@@ -5,16 +5,13 @@
 #██║ ╚═╝ ██║███████╗██████╔╝██║██║  ██║██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║
 #╚═╝     ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #
-media_player:
-  - platform: androidtv
-    host: !secret host_androidtv # pragma: allowlist secret
-    name: NVIDIA Shield TV
-    device_class: androidtv
-#    adb_server_ip: localhost
-#    adb_server_port: 5037
-    screencap: true
-    apps:
-      com.netflix.ninja: "Netflix"
-      com.google.android.tvlauncher: "Homescreen"
-      com.plexapp.android: "Plex"
-      com.liskovsoft.videomanager: "YouTube"
+#media_player:
+#  - platform: androidtv
+#    host: !secret host_androidtv # pragma: allowlist secret
+#    name: Fernseher
+#    device_class: androidtv
+#    screencap: true
+#    apps:
+#      com.netflix.ninja: "Netflix"
+#      com.google.android.tvlauncher: "Homescreen"
+#      com.liskovsoft.videomanager: "YouTube"

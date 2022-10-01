@@ -1,0 +1,28 @@
+- alias: Notification on Twitch Streamer
+  id: "1110a"
+  trigger:
+    - platform: state
+      entity_id: sensor.twitch_vendetta
+      attribute: url
+  condition:
+    - condition: template
+      value_template: "{{ as_timestamp(now()) - as_timestamp(states.automation.notification_jb3_video.attributes.last_triggered) | int > 900 }}"
+    - condition: template
+      value_template: "{{ states.automation.notification_jb3_video.attributes.last_triggered != none }}"
+  action:
+    - service: notify.gotify
+      data_template:
+        title: New JB3 Video
+        message: >
+          {{states('sensor.jb3')}}
+           {{state_attr('sensor.jb3', 'url')}}
+        #priority: 7
+    - service: notify.cloxion
+      data:
+        message: "Neues JB3 Video: {{states.sensor.jb3.state}}"
+        data:
+          sound: "notification"
+          icon: "a10835"
+          cycles: 0
+          lifetime: 3600
+          priority: "critical"

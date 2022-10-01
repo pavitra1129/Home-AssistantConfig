@@ -102,6 +102,10 @@
 !automations/
 !automations/*.yaml
 
+#python_scripts directory
+!python_scripts/
+!python_scripts/*.py
+
 #ensure
 *.db
 *.log

@@ -1,10 +1,10 @@
 substitutions:
   devicename: bulbkueche
-  friendly_name: Lampe
   room: Küche
+  friendly_name: Lampe
   update_interval_short: 2min
   update_interval_long: 10min
-  frequency_rgb: 100 Hz
+  frequency_rgb: 1000 Hz
   frequency_cw: 1000 Hz
   frequency_ww: 1000 Hz
 esphome:
@@ -19,14 +19,14 @@ esphome:
       - light.turn_on:
           state: True
           id: ${devicename}_cwww
-          transition_length: 3s
+          transition_length: 2s
           white: 100%
           brightness: 100%
       - light.turn_off:
           id: ${devicename}_rgb
           transition_length: 0s
 globals: !include shared/globals.yaml
-web_server: !include shared/webserver.yaml
+##web_server: !include shared/webserver.yaml
 time: !include shared/time.yaml
 sensor: !include shared/sensors.yaml
 binary_sensor: !include shared/binarysensors.yaml

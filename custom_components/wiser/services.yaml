@@ -1,69 +1,201 @@
 boost_heating:
+  name: Boost Heating
   description: >
-    Set the boost mode ON defining the period of time and the desired target
-    temperature or temperature increase delta for the boost.  Setting the
-    temperature delta overrides any target temperature.
+    Boost the temperature in the selected rooms/areas
+  target:
+    entity:
+      integration: wiser
+      domain: climate
   fields:
-    entity_id:
-      description: >
-        Enter the entity_id for the room required to set the boost mode.
-      example: climate.wiser_lounge
     time_period:
-      description: Set the time period for the boost in minutes.
+      name: Time period
+      description: Set the time period for the boost in minutes
       example: 60
-    temperature:
-      description: Set the target temperature for the boost period.
-      example: 20.5
+      default: 60
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 9999
+          step: 1
+          mode: box
     temperature_delta:
-      description: Set the temperature increase for the boost period.
-      example: 2
+      name: Temperature Increase
+      description: Set the increase in temperature for the boost period
+      example: 3.0
+      default: 3.0
+      required: false
+      selector:
+        number:
+          min: 0.5
+          max: 5
+          step: 0.5
+          unit_of_measurement: °C
+    temperature:
+      name: Temperature
+      description: Set the room target temperature for the boost period
+      example: 21.0
+      default: 21.0
+      required: false
+      selector:
+        number:
+          min: 5
+          max: 30
+          step: 0.5
+          unit_of_measurement: °C
+
+boost_hotwater:
+  name: Boost Hot Water
+  description: >
+    Boost the hot water for time specified
+  fields:
+    time_period:
+      name: Time period
+      description: Set the time period for the boost
+      example: 60
+      default: 60
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 1440
+          step: 1
+          mode: box
+          unit_of_measurement: minutes
+    hub:
+      name: Hub
+      description: Only needs to be set if you have multiple Wiser hubs
+      required: false
+      selector:
+        config_entry:
+          integration: wiser
+
 
 get_schedule:
+  name: Save Schedule to File
   description: >
-    Read the schedule from a roomId and write to an output file in yaml
+    Read the schedule from a room or device and write to an output file in yaml
   fields:
     entity_id:
-      description: Enter the entity_id for the room to read the schedule.
-      example: climate.wiser_lounge
+      name: Entity
+      description: A wiser entity
+      required: true
+      selector:
+        entity:
+          integration: wiser
+          domain: 
+          - climate
+          - select
     filename:
+      name: Filename
       description: >
         The filename to write out the yaml. See README.MD if running within a
-        docker container.
-      example: schedule1.yaml
+        docker container
+      required: false
+      example: "config/schedules/{{ entity_id.name }}.yaml"
+      selector:
+        text:
 
 set_schedule:
-  description: Read in the yaml schedule file and set the schedule in a room
+  name: Set Schedule From File
+  description: Read in the yaml schedule file and set the schedule
   fields:
     entity_id:
-      description: Enter the entity_id for the room to set the schedule.
-      example: climate.wiser_lounge
+      name: Entity
+      description: A wiser entity
+      required: true
+      selector:
+        entity:
+          integration: wiser
+          domain: 
+          - climate
+          - select
     filename:
+      name: Filename
       description: The filename to read the yaml schedule from.
+      required: true
       example: schedules/schedule1.yaml
+      selector:
+        text:
 
 copy_schedule:
-  description: Copy the schedule in a room to another room
+  name: Copy Schedule
+  description: Copy the schedule from one to another in the same type
   fields:
     entity_id:
-      description: Enter the entity_id for the room to copy the schedule from.
-      example: climate.wiser_lounge
+      name: Entity
+      description: A wiser entity
+      required: true
+      selector:
+        entity:
+          integration: wiser
+          domain: 
+          - climate
+          - select
     to_entity_id:
+      name: To Entity
       description: Enter the entity_id for the room to copy the schedule to.
+      required: true
       example: climate.wiser_kitchen
+      selector:
+        entity:
+          integration: wiser
+          domain: 
+          - climate
+          - select
 
-set_smartplug_mode:
-  description: Sets the mode of a smart plug
+assign_schedule:
+  name: Assign Schedule
+  description: Assign the schedule to other rooms or devices in the same type
   fields:
     entity_id:
-      description: Enter the entity_id for the smartplug.
-      example: switch.smartplug
-    plug_mode:
-      description: Enter the switch mode. Can be auto or manual.
-      example: manual
+      name: Entity
+      description: A wiser entity
+      required: false
+      selector:
+        entity:
+          integration: wiser
+          domain: 
+          - climate
+          - select
+    schedule_id:
+      name: Schedule Id
+      description: A wiser schedule id
+      required: false
+      selector:
+        number:
+          mode: box
+    to_entity_id:
+      name: To Entity
+      description: Enter the entity_id for the room or device to assign the same schedule to.
+      required: true
+      example: climate.wiser_kitchen
+      selector:
+        entity:
+          integration: wiser
+          domain: 
+          - climate
+          - select
 
-set_hotwater_mode:
-  description: Sets the hot water mode
+set_device_mode:
+  name: "Set Device Mode"
+  description: Sets the device mode to auto or manual
   fields:
-    hotwater_mode:
-      description: Enter the mode can be on, off or auto.
+    entity_id:
+      name: Entity
+      description: A wiser mode entity
+      required: true
+      selector:
+        entity:
+          integration: wiser
+          domain: select
+    mode:
+      name: "Mode"
+      description: Enter the mode which can be manual or auto.
+      required: true
       example: auto
+      selector:
+        select:
+          options:
+            - "Auto"
+            - "Manual"

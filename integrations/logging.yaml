@@ -6,10 +6,10 @@
 #╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝ ╚═════╝
 #
 logger:
-  default: warn
+  default: info
   logs:
-    custom_components.google_fit: debug
     custom_components.sensor.places: debug
+    custom_components.deepstack_objects: debug
     homeassistant.components.sensor.deutsche_bahn: debug
     homeassistant.components.google_assistant.http: debug
     homeassistant.components.google_cloud: debug
@@ -30,15 +30,23 @@ recorder:
     domains:
       - updater
       - camera
-      - media_player
       - weather
       - sun
       - image_processing
-      - light
       - group
       - script
       - zone
       - time
+    entity_globs:
+      - sensor.*time*
+      - sensor.time*
+      - sensor.*date*
+      - sensor.date*
+      - sesnor.load
+      - sensor.*load*
+      - sensor.*free*
+      - sensor.*mem*
+      - sensor.processor_use
 logbook:
   exclude:
     entity_globs:
@@ -48,14 +56,15 @@ logbook:
       - sensor.date*
       - sesnor.load
       - sensor.*load*
+      - sensor.*free*
+      - sensor.*mem*
+      - sensor.processor_use
     domains:
       - updater
       - camera
-      - media_player
       - weather
       - sun
       - image_processing
-      - light
       - group
       - script
       - zone
@@ -65,11 +74,9 @@ history:
     domains:
       - updater
       - camera
-      - media_player
       - weather
       - sun
       - image_processing
-      - light
       - group
       - script
       - zone

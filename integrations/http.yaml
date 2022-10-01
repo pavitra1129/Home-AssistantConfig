@@ -4,13 +4,13 @@
 #██╔══██║   ██║      ██║   ██╔═══╝
 #██║  ██║   ██║      ██║   ██║
 #╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝
-#
+#Add the Cloudflare IPs as trusted proxies https://www.cloudflare.com/ips-v4
 http:
-#  base_url: !secret base_url # pragma: allowlist secret
   use_x_forwarded_for: true
   trusted_proxies:
-    - 127.0.0.1
-    - 10.10.10.6
+    - 10.10.10.8
+    - 172.30.33.0/24
   ip_ban_enabled: true
   login_attempts_threshold: 5
-  ssl_profile: modern
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem

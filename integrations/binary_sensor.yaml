@@ -52,14 +52,14 @@ binary_sensor:
         to_state: "home"
   - platform: template
     sensors:
-      macbook_battery_level_low:
-        value_template: "{{ (states.sensor.macbook_air_battery_level | float) < 25 }}"
-        friendly_name: "MacBook Akku kritisch"
-      nexus_battery_level_low:
-        value_template: "{{ (states.sensor.google_nexus_battery_level | float) < 25 }}"
-        friendly_name: "Nexus Akku kritisch"
+      #macbook_battery_level_low:
+      #  value_template: "{{ (states.sensor.macbook_air_battery_level | float) < 25 }}"
+      #  friendly_name: "MacBook Akku kritisch"
+      #nexus_battery_level_low:
+      #  value_template: "{{ (states.sensor.nexus_battery_level | float) < 25 }}"
+      #  friendly_name: "Nexus Akku kritisch"
       pixel_battery_level_low:
-        value_template: "{{ (states.sensor.google_pixel_battery_level | float) < 25 }}"
+        value_template: "{{ (states.sensor.pixel_battery_level | float) < 25 }}"
         friendly_name: "Pixel Akku kritisch"
       climate_thermostat_bad_battery_level_low:
         value_template: "{{ (states.sensor.climate_thermostat_bad_battery_level | float) < 25 }}"
@@ -73,14 +73,14 @@ binary_sensor:
       climate_raumthermostat_wohnzimmer_battery_level_low:
         value_template: "{{ (states.sensor.climate_raumthermostat_wohnzimmer_battery_level | float) < 80 }}"
         friendly_name: "iTRV Raumthermostat Akku kritisch"
-#      dark_outside:
-#        value_template: "{{states.sun.sun.attributes.elevation|float < 2 or states.sensor.dark_sky_cloud_coverage.state|float > 50}}"
-#        friendly_name: "Dark Outside"
+      #      dark_outside:
+      #        value_template: "{{states.sun.sun.attributes.elevation|float < 2 or states.sensor.dark_sky_cloud_coverage.state|float > 50}}"
+      #        friendly_name: "Dark Outside"
+      #        device_class: light
+#      dark_inside:
+#        value_template: "{{ (states.sensor.nodemcu_2_wohnzimmer_lichtsensor | float) < 200 }}" # lets consider 200 lux so dark that the cam needs a light
+#        friendly_name: "Dark Inside"
 #        device_class: light
-      dark_inside:
-        value_template: "{{ (states.sensor.nodemcu_2_wohnzimmer_lichtsensor | float) < 200 }}" # lets consider 200 lux so dark that the cam needs a light
-        friendly_name: "Dark Inside"
-        device_class: light
       window_wohnzimmer:
         device_class: window
         friendly_name: Fenster Wohnzimmer
@@ -175,23 +175,30 @@ binary_sensor:
         to_state: "off"
         prob_given_true: 0.9 # 90% chance that if we are in bed, the light is off
         prob_given_false: 0.7 # 70% chance that if we are not in bed the light is off
-  - platform: ffmpeg_noise
-    name: Noise Sensor 1 (Wohnzimmer)
-    input: -f alsa -ac 1 -i plughw:1,0 -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
-  #    input: -f pulse -ac 1 -i default -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
-      #   input: !secret nest_stream
-    extra_arguments: -filter:a highpass=f=300,lowpass=f=2500,volume=volume=2 -codec:a libmp3lame -ar 16000
-    initial_state: true
-    duration: 2
-    reset: 60
-    peak: -32
-  - platform: ffmpeg_motion
-    input: !secret nest_stream # pragma: allowlist secret
-    name: Motion Sensor
-    reset: 120
-    changes: 10
-    initial_state: true
-    extra_arguments: -q:v 2
+  #- platform: ffmpeg_noise
+  #  initial_state: true
+  #  input: -f alsa -ac 1 -i plughw:1 -vn
+  #  peak: -32
+  #  duration: 2
+  #  reset:
+  #    60
+#  - platform: ffmpeg_noise
+#    name: Noise Sensor 1 (Wohnzimmer)
+#    input: -f alsa -ac 1 -i plughw:1,0 -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
+#  #    input: -f pulse -ac 1 -i default -vn -filter:a silencedetect=n=-10dB:d=1 -f null -
+#      #   input: !secret nest_stream
+#    extra_arguments: -filter:a highpass=f=300,lowpass=f=2500,volume=volume=2 -codec:a libmp3lame -ar 16000
+#    initial_state: true
+#    duration: 2
+#    reset: 60
+#    peak: -32
+#  - platform: ffmpeg_motion
+#    input: !secret nest_stream # pragma: allowlist secret
+#    name: Motion Sensor
+#    reset: 120
+#    changes: 10
+#    initial_state: true
+#    extra_arguments: -q:v 2
   - platform: trend
     sensors:
       outside_temperature_rising:
