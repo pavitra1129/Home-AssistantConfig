@@ -1,0 +1,122 @@
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: InfluxDB Homeassistant Size
+  entity_id: sensor.influxdb_size_homeassistant
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: InfluxDB Internal Size
+  entity_id: sensor.influxdb_size_internal
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: InfluxDB UniFi Size
+  entity_id: sensor.influxdb_size_unifi
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW WHZ Power
+  entity_id: sensor.sonoff_pow_r2_whz_power
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW WHZ Current
+  entity_id: sensor.sonoff_pow_r2_whz_current
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW WHZ Voltage
+  entity_id: sensor.sonoff_pow_r2_whz_voltage
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW TV Power
+  entity_id: sensor.sonoff_pow_r2_tv_power
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW TV Current
+  entity_id: sensor.sonoff_pow_r2_tv_current
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW TV Voltage
+  entity_id: sensor.sonoff_pow_r2_tv_voltage
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW Combined Power
+  entity_id: sensor.energy_combined_power
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW Combined Current
+  entity_id: sensor.energy_combined_current
+
+- platform: filter
+  filters:
+    - filter: time_throttle
+      window_size: 00:01
+  name: Sonoff POW Combined Voltage
+  entity_id: sensor.energy_combined_voltage
+
+- platform: filter
+  name: "Temperatur Wohnzimmer Thermostat (Filtered)"
+  entity_id: sensor.climate_wohnzimmer_temp
+  filters:
+    - filter: outlier
+      window_size: 4
+      radius: 2.0
+    - filter: lowpass
+      time_constant: 10
+    - filter: time_simple_moving_average
+      window_size: 00:05
+      precision: 2
+
+- platform: filter
+  name: "Temperatur Bad Thermostat (Filtered)"
+  entity_id: sensor.climate_bad_temp
+  filters:
+    - filter: outlier
+      window_size: 4
+      radius: 2.0
+    - filter: lowpass
+      time_constant: 10
+    - filter: time_simple_moving_average
+      window_size: 00:05
+      precision: 2
+
+- platform: filter
+  name: "Temperatur Flur Thermostat (Filtered)"
+  entity_id: sensor.climate_flur_temp
+  filters:
+    - filter: outlier
+      window_size: 4
+      radius: 2.0
+    - filter: lowpass
+      time_constant: 10
+    - filter: time_simple_moving_average
+      window_size: 00:05
+      precision: 2

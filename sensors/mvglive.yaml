@@ -1,0 +1,19 @@
+- platform: mvglive
+  nextdeparture:
+    - station: !secret station_mvg_tram # pragma: allowlist secret
+      destinations: !secret destination_tram # pragma: allowlist secret
+      name: Tram
+      lines: !secret line_tram # pragma: allowlist secret
+      products: ["Tram", "Nachteule"]
+      number: 5
+    - station: !secret station_mvg_bus # pragma: allowlist secret
+      destinations: !secret destination_bus # pragma: allowlist secret
+      name: Bus
+      lines: !secret line_bus # pragma: allowlist secret
+      products: ["Bus"]
+      number: 5
+    - station: !secret station_mvg_u # pragma: allowlist secret
+      name: U-Bahn
+      #      directions: ["2"]
+      products: ["U-Bahn"]
+      number: 5

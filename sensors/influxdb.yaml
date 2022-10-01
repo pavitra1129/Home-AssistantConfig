@@ -1,0 +1,48 @@
+- platform: influxdb
+  host: !secret influx_host # pragma: allowlist secret
+  port: !secret influx_port # pragma: allowlist secret
+  username: !secret influx_usr # pragma: allowlist secret
+  password: !secret influx_pwd # pragma: allowlist secret
+  queries:
+    - name: InfluxDB Size Internal
+      unit_of_measurement: MB
+      group_function: mean
+      value_template: "{{ (value | float / 1024 / 1024) | round(1) }}"
+      measurement: '"monitor"."shard"'
+      where: "time > now() - 15m"
+      database: _internal
+      field: diskBytes
+    - name: InfluxDB Size UniFi
+      unit_of_measurement: MB
+      group_function: mean
+      value_template: "{{ (value | float / 1024 / 1024) | round(1) }}"
+      measurement: '"monitor"."shard"'
+      where: '"database"=''unifi'' AND time > now() - 15m'
+      database: _internal
+      field: diskBytes
+    - name: InfluxDB Size Homeassistant
+      unit_of_measurement: MB
+      group_function: mean
+      value_template: "{{ (value | float / 1024 / 1024) | round(1) }}"
+      measurement: '"monitor"."shard"'
+      where: '"database"=''homeassistant'' AND time > now() - 15m'
+      database: _internal
+      field: diskBytes
+    - name: Average Power (last hour)
+      database: homeassistant
+      where: '"entity_id" = ''energy_combined_power'' AND time >= now() - 1h'
+      measurement: '"W"'
+      value_template: "{{ value | round(2) }}"
+      unit_of_measurement: W
+    - name: Average Power (last day)
+      database: homeassistant
+      where: '"entity_id" = ''energy_combined_power'' AND time >= now() - 24h'
+      measurement: '"W"'
+      value_template: "{{ value | round(2) }}"
+      unit_of_measurement: W
+    - name: Average Power (last week)
+      database: homeassistant
+      where: '"entity_id" = ''energy_combined_power'' AND time >= now() - 7d'
+      measurement: '"W"'
+      value_template: "{{ value | round(2) }}"
+      unit_of_measurement: W

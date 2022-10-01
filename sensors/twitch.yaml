@@ -1,0 +1,15 @@
+- platform: twitch_helix
+  client_id: !secret twitch_clientid # pragma: allowlist secret
+  client_secret: !secret twitch_secret # pragma: allowlist secret
+  own_channel: phi_xion
+  thumbnail_dimensions: 1920x1080
+  entity_prefix: twitch_
+  channels:
+    - "Vendetta"
+    - "evanf1997"
+    - "Gladd"
+  api_opt_outs:
+    # - subscription_user
+    # - follow_user
+    # - follow_total
+    # - stream

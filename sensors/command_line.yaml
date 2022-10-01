@@ -1,0 +1,10 @@
+- platform: command_line
+  scan_interval: 300
+  unit_of_measurement: pending update(s)
+  name: System Updates
+  command: "cat /config/tmp/sys_updates.log"
+- platform: command_line
+  scan_interval: 300
+  unit_of_measurement: pending update(s)
+  name: Security Updates
+  command: "cat /config/tmp/sec_updates.log"

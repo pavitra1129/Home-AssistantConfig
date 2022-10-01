@@ -1,0 +1,3 @@
+- platform: authenticated
+  provider: ipapi
+  enable_notification: true

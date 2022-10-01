@@ -1,0 +1,15 @@
+- platform: integration
+  source: sensor.sonoff_pow_r2_whz_power
+  name: energy_consumption_whz_1
+  unit_prefix: k
+  round: 2
+- platform: integration
+  source: sensor.sonoff_pow_r2_tv_power
+  name: energy_consumption_whz_2
+  unit_prefix: k
+  round: 2
+- platform: integration
+  source: sensor.energy_combined_power
+  name: energy_consumption_combined
+  unit_prefix: k
+  round: 2
