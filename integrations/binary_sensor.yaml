@@ -52,12 +52,6 @@ binary_sensor:
         to_state: "home"
   - platform: template
     sensors:
-      #macbook_battery_level_low:
-      #  value_template: "{{ (states.sensor.macbook_air_battery_level | float) < 25 }}"
-      #  friendly_name: "MacBook Akku kritisch"
-      #nexus_battery_level_low:
-      #  value_template: "{{ (states.sensor.nexus_battery_level | float) < 25 }}"
-      #  friendly_name: "Nexus Akku kritisch"
       pixel_battery_level_low:
         value_template: "{{ (states.sensor.pixel_battery_level | float) < 25 }}"
         friendly_name: "Pixel Akku kritisch"
@@ -221,10 +215,3 @@ binary_sensor:
         sample_duration: 7200
         min_gradient: -0.0008
         device_class: cold
-  #  - platform: threshold
-  #    device_class: door
-  #    name: Wohnzimmertür
-  #    entity_id: sensor.nodemcu_3_accel_x
-  #    lower: "0.4"
-#  - platform: uptimerobot
-#    api_key: !secret uptime_robot_apikey

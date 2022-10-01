@@ -8,8 +8,8 @@
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-    - 10.10.10.8
-    - 172.30.33.0/24
+    - !secret trusted_proxy0
+    - !secret trusted_proxy1
   ip_ban_enabled: true
   login_attempts_threshold: 5
   ssl_certificate: /ssl/fullchain.pem

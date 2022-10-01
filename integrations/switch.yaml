@@ -17,14 +17,6 @@ switch:
         turn_off:
           service: scene.turn_on
           entity_id: scene.normal_mode_on
-#  - platform: command_line
-#    switches:
-#      soundbar:
-#        friendly_name: "Soundbar"
-#        command_on: !secret ghla_command_on # pragma: allowlist secret
-#        command_off: !secret ghla_command_off # pragma: allowlist secret
-#        command_state: !secret ghla_command_state # pragma: allowlist secret
-#        command_timeout: 10
   - platform: command_line
     switches:
       guest_wifi:
