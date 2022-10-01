@@ -1,0 +1,184 @@
+- platform: feedparser
+  name: !secret feed_1_name # pragma: allowlist secret
+  feed_url: !secret feed_1_url # pragma: allowlist secret
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS Destiny Glitch
+  feed_url: "https://www.reddit.com/r/raidsecrets/search.rss?q=flair%3AGlitch&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS ps4homebrew
+  feed_url: "https://www.reddit.com/r/ps4homebrew/search.rss?q=*&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS wololo
+  feed_url: "https://wololo.net/feed/"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS PS4 PKG
+  feed_url: "https://game-2u.com/feed"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS PKG Links
+  feed_url: "https://www.reddit.com/r/PkgLinks/search.rss?q=*&restrict_sr=on&sort=new&t=month.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS Destiny Datamine
+  feed_url: "https://www.reddit.com/r/raidsecrets/search.rss?q=flair%3ADatamine&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS Guru 3D
+  feed_url: "https://www.guru3d.com/files-rss"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS Metaebene
+  feed_url: "https://metaebene.me/feed"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS LOGBuch Netzpolitik
+  feed_url: "https://logbuch-netzpolitik.de/feed"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS CRE
+  feed_url: "https://cre.fm/feed"
+  inclusions:
+    - title
+    - link
+    - updated
+- platform: feedparser
+  name: RSS Raidsecrets Top
+  feed_url: "https://www.reddit.com/r/raidsecrets/search.rss?q=*&restrict_sr=on&include_over_18=on&sort=top&t=week.rss"
+  inclusions:
+    - title
+    - link
+    - pubDate
+
+- platform: feedparser
+  name: RSS DTG Top
+  feed_url: "https://www.reddit.com/r/destinythegame/search.rss?q=*&restrict_sr=on&include_over_18=on&sort=top&t=week.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS Destiny SGA
+  feed_url: "https://www.reddit.com/r/DestinyTheGame/search.rss?q=flair%3ASGA&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS Destiny Guide
+  feed_url: "https://www.reddit.com/r/DestinyTheGame/search.rss?q=flair%3AGuide&restrict_sr=on&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS Free Game Keys
+  feed_url: "https://www.reddit.com/r/GameDeals/search.rss?q=subreddit:GameDeals%20AND%20title:(%22free%22%20OR%20%22100%%22%20OR%20%22$0.00%22%20OR%20%22Giveaway%22%20NOT%20%22IndieBox%22%20NOT%20%22nintendo%22%20NOT%20%22fanatical%22%20NOT%20%22itchio%22%20NOT%20%22itch.io%22%20NOT%20%22IndieGala%22%20NOT%20%22Groupees%22)&restrict_sr=&include_over_18=on&sort=new&t=all.rss"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: rss haveibeenpwnd
+  feed_url: "http://feeds.feedburner.com/HaveIBeenPwnedLatestBreaches.xml"
+  inclusions:
+    - title
+    - link
+    - pubDate
+    - description
+
+- platform: feedparser
+  name: RSS esxi 6.7 patches
+  feed_url: "https://esxi-patches.v-front.de/atom/ESXi-6.7.0.xml"
+  inclusions:
+    - title
+    - link
+    - updated
+    - summary
+  exclusions:
+    - logo
+    - icon
+
+- platform: feedparser
+  name: RSS esxi 7.0 patches
+  feed_url: "https://esxi-patches.v-front.de/atom/ESXi-7.0.0.xml"
+  inclusions:
+    - title
+    - link
+    - updated
+    - summary
+  exclusions:
+    - logo
+    - icon
+
+- platform: feedparser
+  name: RSS ccc media
+  feed_url: "https://media.ccc.de/podcast-hq.xml"
+  inclusions:
+    - title
+    - link
+    - lastBuildDate
+    - description
+
+- platform: feedparser
+  name: RSS homeassistant alerts
+  feed_url: "https://alerts.home-assistant.io/feed.xml"
+  inclusions:
+    - title
+    - link
+    - updated
+
+- platform: feedparser
+  name: RSS GitHub Newsfeed
+  feed_url: !secret feed_github_news # pragma: allowlist secret
+  inclusions:
+    - title
+    - link
+    - updated

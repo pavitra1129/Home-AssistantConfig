@@ -9,7 +9,7 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 zone: !include zones.yaml
 panel_iframe: !include panels.yaml
-sensor: !include sensors.yaml
+sensor: !include_dir_merge_list sensors/
 # homeassistant starts here most stuff is in integrations directory
 homeassistant:
   packages: !include_dir_named integrations/

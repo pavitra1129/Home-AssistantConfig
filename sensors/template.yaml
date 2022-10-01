@@ -1,0 +1,141 @@
+- platform: template
+  sensors:
+    climate_wohnung_temp:
+      friendly_name: Wohnung
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.alle_thermostate.attributes.current_temperature | default(0) }}"
+    climate_flur_temp:
+      friendly_name: Flur
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.wiser_flur.attributes.current_temperature | default(0) }}"
+    climate_bad_temp:
+      friendly_name: Bad
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.wiser_bad.attributes.current_temperature | default(0) }}"
+    climate_wohnzimmer_temp:
+      friendly_name: Wohnzimmer
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.wiser_wohnzimmer.attributes.current_temperature | default(0) }}"
+    climate_wohnung_target_temp:
+      friendly_name: Target Temp Wohnung
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.alle_thermostate.attributes.current_temperature | default(0) }}"
+    climate_flur_target_temp:
+      friendly_name: Target Temp Flur
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.wiser_flur.attributes.current_schedule_temp | default(0) }}"
+    climate_bad_target_temp:
+      friendly_name: Target Temp Bad
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.wiser_bad.attributes.current_schedule_temp | default(0) }}"
+    climate_wohnzimmer_target_temp:
+      friendly_name: Target Temp Wohnzimmer
+      unit_of_measurement: "°C"
+      device_class: temperature
+      value_template: "{{ states.climate.wiser_wohnzimmer.attributes.current_schedule_temp | default(0) }}"
+    unifi_speedtest_rx:
+      #      entity_id: sensor.unifi_gateway_www
+      friendly_name: Download
+      unit_of_measurement: MB/s
+      value_template: "{{ state_attr('sensor.unifi_gateway_www','xput_down') | default(0) }}"
+    unifi_speedtest_tx:
+      #      entity_id: sensor.unifi_gateway_www
+      friendly_name: Upload
+      unit_of_measurement: MB/s
+      value_template: "{{ state_attr('sensor.unifi_gateway_www','xput_up') | default(0) }}"
+    unifi_speedtest_ping:
+      #      entity_id: sensor.unifi_gateway_www
+      friendly_name: Ping
+      unit_of_measurement: ms
+      value_template: "{{ state_attr('sensor.unifi_gateway_www','speedtest_ping') | default(0) }}"
+    unifi_wlan_user:
+      #      entity_id: sensor.unifi_gateway_wlan
+      friendly_name: WLAN User
+      unit_of_measurement: devices
+      value_template: "{{ states.sensor.unifi_gateway_wlan.attributes.num_user | default(0) }}"
+    unifi_wlan_guest:
+      #      entity_id: sensor.unifi_gateway_wlan
+      friendly_name: WLAN Guests
+      unit_of_measurement: devices
+      value_template: "{{ states.sensor.unifi_gateway_wlan.attributes.num_guest | default(0) }}"
+    sun_sunset:
+      #      entity_id: sun.sun
+      friendly_name: Sonnenuntergang
+      value_template: "{{ state_attr('sun.sun','next_dusk') }}"
+    sun_sunrise:
+      #      entity_id: sun.sun
+      friendly_name: Sonnenaufgang
+      value_template: "{{ state_attr('sun.sun','next_dawn') }}"
+    proximity_dir_of_travel:
+      #      entity_id: proximity.home
+      friendly_name: Direction of travel
+      value_template: "{{ state_attr('proximity.home','dir_of_travel') }}"
+    energy_combined_current:
+      value_template: "{{ ((states.sensor.sonoff_pow_r2_tv_current.state | float) + (states.sensor.sonoff_pow_r2_whz_current.state | float)) | round(3) }}"
+      friendly_name: Energy combined current
+      unit_of_measurement: A
+    energy_combined_power:
+      value_template: "{{ ((states.sensor.sonoff_pow_r2_tv_power.state | float) + (states.sensor.sonoff_pow_r2_whz_power.state | float)) | round(2) }}"
+      friendly_name: Energy combined power
+      device_class: power
+      unit_of_measurement: W
+    energy_combined_voltage:
+      value_template: "{{ (((states.sensor.sonoff_pow_r2_tv_voltage.state | float) + (states.sensor.sonoff_pow_r2_whz_voltage.state | float)) / 2) | round(2) }}"
+      friendly_name: Energy combined voltage
+      unit_of_measurement: V
+    energy_consumed_hourly_combined:
+      unit_of_measurement: kWh
+      value_template: "{{ ((states.sensor.energy_consumed_hourly_whz_1.state | float) + (states.sensor.energy_consumed_hourly_whz_2.state | float)) | round(2) }}"
+    energy_consumed_daily_combined:
+      unit_of_measurement: kWh
+      value_template: "{{ ((states.sensor.energy_consumed_daily_whz_1.state | float) + (states.sensor.energy_consumed_daily_whz_2.state | float)) | round(2) }}"
+    energy_consumed_weekly_combined:
+      unit_of_measurement: kWh
+      value_template: "{{ ((states.sensor.energy_consumed_weekly_whz_1.state | float) + (states.sensor.energy_consumed_weekly_whz_2.state | float)) | round(2) }}"
+    energy_consumed_monthly_combined:
+      unit_of_measurement: kWh
+      value_template: "{{ ((states.sensor.energy_consumed_monthly_whz_1.state | float) + (states.sensor.energy_consumed_monthly_whz_2.state | float)) | round(2) }}"
+    energy_consumed_yearly_combined:
+      unit_of_measurement: kWh
+      value_template: "{{ ((states.sensor.energy_consumed_yearly_whz_1.state | float) + (states.sensor.energy_consumed_yearly_whz_2.state | float)) | round(2) }}"
+    climate_thermostat_bad_battery_level:
+      friendly_name: Thermostat Bad
+      value_template: "{{ states('sensor.wiser_itrv_bad_battery') | default(101) }}"
+      unit_of_measurement: "%"
+      device_class: battery
+    climate_thermostat_flur_battery_level:
+      friendly_name: Thermostat Flur
+      value_template: "{{ states('sensor.wiser_itrv_flur_battery') | default(101) }}"
+      unit_of_measurement: "%"
+      device_class: battery
+    climate_thermostat_wohnzimmer_battery_level:
+      friendly_name: Thermostat Wohnzimmer
+      value_template: "{{ states('sensor.wiser_itrv_wohnzimmer_battery') | default(101) }}"
+      unit_of_measurement: "%"
+      device_class: battery
+    climate_raumthermostat_wohnzimmer_battery_level:
+      friendly_name: Raum Thermostat Wohnzimmer
+      value_template: "{{ states('sensor.wiser_roomstat_wohnzimmer_battery') | default(101) }}"
+      unit_of_measurement: "%"
+      device_class: battery
+    outside_temperature:
+      friendly_name: Außentemperatur
+      value_template: >
+        {{ state_attr('weather.dark_sky', 'temperature') | default(0) | int if states.weather.dark_sky.attributes.temperature is not none }}
+      unit_of_measurement: "°C"
+      device_class: temperature
+    core_mem:
+      friendly_name: Core Memory Usage
+      unit_of_measurement: "%"
+      value_template: "{{ state_attr('sensor.core', 'memory_percent') }}"
+    supervisor_mem:
+      friendly_name: Supervisor Memory Usage
+      unit_of_measurement: "%"
+      value_template: "{{ state_attr('sensor.supervisor', 'memory_percent') }}"

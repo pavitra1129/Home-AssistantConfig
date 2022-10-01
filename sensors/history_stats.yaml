@@ -1,0 +1,93 @@
+- platform: history_stats
+  name: Heating Bad On Today
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 1
+- platform: history_stats
+  name: Heating Flur On Today
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 1
+- platform: history_stats
+  name: Heating Wohnzimmer On Today
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 1
+- platform: history_stats
+  name: Heating Bad On Yesterday
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 2
+- platform: history_stats
+  name: Heating Flur On Yesterday
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 2
+- platform: history_stats
+  name: Heating Wohnzimmer On Yesterday
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 2
+- platform: history_stats
+  name: Heating Bad On this Week
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+- platform: history_stats
+  name: Heating Flur On this Week
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+- platform: history_stats
+  name: Heating Wohnzimmer On this Week
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  start: "{{ as_timestamp( now().replace(hour=0, minute=0, second=0) ) - now().weekday() * 86400 }}"
+  end: "{{ now() }}"
+- platform: history_stats
+  name: Heating Bad On past 30 days
+  entity_id: binary_sensor.heating_bad
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 30
+- platform: history_stats
+  name: Heating Flur On past 30 days
+  entity_id: binary_sensor.heating_flur
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 30
+- platform: history_stats
+  name: Heating Wohnzimmer On past 30 days
+  entity_id: binary_sensor.heating_wohnzimmer
+  state: "on"
+  type: time
+  end: "{{ now().replace(hour=0, minute=0, second=0) }}"
+  duration:
+    days: 30

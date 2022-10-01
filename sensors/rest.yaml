@@ -1,0 +1,33 @@
+- platform: rest
+  name: Club Status
+  json_attributes:
+    - space
+    - url
+    - state
+    - location
+    - feeds
+    - logo
+  resource: !secret muccc_spaceapi
+  value_template: "{{ value_json.state.message }}"
+  headers:
+    Accept: application/json
+    Content-Type: application/json
+    User-Agent: hassio REST sensor (msg rid@muccc irc if concerns)
+
+- platform: rest
+  name: Where the fuck is Xur
+  json_attributes:
+    - desc
+    - found
+    - img
+    - lastUpdate
+    - planet
+    - present
+    - zone
+  resource: !secret xur_rest_api
+  value_template: "{{ value_json.present }}"
+
+- platform: rest
+  resource: https://api.myip.com
+  name: External IP
+  value_template: "{{ value_json.ip }}"
