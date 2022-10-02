@@ -11,24 +11,36 @@ rest_command:
     method: POST
     content_type: "application/json"
     headers:
-        authorization: !secret assistant_relay_apikey
+      authorization: !secret assistant_relay_apikey
     payload: '{"command":"{{ command }}", "user":"HomeAssistant", "broadcast":true, "device":"Google Nest Hub"}'
   assistant_converse:
     url: !secret google_assistant_relay # pragma: allowlist secret
     method: POST
     content_type: "application/json"
     headers:
-        authorization: !secret assistant_relay_apikey # pragma: allowlist secret
+      authorization: !secret assistant_relay_apikey # pragma: allowlist secret
     payload: '{"command":"{{ command }}", "user":"HomeAssistant", "talkback":true, "device":"Google Nest Hub"}'
   assistant_relay:
     url: !secret google_assistant_relay # pragma: allowlist secret
     method: POST
     content_type: "application/json"
     headers:
-        authorization: !secret assistant_relay_apikey # pragma: allowlist secret
+      authorization: !secret assistant_relay_apikey # pragma: allowlist secret
     payload: '{"command":"{{ command }}", "user":"HomeAssistant", "device":"Google Nest Hub"}'
   webhook:
     url: !secret webhook_url # pragma: allowlist secret
     method: POST
     payload: '{"msg": "{{ command }}"}'
     content_type: "application/json"
+  gh_issue_change_state:
+    url: "https://api.github.com/repos/phixion/Home-AssistantConfig/issues/{{issue_number}}"
+    method: PATCH
+    headers:
+        authorization: !secret gh_token_issues # pragma: allowlist secret
+    payload: '{"state":"{{ status }}"}'
+  gh_issue_comment:
+    url: "https://api.github.com/repos/phixion/Home-AssistantConfig/issues/{{issue_number}}/comments"
+    method: POST
+    headers:
+       authorization: !secret gh_token_issues # pragma: allowlist secret
+    payload: '{ "body": "{{ message }}" }'
