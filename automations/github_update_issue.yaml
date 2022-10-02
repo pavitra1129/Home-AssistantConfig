@@ -1,0 +1,34 @@
+automation:
+  - id: 6754654s
+    alias: HA Update Notification
+
+    trigger:
+      - platform: homeassistant
+        event: start
+      - platform: state
+        entity_id: update.home_assistant_core_update
+
+    action:
+      - service: rest_command.gh_issue_change_state
+        data:
+          status: "open"
+          issue_number: 17
+      
+      - service: rest_command.gh_issue_comment
+        data:
+          message: 'Upgrade HA from {{ state_attr("update.home_assistant_core_update","installed_version") }} to {{ state_attr("update.home_assistant_core_update","latest_version") }} \n Release notes available via {{ state_attr("update.home_assistant_core_update","release_url") }}. \n","labels":["task: upgrade","task: maintenance"]} '
+          issue_number: 17
+      
+      - service: input_text.set_value
+        data:
+          entity_id: input_text.ha_version_notified
+          value: '{{ state_attr("update.home_assistant_core_update","latest_version") }}'
+
+      - service: persistent_notification.create
+        data:
+          title: Update Home Assistant
+          message: >
+            There is an update to Home Assistant core
+              * {{ state_attr("update.home_assistant_core_update","installed_version") }} -> {{ state_attr("update.home_assistant_core_update","latest_version") }}
+          notification_id: update_ha
+
